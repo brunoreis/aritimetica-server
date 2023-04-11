@@ -1,0 +1,16 @@
+- add a way to see the db
+- check some prisma client interface
+- users Query
+    - double check the seeded table. 
+    - Why "The table `public.User` does not exist in the current database."?
+- postgress db
+    - migrate password field types to varchars(since PG native are richer)
+    - create enum for roles field
+    - postgress tool to see the db
+- manage environment vars and passowrds     
+- Auth
+    - add orgs
+    - inject roles and orgs into the TOKEN on login? 
+- deploy
+    - how to access running instances, query the DB, interact with the app? 
+    - add restrictions on migrations, seeds, etc...
