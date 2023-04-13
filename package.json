@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "prisma": {
-    "seed": "ts-node prisma/seed.ts",
-    "schema": "prisma/schema.prisma"
+    "schema": "prisma/schema.prisma",
+    "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -1,9 +1,9 @@
-- users Query
-    - check if there is a prisma client interface
+- heroku deploy and pipeline
 - postgress db
     - migrate password field types to varchars(since PG native are richer)
     - create enum for roles field
     - postgress tool to see the db
+- take a look on prisma's data guide
 - manage environment vars and passowrds     
 - Auth
     - add orgs
