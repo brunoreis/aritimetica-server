@@ -2,10 +2,14 @@
   "name": "aritimetica-server",
   "version": "0.0.0",
   "license": "MIT",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts",
+    "schema": "prisma/schema.prisma"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --transpile-only --no-notify api/index.ts",
-    "prisma:reset_and_seed": "npx prisma migrate reset",
+    "prisma:seed": "npx prisma migrate reset",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
     "build": "tsc"

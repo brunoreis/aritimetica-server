@@ -1,8 +1,5 @@
-- add a way to see the db
-- check some prisma client interface
 - users Query
-    - double check the seeded table. 
-    - Why "The table `public.User` does not exist in the current database."?
+    - check if there is a prisma client interface
 - postgress db
     - migrate password field types to varchars(since PG native are richer)
     - create enum for roles field
