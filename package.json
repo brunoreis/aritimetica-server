@@ -13,7 +13,7 @@
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node dist/api/index.js",
     "clean": "rm -rf dist/*"
   },
   "dependencies": {
