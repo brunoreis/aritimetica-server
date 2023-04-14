@@ -1,5 +1,10 @@
 ## Env configuration
 
+In the local env, configurations are put on .env. 
+On heroku you need to define env vars per service. 
+You can rename `.env.example` to `.env` on your first installation. 
+`.env` is excluded from the repo in `.gitignore` and won't be persisted. 
+
 ## Architecture
 
 This is a GraphQL server. It's built using three main tools/layers: 
@@ -43,6 +48,8 @@ To see your data on [prisma studio](https://github.com/prisma/studio) run: `npx 
 #### DB
 
 The db is managed by prisma. In this project we have a `docker-compose.yml` file with two helpful services, a postgres server and a pgadmin server. If you run these services (`docker-compose up`), you will have a local instance of a PG database and also the [pgadmin](https://www.pgadmin.org/) platform to see the data on your database and manage it. 
+
+The DATABASE_URL local env configuration can point either to the local container or to any other db instance, like the aws RDS used in prod. 
 
 ### GraphQL / Server
 
@@ -111,3 +118,10 @@ Evolving the application typically requires two steps:
 When you do so, the nexus dev server will automatically generate the appropriate `schema.graphql` and `nexus-typegen.ts` files.
 
 ## Deploy Pipeline
+
+This app is being deployed to heroku with the following pipeline: 
+
+**New PRs** will deploy **Review Apps**
+you can check them on the github PR
+
+**Merges on main** will get **deployed to prod**. 

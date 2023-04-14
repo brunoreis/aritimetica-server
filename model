@@ -1,0 +1,11 @@
+user 1-* lesson 1-* exercise
+
+user n-1 membership 1-n group
+            *
+            |
+            *
+           role
+            *
+            |
+            *
+        permission

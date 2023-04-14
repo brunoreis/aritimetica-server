@@ -1,5 +1,3 @@
-- heroku deploy and pipeline
-- manage environment vars and passowrds
 - postgress db
     - migrate password field types to varchars(since PG native are richer)
     - create enum for roles field
