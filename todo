@@ -1,13 +1,13 @@
 - heroku deploy and pipeline
+- manage environment vars and passowrds
 - postgress db
     - migrate password field types to varchars(since PG native are richer)
     - create enum for roles field
     - postgress tool to see the db
-- take a look on prisma's data guide
-- manage environment vars and passowrds     
 - Auth
     - add orgs
     - inject roles and orgs into the TOKEN on login? 
+- take a look on prisma's data guide
 - deploy
     - how to access running instances, query the DB, interact with the app? 
     - add restrictions on migrations, seeds, etc...
