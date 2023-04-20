@@ -7,6 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Lesson {
+  id            String    @id @default(uuid())
+  title         String
+  assigner      User      @relation("assigner", fields: [assignerId], references: [id])
+  assignee      User      @relation("assignee", fields: [assigneeId], references: [id])
+  assignerId    String
+  assigneeId    String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
 model User {
   id        String  @id @default(uuid())
   email     String  @unique
@@ -14,6 +25,8 @@ model User {
   bio       String?
   password  String
   memberships Membership[]
+  assignedLessons Lesson[] @relation("assigner")
+  receivedLessons Lesson[] @relation("assignee")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -25,13 +38,14 @@ model Permission {
 
 model Role {
   id        String  @id 
+  title     String
   memberships Membership[]
   permissions Permission[]
 }
 
 model Group {
-  id        String  @id @default(uuid())
-  name      String  
+  id          String      @id @default(uuid())
+  name        String
   memberships Membership[]
 }
 
@@ -44,4 +58,3 @@ model Membership {
   roleId String
   groupId String
 }
-

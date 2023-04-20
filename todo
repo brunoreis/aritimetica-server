@@ -1,11 +1,23 @@
+- authorization
+    - the context will always inject an user 
+        - if no auth
+            - Unauthenticated User
+        - if a jwt is provided
+            - Other User
+    - type the context to have the correct auth type on authorize field definition
+    - type the header in createContext (TS)
+    - create user group and lesson lists
+        - authorize admins
+        - authorize teachers
+        - authorize students
+    - create logout mutation
+    - only allow authorized users
+        - login (only allowed for unauthenticated users)
+        - logout (allowed for most users)
 - postgress db
     - migrate password field types to varchars(since PG native are richer)
     - create enum for roles field
     - postgress tool to see the db
-- Auth
-    - think about permissions PER org vs general permissons
-    - can a membership not have a group. Should we have a special APP group? 
-    - inject roles and orgs into the TOKEN on login? 
 - take a look on prisma's data guide
 - deploy
     - how to access running instances, query the DB, interact with the app? 

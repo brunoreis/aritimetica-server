@@ -2,6 +2,15 @@
 ### Do not make changes to this file directly
 
 
+type LoginResponse {
+  jwt: String
+  user: User
+}
+
+type Mutation {
+  login(email: String!, password: String!): LoginResponse!
+}
+
 type Query {
   users: [User]!
 }

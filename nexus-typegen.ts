@@ -4,7 +4,7 @@
  */
 
 
-
+import type { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 
 
 
@@ -28,6 +28,11 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  LoginResponse: { // root type
+    jwt?: string | null; // String
+    user?: NexusGenRootTypes['User'] | null; // User
+  }
+  Mutation: {};
   Query: {};
   User: { // root type
     bio?: string | null; // String
@@ -50,6 +55,13 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  LoginResponse: { // field return type
+    jwt: string | null; // String
+    user: NexusGenRootTypes['User'] | null; // User
+  }
+  Mutation: { // field return type
+    login: NexusGenRootTypes['LoginResponse']; // LoginResponse!
+  }
   Query: { // field return type
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
@@ -64,6 +76,13 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  LoginResponse: { // field return type name
+    jwt: 'String'
+    user: 'User'
+  }
+  Mutation: { // field return type name
+    login: 'LoginResponse'
+  }
   Query: { // field return type name
     users: 'User'
   }
@@ -78,6 +97,12 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    login: { // args
+      email: string; // String!
+      password: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -143,6 +168,15 @@ declare global {
   interface NexusGenPluginInputTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
+    /**
+     * Authorization for an individual field. Returning "true"
+     * or "Promise<true>" means the field can be accessed.
+     * Returning "false" or "Promise<false>" will respond
+     * with a "Not Authorized" error for the field.
+     * Returning or throwing an error will also prevent the
+     * resolver from executing.
+     */
+    authorize?: FieldAuthorizeResolver<TypeName, FieldName>
   }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {
   }
