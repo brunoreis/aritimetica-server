@@ -93,17 +93,17 @@ const roleData: Prisma.RoleCreateInput[] = [
 
 const userData: Prisma.UserCreateInput[] = [
   {
-    id: 'admin',
-    email: 'admin@example.com',
-    name: 'Admin',
-    bio: "Hello, I'm Admin!",
-    password: '$2b$10$KBPVsOCqVBJBCEEzI2S9n.2exIlJoQUX4l6KLjk5pSy5TbZdmo6.O',
-  },
-  {
     id: 'unauthenticated',
     email: 'unauthenticated@example.com',
     name: 'Unauthenticated User',
     bio: "Hello, I'm Unauthenticated!",
+    password: '',
+  },
+  {
+    id: 'admin',
+    email: 'admin@example.com',
+    name: 'Admin',
+    bio: "Hello, I'm Admin!",
     password: '$2b$10$KBPVsOCqVBJBCEEzI2S9n.2exIlJoQUX4l6KLjk5pSy5TbZdmo6.O',
   },
   {

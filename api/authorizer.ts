@@ -1,10 +1,11 @@
+import { UserDataType } from './UserDataType';
 export type Authorizer = {
     loggedIn: () => boolean;
 }
 
-const authorizer = ({ userId }: { userId?: string }):Authorizer => {
+const authorizer = ({ userData }: { userData: UserDataType }):Authorizer => {
     return {
-        loggedIn: () => !!userId
+        loggedIn: () => userData.id !== 'annonymous'
     };
 }
 

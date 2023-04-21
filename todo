@@ -1,9 +1,4 @@
 - authorization
-    - the context will always inject an user 
-        - if no auth
-            - Unauthenticated User
-        - if a jwt is provided
-            - Other User
     - type the context to have the correct auth type on authorize field definition
     - type the header in createContext (TS)
     - create user group and lesson lists
