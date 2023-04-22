@@ -1,10 +1,26 @@
 - authorization
-    - type the context to have the correct auth type on authorize field definition
-    - type the header in createContext (TS)
-    - create user group and lesson lists
+    - change ids by uuids
+    - query groups or a specific
+        - authorize student
+            - should query "me", but not other users
+            - create a User resolver
+                - add a me:boolean param
+                    - return the logged user
+            - are we able to know if the query graph is asking for the group and eager loading it in the membership resolver? 
+            - same with memberships
+            - what about filtering the fields?
+            - rename ids by uuids
+        - test with a teacher
+        - test with an admin
+            - should be able to retrieve any user
+    - create user lists (inside groups? / main one?)
         - authorize admins
+        - students ?
         - authorize teachers
-        - authorize students
+    - create user lists
+        - authorize admins
+        - students
+        - authorize teachers
     - create logout mutation
     - only allow authorized users
         - login (only allowed for unauthenticated users)

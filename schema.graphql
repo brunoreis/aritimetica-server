@@ -2,9 +2,21 @@
 ### Do not make changes to this file directly
 
 
+type Group {
+  id: String
+  name: String
+}
+
 type LoginResponse {
   jwt: String
   user: User
+}
+
+type Membership {
+  group: Group
+  groupId: String
+  roleId: String
+  userId: String
 }
 
 type Mutation {
@@ -18,6 +30,7 @@ type Query {
 type User {
   bio: String
   email: String
+  memberships: [Membership]
   name: String
   password: String
   role: String

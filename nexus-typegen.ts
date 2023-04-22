@@ -28,9 +28,18 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Group: { // root type
+    id?: string | null; // String
+    name?: string | null; // String
+  }
   LoginResponse: { // root type
     jwt?: string | null; // String
     user?: NexusGenRootTypes['User'] | null; // User
+  }
+  Membership: { // root type
+    groupId?: string | null; // String
+    roleId?: string | null; // String
+    userId?: string | null; // String
   }
   Mutation: {};
   Query: {};
@@ -55,9 +64,19 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Group: { // field return type
+    id: string | null; // String
+    name: string | null; // String
+  }
   LoginResponse: { // field return type
     jwt: string | null; // String
     user: NexusGenRootTypes['User'] | null; // User
+  }
+  Membership: { // field return type
+    group: NexusGenRootTypes['Group'] | null; // Group
+    groupId: string | null; // String
+    roleId: string | null; // String
+    userId: string | null; // String
   }
   Mutation: { // field return type
     login: NexusGenRootTypes['LoginResponse']; // LoginResponse!
@@ -68,6 +87,7 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     bio: string | null; // String
     email: string | null; // String
+    memberships: Array<NexusGenRootTypes['Membership'] | null> | null; // [Membership]
     name: string | null; // String
     password: string | null; // String
     role: string | null; // String
@@ -76,9 +96,19 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Group: { // field return type name
+    id: 'String'
+    name: 'String'
+  }
   LoginResponse: { // field return type name
     jwt: 'String'
     user: 'User'
+  }
+  Membership: { // field return type name
+    group: 'Group'
+    groupId: 'String'
+    roleId: 'String'
+    userId: 'String'
   }
   Mutation: { // field return type name
     login: 'LoginResponse'
@@ -89,6 +119,7 @@ export interface NexusGenFieldTypeNames {
   User: { // field return type name
     bio: 'String'
     email: 'String'
+    memberships: 'Membership'
     name: 'String'
     password: 'String'
     role: 'String'
