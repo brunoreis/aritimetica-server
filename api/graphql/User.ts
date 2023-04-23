@@ -3,6 +3,7 @@ import { sign } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { ContextType } from '../ContextType';
 import { extendType, nonNull, stringArg } from 'nexus'
+import { parseResolveInfo, simplifyParsedResolveInfoFragmentWithType } from 'graphql-parse-resolve-info'
 
 export const User = objectType({
   name: 'User',
@@ -15,25 +16,48 @@ export const User = objectType({
     t.string('role')
     t.list.field('memberships', {
       type: 'Membership',
-      resolve(_root, args, ctx:ContextType) {
-        return ctx.db.membership.findMany({
-          where:{
-            userId: _root.id
-          }
-        })
+      resolve(root, args, ctx:ContextType, resolveInfo) {
+        if(root.memberships) {
+          return root.memberships
+        } else {
+          ctx.db.membership.findMany({
+            where:{
+              userUuid: root.uuid
+            }
+          })
+        }
       },
     })
   },
 })
 
-export const UserQuery = extendType({
+export const UsersQuery = extendType({
   type: 'Query',
   definition(t) {
     t.nonNull.list.field('users', {
       type: 'User',
       authorize: (_root, _args, ctx:ContextType) => ctx.auth.loggedIn(),
-      resolve(_root, _args, ctx) {
-          return ctx.db.user.findMany()
+      resolve(_root, _args, ctx, resolveInfo) {
+        const parsedResolveInfoFragment = parseResolveInfo(resolveInfo);
+        let memberships:boolean | object = false;
+        const membershipsRelation = parsedResolveInfoFragment?.fieldsByTypeName.User?.memberships;
+        if(membershipsRelation) {
+          memberships = true;
+          const groupRelation = membershipsRelation.fieldsByTypeName.Membership?.group;
+          if(groupRelation) {
+            memberships = {
+              include: {
+                group: true
+              }
+            }
+          }
+        }
+        const params =  {
+          include: {
+            memberships
+          } 
+        }
+        return ctx.db.user.findMany(params)
       }
     })
   },
@@ -65,7 +89,7 @@ export const LoginMutation = extendType({
         if (!isValidPassword) {
           throw new Error("Invalid email or Password");
         }
-        const jwt = sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
+        const jwt = sign({ userUuid: user.uuid }, process.env.JWT_SECRET_KEY, {
           expiresIn: "1h",
         });
         return { jwt, user };

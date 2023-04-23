@@ -37,9 +37,9 @@ export interface NexusGenObjects {
     user?: NexusGenRootTypes['User'] | null; // User
   }
   Membership: { // root type
-    groupId?: string | null; // String
-    roleId?: string | null; // String
-    userId?: string | null; // String
+    groupUuid?: string | null; // String
+    roleUuid?: string | null; // String
+    userUuid?: string | null; // String
   }
   Mutation: {};
   Query: {};
@@ -74,9 +74,9 @@ export interface NexusGenFieldTypes {
   }
   Membership: { // field return type
     group: NexusGenRootTypes['Group'] | null; // Group
-    groupId: string | null; // String
-    roleId: string | null; // String
-    userId: string | null; // String
+    groupUuid: string | null; // String
+    roleUuid: string | null; // String
+    userUuid: string | null; // String
   }
   Mutation: { // field return type
     login: NexusGenRootTypes['LoginResponse']; // LoginResponse!
@@ -106,9 +106,9 @@ export interface NexusGenFieldTypeNames {
   }
   Membership: { // field return type name
     group: 'Group'
-    groupId: 'String'
-    roleId: 'String'
-    userId: 'String'
+    groupUuid: 'String'
+    roleUuid: 'String'
+    userUuid: 'String'
   }
   Mutation: { // field return type name
     login: 'LoginResponse'

@@ -4,17 +4,21 @@ import { ContextType } from '../ContextType';
 export const Membership = objectType({
   name: 'Membership',
   definition(t) {
-    t.string('roleId')
-    t.string('userId')
-    t.string('groupId')
+    t.string('roleUuid')
+    t.string('userUuid')
+    t.string('groupUuid')
     t.field('group', {
         type: 'Group',
         resolve(root, _args, ctx:ContextType) {
-          return ctx.db.group.findUnique({
-            where:{
-              id: root.groupId
-            }
-          })
+          if(root.group) {
+            return root.group
+          } else {
+            return ctx.db.group.findUnique({
+              where:{
+                uuid: root.groupUuid
+              }
+            })
+          }
         },
       })
   },

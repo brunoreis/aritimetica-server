@@ -19,8 +19,8 @@ const extractUserIdFromAuthToken = (req: Request):string | null => {
   const token = authHeader && authHeader.split(" ")[1];
   if (token) {
     try {
-      const decodedToken = verify(token, process.env.JWT_SECRET_KEY) as unknown as { userId: string };
-      return decodedToken.userId
+      const decodedToken = verify(token, process.env.JWT_SECRET_KEY) as unknown as { userUuid: string };
+      return decodedToken.userUuid
     } catch (err) {
       // unable to verify the token
     }
@@ -28,19 +28,19 @@ const extractUserIdFromAuthToken = (req: Request):string | null => {
   return null;
 }
 
-const loadUserDataFromUserId = async (userId: string | null): Promise<UserDataType> => {
-  if(userId) {
-    const user = await prisma.user.findUnique({ where: { id: userId } })
+const loadUserDataFromUserId = async (userUuid: string | null): Promise<UserDataType> => {
+  if(userUuid) {
+    const user = await prisma.user.findUnique({ where: { uuid: userUuid } })
     if(user) {
       return {
-        id: user.id,
+        uuid: user.uuid,
         email: user.email,
         name: user.name
       }
     }
   } 
   return {
-    id: 'annonymous',
+    uuid: 'annonymous',
     email: '',
     name: ''
   }

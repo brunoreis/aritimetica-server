@@ -8,18 +8,18 @@ datasource db {
 }
 
 model Lesson {
-  id            String    @id @default(uuid())
+  uuid            String    @id @default(uuid())
   title         String
-  assigner      User      @relation("assigner", fields: [assignerId], references: [id])
-  assignee      User      @relation("assignee", fields: [assigneeId], references: [id])
-  assignerId    String
-  assigneeId    String
+  assigner      User      @relation("assigner", fields: [assignerUuid], references: [uuid])
+  assignee      User      @relation("assignee", fields: [assigneeUuid], references: [uuid])
+  assignerUuid    String
+  assigneeUuid    String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
 
 model User {
-  id        String  @id @default(uuid())
+  uuid        String  @id @default(uuid())
   email     String  @unique
   name      String
   bio       String?
@@ -32,29 +32,29 @@ model User {
 }
 
 model Permission {
-  id String  @id
+  uuid String  @id
   roles Role[]
 }
 
 model Role {
-  id        String  @id 
+  uuid        String  @id 
   title     String
   memberships Membership[]
   permissions Permission[]
 }
 
 model Group {
-  id          String      @id @default(uuid())
+  uuid          String      @id @default(uuid())
   name        String
   memberships Membership[]
 }
 
 model Membership {
-  id String @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  group Group @relation(fields: [groupId], references: [id])
-  role Role @relation(fields: [roleId], references: [id])
-  userId String
-  roleId String
-  groupId String
+  uuid String @id @default(uuid())
+  user User @relation(fields: [userUuid], references: [uuid])
+  group Group @relation(fields: [groupUuid], references: [uuid])
+  role Role @relation(fields: [roleUuid], references: [uuid])
+  userUuid String
+  roleUuid String
+  groupUuid String
 }

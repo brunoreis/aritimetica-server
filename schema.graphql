@@ -14,9 +14,9 @@ type LoginResponse {
 
 type Membership {
   group: Group
-  groupId: String
-  roleId: String
-  userId: String
+  groupUuid: String
+  roleUuid: String
+  userUuid: String
 }
 
 type Mutation {

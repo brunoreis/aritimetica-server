@@ -1,15 +1,12 @@
 - authorization
-    - change ids by uuids
+    - list all db queries of a specific request
+    - refactor user>memberships>group resolvers
     - query groups or a specific
         - authorize student
             - should query "me", but not other users
             - create a User resolver
                 - add a me:boolean param
                     - return the logged user
-            - are we able to know if the query graph is asking for the group and eager loading it in the membership resolver? 
-            - same with memberships
-            - what about filtering the fields?
-            - rename ids by uuids
         - test with a teacher
         - test with an admin
             - should be able to retrieve any user
