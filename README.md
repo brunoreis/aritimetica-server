@@ -61,6 +61,13 @@ The **code based schema** approach is very productive since it auto generates th
 
 ### Authentication and Authorization
 
+The User.login mutation will create a jwt token. That token, passed on the `Authorization` header ("Bearer [token]"), is used to authenticate the user. 
+
+The `createContext` method will inject a `loadUserData` method in the context so that it can be used if the auth user is needed. The user data is not loaded in all requests in the context because we just want it on operations that require an authenticated users. On open endpoints we don't want the user to be queried unnecessarily.
+
+`createContext` also injects an `auth` object that can be used to check for specific authorization queries. That's usually the moment when `loadUserData` is called for the first time. 
+
+We use the `authorize` check provided by the nexus' [fieldAuthorizePlugin](https://nexusjs.org/docs/plugins/field-authorize). Resolvers can provide an `authorize` function that will run to check for authorization. 
 ## Local Installation
 
 1. Clone this repo and install dependencies

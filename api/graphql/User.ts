@@ -16,11 +16,11 @@ export const User = objectType({
     t.string('role')
     t.list.field('memberships', {
       type: 'Membership',
-      resolve(root, args, ctx:ContextType, resolveInfo) {
+      resolve(root, _args, ctx:ContextType) {
         if(root.memberships) {
           return root.memberships
         } else {
-          ctx.db.membership.findMany({
+          return ctx.db.membership.findMany({
             where:{
               userUuid: root.uuid
             }

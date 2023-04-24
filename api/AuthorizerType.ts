@@ -1,5 +1,5 @@
 type AuthorizerType = {
-    loggedIn: () => boolean;
+    loggedIn: () => Promise<boolean>;
 }
 
 export type { AuthorizerType }

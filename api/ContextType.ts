@@ -5,7 +5,7 @@ import { AuthorizerType } from './AuthorizerType';
 type ContextType = {
     db: PrismaClient;
     auth: AuthorizerType,
-    userData: UserDataType
+    loadUserData: () => Promise<UserDataType>
 };
 
 export type { ContextType }

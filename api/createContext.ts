@@ -1,14 +1,12 @@
-import { db } from "./db";
-import { PrismaClient } from "@prisma/client"
+import createDb from "./createDb";
 import { verify } from 'jsonwebtoken';
 import { Request, Response } from 'express'
 import * as dotenv from 'dotenv'
 import { UserDataType } from './UserDataType'
 import { ContextType } from './ContextType'
 import createAuthorizer from "./createAuthorizer";
+import { PrismaClient } from "@prisma/client";
 dotenv.config()
-
-const prisma = new PrismaClient();
 
 type ContextInput = {
   req: Request, 
@@ -28,9 +26,9 @@ const extractUserIdFromAuthToken = (req: Request):string | null => {
   return null;
 }
 
-const loadUserDataFromUserId = async (userUuid: string | null): Promise<UserDataType> => {
+const loadUserDataFromUserId = async (userUuid: string | null, db: PrismaClient): Promise<UserDataType> => {
   if(userUuid) {
-    const user = await prisma.user.findUnique({ where: { uuid: userUuid } })
+    const user = await db.user.findUnique({ where: { uuid: userUuid } })
     if(user) {
       return {
         uuid: user.uuid,
@@ -44,15 +42,21 @@ const loadUserDataFromUserId = async (userUuid: string | null): Promise<UserData
     email: '',
     name: ''
   }
-    
+}
+
+const createLoadUserData = (db:PrismaClient, req:Request) => async ():Promise<UserDataType> => {
+  const userId = extractUserIdFromAuthToken(req)
+  const userData = await loadUserDataFromUserId(userId, db)
+  return userData
 }
 
 export const createContext = async ({ req }: ContextInput ): Promise<ContextType> => {
-    const userId = extractUserIdFromAuthToken(req)
-    const userData = await loadUserDataFromUserId(userId)
+    const db = createDb()
+    db.___log = true
+    const loadUserData = createLoadUserData(db, req)
     return {
       db,
-      auth: createAuthorizer({ userData }),
-      userData
+      auth: createAuthorizer({ loadUserData }),
+      loadUserData
     };
 };

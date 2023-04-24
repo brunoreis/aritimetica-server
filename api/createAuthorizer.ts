@@ -1,9 +1,12 @@
 import { UserDataType } from './UserDataType';
 import { AuthorizerType } from './AuthorizerType';
 
-const createAuthorizer = ({ userData }: { userData: UserDataType }):AuthorizerType => {
+const createAuthorizer = ({ loadUserData }: { loadUserData: () => Promise<UserDataType> }):AuthorizerType => {
     return {
-        loggedIn: () => userData.uuid !== 'annonymous'
+        loggedIn: async () => {
+            const userData = await loadUserData();
+            return userData.uuid !== 'annonymous'
+        }
     };
 }
 

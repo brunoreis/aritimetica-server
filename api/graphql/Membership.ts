@@ -13,11 +13,12 @@ export const Membership = objectType({
           if(root.group) {
             return root.group
           } else {
-            return ctx.db.group.findUnique({
+            const params = {
               where:{
                 uuid: root.groupUuid
               }
-            })
+            }
+            return ctx.db.group.findUnique(params)
           }
         },
       })

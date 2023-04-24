@@ -1,7 +1,9 @@
 - authorization
-    - list all db queries of a specific request
-    - refactor user>memberships>group resolvers
-    - query groups or a specific
+    - create .end config to log prisma queries
+    - query one user with groups
+    - refactor user > memberships > group resolvers
+        - extract the include logic
+    - query user with memberships, groups and users inside those groups
         - authorize student
             - should query "me", but not other users
             - create a User resolver
