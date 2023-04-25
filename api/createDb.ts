@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
-
-const db = new PrismaClient({
+const createDbWithLogging = (): PrismaClient => {
+  const db = new PrismaClient({
     log: [
       {
         emit: 'event',
@@ -20,18 +20,22 @@ const db = new PrismaClient({
         level: 'warn',
       },
     ],
-});
+  })
 
-
-db.$on('query', (e) => {
-    console.log('log? ', db.___log)
+  db.$on('query', (e) => {
     console.log('Query: ' + e.query)
     console.log('Params: ' + e.params)
     console.log('Duration: ' + e.duration + 'ms')
-})
+  })
+  return db
+}
 
-const createDb = ():PrismaClient => {
-    return db;
+const db = process.env.LOG_PRISMA_QUERIES == 'true'
+  ? createDbWithLogging()
+  : new PrismaClient()
+
+const createDb = (): PrismaClient => {
+  return db
 }
 
 export default createDb

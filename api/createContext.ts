@@ -52,7 +52,6 @@ const createLoadUserData = (db:PrismaClient, req:Request) => async ():Promise<Us
 
 export const createContext = async ({ req }: ContextInput ): Promise<ContextType> => {
     const db = createDb()
-    db.___log = true
     const loadUserData = createLoadUserData(db, req)
     return {
       db,
