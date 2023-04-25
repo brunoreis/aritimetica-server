@@ -1,8 +1,8 @@
 - authorization
-    - create .end config to log prisma queries
     - query one user with groups
     - refactor user > memberships > group resolvers
         - extract the include logic
+    - solve typescript issues in models
     - query user with memberships, groups and users inside those groups
         - authorize student
             - should query "me", but not other users
