@@ -1,4 +1,5 @@
 export * from './types/User'
+export * from './queries/user'
 export * from './queries/users'
 export * from './mutations/login'
 export * from './types/Membership'

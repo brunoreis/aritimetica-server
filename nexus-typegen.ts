@@ -44,11 +44,9 @@ export interface NexusGenObjects {
   Mutation: {};
   Query: {};
   User: { // root type
-    bio?: string | null; // String
     email?: string | null; // String
     name?: string | null; // String
     password?: string | null; // String
-    role?: string | null; // String
     uuid?: string | null; // String
   }
 }
@@ -82,15 +80,14 @@ export interface NexusGenFieldTypes {
     login: NexusGenRootTypes['LoginResponse']; // LoginResponse!
   }
   Query: { // field return type
+    user: NexusGenRootTypes['User']; // User!
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
   User: { // field return type
-    bio: string | null; // String
     email: string | null; // String
     memberships: Array<NexusGenRootTypes['Membership'] | null> | null; // [Membership]
     name: string | null; // String
     password: string | null; // String
-    role: string | null; // String
     uuid: string | null; // String
   }
 }
@@ -114,15 +111,14 @@ export interface NexusGenFieldTypeNames {
     login: 'LoginResponse'
   }
   Query: { // field return type name
+    user: 'User'
     users: 'User'
   }
   User: { // field return type name
-    bio: 'String'
     email: 'String'
     memberships: 'Membership'
     name: 'String'
     password: 'String'
-    role: 'String'
     uuid: 'String'
   }
 }
@@ -132,6 +128,11 @@ export interface NexusGenArgTypes {
     login: { // args
       email: string; // String!
       password: string; // String!
+    }
+  }
+  Query: {
+    user: { // args
+      uuid: string; // String!
     }
   }
 }

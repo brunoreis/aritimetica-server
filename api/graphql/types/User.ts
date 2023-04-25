@@ -7,9 +7,7 @@ export const User = objectType({
     t.string('uuid')
     t.string('email')
     t.string('name')
-    t.string('bio')
     t.string('password')
-    t.string('role')
     t.list.field('memberships', {
       type: 'Membership',
       resolve(root, _args, ctx:ContextType) {

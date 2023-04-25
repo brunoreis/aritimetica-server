@@ -24,15 +24,14 @@ type Mutation {
 }
 
 type Query {
+  user(uuid: String!): User!
   users: [User]!
 }
 
 type User {
-  bio: String
   email: String
   memberships: [Membership]
   name: String
   password: String
-  role: String
   uuid: String
 }

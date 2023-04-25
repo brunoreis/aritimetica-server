@@ -1,15 +1,15 @@
 - authorization
-    - query one user with groups
     - refactor user > memberships > group resolvers
         - extract the include logic
     - solve typescript issues in models
-    - query user with memberships, groups and users inside those groups
+    - query user 
         - authorize student
             - should query "me", but not other users
             - create a User resolver
                 - add a me:boolean param
                     - return the logged user
-        - test with a teacher
+        - authorize teacher
+        - authorize admin
         - test with an admin
             - should be able to retrieve any user
     - create user lists (inside groups? / main one?)

@@ -22,7 +22,6 @@ model User {
   uuid        String  @id @default(uuid())
   email     String  @unique
   name      String
-  bio       String?
   password  String
   memberships Membership[]
   assignedLessons Lesson[] @relation("assigner")
