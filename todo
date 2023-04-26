@@ -1,6 +1,9 @@
 - authorization
     - refactor user > memberships > group resolvers
-        - extract the include logic
+        - move getRequestedFields to a shared place
+        - reuse it on the users query
+        - elaborate more if we can abstract the getIncludeFields method
+
     - solve typescript issues in models
     - query user 
         - authorize student
