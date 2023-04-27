@@ -1,22 +1,26 @@
 import { ContextType } from '../../ContextType';
 import { extendType } from 'nexus'
-import { parseResolveInfo } from 'graphql-parse-resolve-info'
+import getRequestedFields from '../getRequestedFields';
 
-const getRequestedFields = (selections: readonly any[]): string[] => {
-  const requestedFields: string[] = []
-  for (const selection of selections) {
-    console.log(selections)
-    if (selection.kind === 'Field') {
-      requestedFields.push(selection.name.value)
-    } else if (selection.kind === 'FragmentSpread') {
-      // Handle fragment spreads if necessary
-    } else if (selection.kind === 'InlineFragment') {
-      // Handle inline fragments if necessary
-    } else if (selection.kind === 'SelectionSet') {
-      requestedFields.push(...getRequestedFields(selection.selections))
+
+type IncludeFields = { memberships?: boolean | { include: { group: boolean } } }
+
+const getIncludeFields = (requestedFields: string[]): IncludeFields => {
+  const includeFields: IncludeFields = {}
+
+  if (requestedFields.includes('memberships')) {
+    includeFields.memberships = true
+
+    if (requestedFields.includes('memberships.group')) {
+      includeFields.memberships = {
+        include: {
+          group: true
+        }
+      }
     }
   }
-  return requestedFields
+
+  return includeFields
 }
 
 export const UsersQuery = extendType({
@@ -26,24 +30,12 @@ export const UsersQuery = extendType({
       type: 'User',
       authorize: (_root, _args, ctx:ContextType) => ctx.auth.loggedIn(),
       resolve(_root, _args, ctx, resolverInfo) {
-
-        const parsedResolveInfoFragment = parseResolveInfo(resolverInfo);
-        let memberships:boolean | object = false;
-        const membershipsRelation = parsedResolveInfoFragment?.fieldsByTypeName.User?.memberships;
-        if(membershipsRelation) {
-          memberships = true;
-          const groupRelation = membershipsRelation.fieldsByTypeName.Membership?.group;
-          if(groupRelation) {
-            memberships = {
-              include: {
-                group: true
-              }
-            }
-          }
-        }
+        const requestedFields = getRequestedFields(resolverInfo)
+        console.log({ requestedFields })
+        const includeFields = getIncludeFields(requestedFields)
         const params =  {
           include: {
-            memberships
+            ...includeFields
           } 
         }
         return ctx.db.user.findMany(params)

@@ -1,10 +1,4 @@
 - authorization
-    - refactor user > memberships > group resolvers
-        - move getRequestedFields to a shared place
-        - reuse it on the users query
-        - elaborate more if we can abstract the getIncludeFields method
-
-    - solve typescript issues in models
     - query user 
         - authorize student
             - should query "me", but not other users
@@ -15,6 +9,7 @@
         - authorize admin
         - test with an admin
             - should be able to retrieve any user
+    - adjust prettier and format on save (prettier)
     - create user lists (inside groups? / main one?)
         - authorize admins
         - students ?
