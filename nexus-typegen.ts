@@ -29,8 +29,8 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Group: { // root type
-    id?: string | null; // String
     name?: string | null; // String
+    uuid?: string | null; // String
   }
   LoginResponse: { // root type
     jwt?: string | null; // String
@@ -63,8 +63,8 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Group: { // field return type
-    id: string | null; // String
     name: string | null; // String
+    uuid: string | null; // String
   }
   LoginResponse: { // field return type
     jwt: string | null; // String
@@ -94,8 +94,8 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Group: { // field return type name
-    id: 'String'
     name: 'String'
+    uuid: 'String'
   }
   LoginResponse: { // field return type name
     jwt: 'String'

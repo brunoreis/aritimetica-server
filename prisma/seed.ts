@@ -5,9 +5,10 @@ const prisma = new PrismaClient()
 const permissionData: Prisma.PermissionCreateInput[] = [
   { uuid: 'Log In' },
   { uuid: 'Log Out' },
-  // view groups
-  { uuid: 'View All Groups' },
-  { uuid: 'View My Groups' },
+  // view user (with memberships, groups...)
+  { uuid: 'View All Users' },
+  { uuid: 'View My User' },
+  { uuid: 'View Users Of My Groups' },
   // manage group users
   { uuid: 'Invite User to Group' },
   { uuid: 'Change User Group Roles' },
@@ -44,6 +45,7 @@ const roleData: Prisma.RoleCreateInput[] = [
         { uuid: 'Log Out' },
         { uuid: 'View My Lessons List' },
         { uuid: 'View My Lessons' },
+        { uuid: 'View My User' },
         { uuid: 'Create Lesson' },
       ],
     },
@@ -53,7 +55,7 @@ const roleData: Prisma.RoleCreateInput[] = [
     title: 'Admin',
     permissions: {
       connect: [
-        { uuid: 'View All Groups' },
+        { uuid: 'View All Users' },
         { uuid: 'View All Lessons List' },
         { uuid: 'View All Lessons' },
       ],
@@ -96,14 +98,12 @@ const userData: Prisma.UserCreateInput[] = [
     uuid: 'unauthenticated',
     email: 'unauthenticated@example.com',
     name: 'Unauthenticated User',
-    bio: "Hello, I'm Unauthenticated!",
     password: '',
   },
   {
     uuid: 'admin',
     email: 'admin@example.com',
     name: 'Admin',
-    bio: "Hello, I'm Admin!",
     password: '$2b$10$KBPVsOCqVBJBCEEzI2S9n.2exIlJoQUX4l6KLjk5pSy5TbZdmo6.O',
   },
   {
@@ -111,21 +111,18 @@ const userData: Prisma.UserCreateInput[] = [
     email: 'teacher@example.com',
     password: '$2b$10$CqlCrFqv5KlEeg926QRAaOAft2t/dINTreuFkn1irQnQl7W.WClNq',
     name: 'Teacher',
-    bio: "Hi, I'm Jane!",
   },
   {
     uuid: 'c1f875d9-1889-42f3-8c3b-5f5aa35d1a5f',
     email: 'user1@example.com',
     password: '$2b$10$CqlCrFqv5KlEeg926QRAaOAft2t/dINTreuFkn1irQnQl7W.WClNq',
     name: 'User 1',
-    bio: "Hi, I'm John!",
   },
   {
     uuid: 'a918c10a-6d89-4f67-b814-14b86c9e60d2',
     email: 'user2@example.com',
     password: '$2b$10$CqlCrFqv5KlEeg926QRAaOAft2t/dINTreuFkn1irQnQl7W.WClNq',
     name: 'User 2',
-    bio: "Hi, I'm Alex!",
   },
 ]
 

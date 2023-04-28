@@ -32,10 +32,11 @@ export const UserQuery = extendType({
       args: {                                        
         uuid: nonNull(stringArg()),
       },
-      authorize: (_root, args, ctx:ContextType) => ctx.auth.loggedIn(),
+      authorize: async (_root, args, ctx:ContextType) => {
+        return ctx.auth.hasGlobalPermission('View All Users')
+      },
       resolve(_root, args, ctx, resolverInfo:GraphQLResolveInfo) {
-        const requestedFields = getRequestedFields(resolverInfo)
-        
+        const requestedFields = getRequestedFields(resolverInfo)  
         const includeFields = getIncludeFields(requestedFields)
         const params =  {
           include: {

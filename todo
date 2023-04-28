@@ -1,27 +1,28 @@
 - authorization
+    - add correct type to userData and other type failures
+    - 
     - query user 
-        - authorize student
-            - should query "me", but not other users
-            - create a User resolver
-                - add a me:boolean param
-                    - return the logged user
-        - authorize teacher
-        - authorize admin
-        - test with an admin
-            - should be able to retrieve any user
-    - adjust prettier and format on save (prettier)
-    - create user lists (inside groups? / main one?)
-        - authorize admins
-        - students ?
-        - authorize teachers
-    - create user lists
-        - authorize admins
-        - students
-        - authorize teachers
-    - create logout mutation
+        - authorize user (do we want to think about screens? )
+            implement: 
+                - hasGlobalPermission
+                    - read permissions with userdata
+                    - memoize user data to not repeat the query
+                - hasGroupPermission
+            - user has global permission "View All Users" (authorize admin)
+            - user has global permission "View My User" 
+                - the requested(args) user == authenticated user
+            - user has group permission "View Users Of My Groups" for a group the queried user belongs to (authorize teacher)
+                - need to (pre) load the queried user with groups
+            - do we really want permission based access? Maybe role based access will be easier. 
+- adjust prettier and format on save (prettier)
+- create logout mutation
     - only allow authorized users
         - login (only allowed for unauthenticated users)
         - logout (allowed for most users)
+    - think about only running authorized queries in prod
+        - security
+        - avoid recursive queries to compromise the server
+- frontend
 - postgress db
     - migrate password field types to varchars(since PG native are richer)
     - create enum for roles field

@@ -31,8 +31,8 @@ export const UsersQuery = extendType({
       authorize: (_root, _args, ctx:ContextType) => ctx.auth.loggedIn(),
       resolve(_root, _args, ctx, resolverInfo) {
         const requestedFields = getRequestedFields(resolverInfo)
-        console.log({ requestedFields })
         const includeFields = getIncludeFields(requestedFields)
+        console.log({ includeFields })
         const params =  {
           include: {
             ...includeFields
