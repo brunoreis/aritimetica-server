@@ -1,5 +1,5 @@
 import { objectType } from 'nexus'
-import { ContextType } from '../../ContextType';
+import { ContextType } from '../../createContext/ContextType';
 
 interface MembershipRoot {
   roleUuid?: string | null

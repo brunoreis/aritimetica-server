@@ -1,6 +1,4 @@
 - authorization
-    - add correct type to userData and other type failures
-    - 
     - query user 
         - authorize user (do we want to think about screens? )
             implement: 

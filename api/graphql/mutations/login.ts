@@ -1,7 +1,7 @@
 import { objectType } from 'nexus'
 import { sign } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { ContextType } from '../../ContextType';
+import { ContextType } from '../../createContext/ContextType';
 import { extendType, nonNull, stringArg } from 'nexus'
 
 export const LoginResponse = objectType({

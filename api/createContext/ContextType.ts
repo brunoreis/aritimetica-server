@@ -1,6 +1,6 @@
 import { UserDataType } from './UserDataType';
 import { PrismaClient } from "@prisma/client"
-import { AuthorizerType } from './AuthorizerType';
+import { AuthorizerType } from '../AuthorizerType';
 
 type ContextType = {
     db: PrismaClient;

@@ -1,4 +1,4 @@
-import { ContextType } from '../../ContextType';
+import { ContextType } from '../../createContext/ContextType';
 import { extendType } from 'nexus'
 import getRequestedFields from '../getRequestedFields';
 

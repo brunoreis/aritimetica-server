@@ -1,11 +1,12 @@
 import createDb from './createDb'
 import { verify } from 'jsonwebtoken'
-import { Request, Response } from 'express'
+import { Request } from 'express'
 import * as dotenv from 'dotenv'
 import { UserDataType } from './UserDataType'
 import { ContextType } from './ContextType'
-import createAuthorizer from './createAuthorizer'
+import createAuthorizer from './createAuthorizer/createAuthorizer'
 import { PrismaClient } from '@prisma/client'
+import { loadUserDataFromUserId } from './loadUserDataFromUserId'
 dotenv.config()
 
 type ContextInput = {
@@ -27,46 +28,6 @@ const extractUserIdFromAuthToken = (req: Request): string | null => {
     }
   }
   return null
-}
-
-const loadUserDataFromUserId = async (
-  userUuid: string | null,
-  db: PrismaClient,
-): Promise<UserDataType> => {
-  console.log('*** *** *** loadUserDataFromUserId')
-  if (userUuid) {
-    const user = await db.user.findUnique({
-      where: { uuid: userUuid },
-      select: { 
-        uuid: true,
-        email: true,
-        name: true,
-        memberships: { 
-          select: { 
-            group: {
-              select: { 
-                uuid: true,
-                name: true
-              }
-            },
-            role: {
-              select: { 
-                uuid: true,
-                permissions: true
-              }
-            }
-          } } 
-      },
-    })
-    if (user) {
-      return user
-    }
-  }
-  return {
-    uuid: 'annonymous',
-    email: '',
-    name: '',
-  }
 }
 
 const createLoadUserData =
