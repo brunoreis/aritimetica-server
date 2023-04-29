@@ -20,7 +20,6 @@ const getIncludeFields = (requestedFields: string[]): IncludeFields => {
       }
     }
   }
-
   return includeFields
 }
 
@@ -30,10 +29,11 @@ export const UserQuery = extendType({
     t.nonNull.field('user', {
       type: 'User',
       args: {                                        
-        uuid: nonNull(stringArg()),
+        userUuid: nonNull(stringArg()),
       },
       authorize: async (_root, args, ctx:ContextType) => {
-        return ctx.auth.hasGlobalPermission('View All Users')
+        return await ctx.auth.hasGlobalPermission('View All Users') || 
+        (await ctx.auth.hasGlobalPermission('View My User') && await ctx.auth.isCurrentUser(args.userUuid))
       },
       resolve(_root, args, ctx, resolverInfo:GraphQLResolveInfo) {
         const requestedFields = getRequestedFields(resolverInfo)  
@@ -43,7 +43,7 @@ export const UserQuery = extendType({
             ...includeFields
           },
           where: {
-            uuid: args.uuid
+            uuid: args.userUuid
           }
         }
         return ctx.db.user.findUnique(params)

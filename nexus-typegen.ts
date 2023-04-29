@@ -132,7 +132,7 @@ export interface NexusGenArgTypes {
   }
   Query: {
     user: { // args
-      uuid: string; // String!
+      userUuid: string; // String!
     }
   }
 }

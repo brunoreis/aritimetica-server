@@ -32,7 +32,6 @@ export const UsersQuery = extendType({
       resolve(_root, _args, ctx, resolverInfo) {
         const requestedFields = getRequestedFields(resolverInfo)
         const includeFields = getIncludeFields(requestedFields)
-        console.log({ includeFields })
         const params =  {
           include: {
             ...includeFields

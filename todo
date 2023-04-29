@@ -1,19 +1,18 @@
 - authorization
+    - rename loadUserDataFromUserId to currentUserData
+        - create a folder and organize it there
+    - optimize queries
+        - memoize currentUserData to not repeat it for the same uuid
     - query user 
         - authorize user (do we want to think about screens? )
             implement: 
-                - hasGlobalPermission
-                    - read permissions with userdata
-                    - memoize user data to not repeat the query
-                - hasGroupPermission
-            - user has global permission "View All Users" (authorize admin)
-            - user has global permission "View My User" 
-                - the requested(args) user == authenticated user
             - user has group permission "View Users Of My Groups" for a group the queried user belongs to (authorize teacher)
                 - need to (pre) load the queried user with groups
             - do we really want permission based access? Maybe role based access will be easier. 
+    - change the authorizer to consider unauthenticated roles
 - adjust prettier and format on save (prettier)
 - create logout mutation
+    - persist token in db?
     - only allow authorized users
         - login (only allowed for unauthenticated users)
         - logout (allowed for most users)

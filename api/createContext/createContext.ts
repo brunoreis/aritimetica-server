@@ -4,7 +4,7 @@ import { Request } from 'express'
 import * as dotenv from 'dotenv'
 import { UserDataType } from './UserDataType'
 import { ContextType } from './ContextType'
-import createAuthorizer from './createAuthorizer/createAuthorizer'
+import { createAuthorizer } from './createAuthorizer/createAuthorizer'
 import { PrismaClient } from '@prisma/client'
 import { loadUserDataFromUserId } from './loadUserDataFromUserId'
 dotenv.config()

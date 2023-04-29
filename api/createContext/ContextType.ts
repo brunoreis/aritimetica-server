@@ -1,10 +1,10 @@
 import { UserDataType } from './UserDataType';
 import { PrismaClient } from "@prisma/client"
-import { AuthorizerType } from '../AuthorizerType';
+import { createAuthorizer } from './createAuthorizer/createAuthorizer';
 
 type ContextType = {
     db: PrismaClient;
-    auth: AuthorizerType,
+    auth: ReturnType<typeof createAuthorizer>,
     loadUserData: () => Promise<UserDataType>
 };
 
