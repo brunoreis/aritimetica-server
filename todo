@@ -1,6 +1,4 @@
 - authorization
-    - rename loadUserDataFromUserId to currentUserData
-        - create a folder and organize it there
     - optimize queries
         - memoize currentUserData to not repeat it for the same uuid
     - query user 
