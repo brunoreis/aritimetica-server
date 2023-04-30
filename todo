@@ -1,6 +1,4 @@
 - authorization
-    - add docs to the readme
-        - define "current user" - always exist
     - query user 
         - authorize user (do we want to think about screens? )
             implement: 

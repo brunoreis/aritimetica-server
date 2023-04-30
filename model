@@ -3,11 +3,11 @@
 user 1-* lesson 1-* exercise
 
     user n-1 membership 1-n group
-    1             1
-    |             |
-    n             n
-    UserRole    Role
-    n             n
-    |             |
-    |             n
-    --------n permission
+                  1
+                  |
+                  n
+                 Role
+                  n
+                  |
+                  n
+              permission
