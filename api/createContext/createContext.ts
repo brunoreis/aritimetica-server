@@ -7,6 +7,7 @@ import { ContextType } from './ContextType'
 import { createAuthorizer } from './createAuthorizer/createAuthorizer'
 import { PrismaClient } from '@prisma/client'
 import { currentUserData } from './currentUserData/currentUserData'
+import { requestCachedUserData } from './requestCachedUserData'
 dotenv.config()
 
 type ContextInput = {
@@ -31,9 +32,9 @@ const extractUserIdFromAuthToken = (req: Request): string | null => {
 }
 
 const createLoadUserData =
-  (db: PrismaClient, req: Request) => async (): Promise<UserDataType> => {
+  (db: PrismaClient, req: Request, cachedUserData: ReturnType<typeof requestCachedUserData>) => async (): Promise<UserDataType> => {
     const userId = extractUserIdFromAuthToken(req)
-    const userData = await currentUserData(userId, db)
+    const userData = await currentUserData(userId, db, cachedUserData)
     return userData
   }
 
@@ -41,7 +42,8 @@ export const createContext = async ({
   req,
 }: ContextInput): Promise<ContextType> => {
   const db = createDb()
-  const loadUserData = createLoadUserData(db, req)
+  const cachedUserData = requestCachedUserData();
+  const loadUserData = createLoadUserData(db, req, cachedUserData)
   return {
     db,
     auth: createAuthorizer({ loadUserData }),
