@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Lesson {
-  uuid            String    @id @default(uuid())
+  uuid          String    @id @default(uuid())
   title         String
   assigner      User      @relation("assigner", fields: [assignerUuid], references: [uuid])
   assignee      User      @relation("assignee", fields: [assigneeUuid], references: [uuid])

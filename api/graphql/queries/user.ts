@@ -4,7 +4,11 @@ import getRequestedFields from '../getRequestedFields';
 import { GraphQLResolveInfo } from 'graphql';
 
 
-type IncludeFields = { memberships?: boolean | { include: { group: boolean } } }
+type IncludeFields = {
+  memberships?: boolean | { include: { group: boolean } }
+  assignedLessons?: boolean | { include: { assignee: boolean, assigner: boolean } }
+  receivedLessons?: boolean | { include: { assignee: boolean, assigner: boolean } }
+}
 
 const getIncludeFields = (requestedFields: string[]): IncludeFields => {
   const includeFields: IncludeFields = {}
@@ -19,6 +23,22 @@ const getIncludeFields = (requestedFields: string[]): IncludeFields => {
         }
       }
     }
+  }
+
+  if (requestedFields.includes('assignedLessons')) {
+    includeFields.assignedLessons = true
+    if (requestedFields.includes('assignedLessons.assignee') || requestedFields.includes('assignedLessons.assigner')) {
+      includeFields.assignedLessons = {
+        include: {
+          assignee: requestedFields.includes('assignedLessons.assignee'),
+          assigner: requestedFields.includes('assignedLessons.assigner')
+        }
+      }
+    }
+  }
+
+  if (requestedFields.includes('receivedLessons')) {
+    includeFields.receivedLessons = true
   }
   return includeFields
 }

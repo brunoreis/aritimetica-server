@@ -32,6 +32,12 @@ export interface NexusGenObjects {
     name?: string | null; // String
     uuid?: string | null; // String
   }
+  Lesson: { // root type
+    assigneeUuid?: string | null; // String
+    assignerUuid?: string | null; // String
+    title?: string | null; // String
+    uuid?: string | null; // String
+  }
   LoginResponse: { // root type
     jwt?: string | null; // String
     user?: NexusGenRootTypes['User'] | null; // User
@@ -66,6 +72,14 @@ export interface NexusGenFieldTypes {
     name: string | null; // String
     uuid: string | null; // String
   }
+  Lesson: { // field return type
+    assignee: NexusGenRootTypes['User'] | null; // User
+    assigneeUuid: string | null; // String
+    assigner: NexusGenRootTypes['User'] | null; // User
+    assignerUuid: string | null; // String
+    title: string | null; // String
+    uuid: string | null; // String
+  }
   LoginResponse: { // field return type
     jwt: string | null; // String
     user: NexusGenRootTypes['User'] | null; // User
@@ -84,10 +98,12 @@ export interface NexusGenFieldTypes {
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
   User: { // field return type
+    assignedLessons: Array<NexusGenRootTypes['Lesson'] | null> | null; // [Lesson]
     email: string | null; // String
     memberships: Array<NexusGenRootTypes['Membership'] | null> | null; // [Membership]
     name: string | null; // String
     password: string | null; // String
+    receivedLessons: Array<NexusGenRootTypes['Lesson'] | null> | null; // [Lesson]
     uuid: string | null; // String
   }
 }
@@ -95,6 +111,14 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   Group: { // field return type name
     name: 'String'
+    uuid: 'String'
+  }
+  Lesson: { // field return type name
+    assignee: 'User'
+    assigneeUuid: 'String'
+    assigner: 'User'
+    assignerUuid: 'String'
+    title: 'String'
     uuid: 'String'
   }
   LoginResponse: { // field return type name
@@ -115,10 +139,12 @@ export interface NexusGenFieldTypeNames {
     users: 'User'
   }
   User: { // field return type name
+    assignedLessons: 'Lesson'
     email: 'String'
     memberships: 'Membership'
     name: 'String'
     password: 'String'
+    receivedLessons: 'Lesson'
     uuid: 'String'
   }
 }

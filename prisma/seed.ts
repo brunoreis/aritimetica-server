@@ -188,6 +188,39 @@ const membershipData: Prisma.MembershipCreateInput[] = [
   },
 ]
 
+const lessonData = [
+  {
+    uuid: '9d0d79a2-51a2-4712-953d-cc7c87faa3a1',
+    title: 'Lesson 1',
+    assignerUuid: 'cfd7d883-93a6-4f15-b7a8-cba0ffc52363',
+    assigneeUuid: 'c1f875d9-1889-42f3-8c3b-5f5aa35d1a5f',
+  },
+  {
+    uuid: 'a558d78d-1dca-4f7c-8b96-c9d4a0454ec1',
+    title: 'Lesson 2',
+    assignerUuid: 'cfd7d883-93a6-4f15-b7a8-cba0ffc52363',
+    assigneeUuid: 'c1f875d9-1889-42f3-8c3b-5f5aa35d1a5f',
+  },
+  {
+    uuid: 'c125f9e9-0a50-47a2-8e53-98f94c43afec',
+    title: 'Lesson 3',
+    assignerUuid: 'cfd7d883-93a6-4f15-b7a8-cba0ffc52363',
+    assigneeUuid: 'c1f875d9-1889-42f3-8c3b-5f5aa35d1a5f',
+  },
+  {
+    uuid: '6a870fb6-ae06-43f3-8825-31d83148010e',
+    title: 'Lesson 4',
+    assignerUuid: 'cfd7d883-93a6-4f15-b7a8-cba0ffc52363',
+    assigneeUuid: 'a918c10a-6d89-4f67-b814-14b86c9e60d2',
+  },
+  {
+    uuid: 'f82c04ec-3ed3-44a7-b17d-d65ce239e1e6',
+    title: 'Lesson 5',
+    assignerUuid: 'cfd7d883-93a6-4f15-b7a8-cba0ffc52363',
+    assigneeUuid: 'a918c10a-6d89-4f67-b814-14b86c9e60d2',
+  },
+];
+
 async function main() {
   console.log(`Start seeding ...`)
   // PERMISSIONS
@@ -225,6 +258,14 @@ async function main() {
     })
     console.log(`Created membership with uuid: ${m.uuid}`)
   }
+  // // LESSONS
+  for (const l of lessonData) {
+    const lesson = await prisma.lesson.create({
+      data: l,
+    })
+    console.log(`Created lesson with uuid: ${l.uuid}`)
+  }
+
   console.log(`Seeding finished.`)
 }
 

@@ -7,6 +7,15 @@ type Group {
   uuid: String
 }
 
+type Lesson {
+  assignee: User
+  assigneeUuid: String
+  assigner: User
+  assignerUuid: String
+  title: String
+  uuid: String
+}
+
 type LoginResponse {
   jwt: String
   user: User
@@ -29,9 +38,11 @@ type Query {
 }
 
 type User {
+  assignedLessons: [Lesson]
   email: String
   memberships: [Membership]
   name: String
   password: String
+  receivedLessons: [Lesson]
   uuid: String
 }

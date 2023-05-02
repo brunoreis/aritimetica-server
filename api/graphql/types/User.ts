@@ -7,6 +7,8 @@ interface UserRoot {
   name?: string | null
   password?: string | null
   memberships?: {}[] | null
+  assignedLessons?: {}[] | null
+  receivedLessons?: {}[] | null
 }
 
 export const User = objectType({
@@ -29,6 +31,42 @@ export const User = objectType({
               }
             }
             return ctx.db.membership.findMany(params)
+          }
+        }
+        return null
+      },
+    })
+    t.list.field('assignedLessons', {
+      type: 'Lesson',
+      resolve(root: UserRoot, _args, ctx: ContextType) {
+        if (root.assignedLessons) {
+          return root.assignedLessons
+        } else {
+          if (root.uuid) {
+            const params = {
+              where: {
+                assignerUuid: root.uuid ?? undefined
+              }
+            }
+            return ctx.db.lesson.findMany(params)
+          }
+        }
+        return null
+      },
+    })
+    t.list.field('receivedLessons', {
+      type: 'Lesson',
+      resolve(root: UserRoot, _args, ctx: ContextType) {
+        if (root.receivedLessons) {
+          return root.receivedLessons
+        } else {
+          if (root.uuid) {
+            const params = {
+              where: {
+                assigneeUuid: root.uuid ?? undefined
+              }
+            }
+            return ctx.db.lesson.findMany(params)
           }
         }
         return null
