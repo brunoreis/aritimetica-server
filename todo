@@ -1,7 +1,10 @@
-- query lessons (with exercises....)
-    - authorize user to view his own lessons
-        - assigner and assignee
-    - authorize admin to view lessons from all users
+- make current user data immutable/frozen
+   - test assignment instead of comparisson in getMembershipsInGroup and see if there is an error
+- implement user.receivedLessons. 'View All Lessons Of A User In The Same Group' permission
+    - log as a teacher
+    - try to view a user with their received lessons
+- create some kind of enum for permissions to avoid type errors
+- query lessons (with exercises....)    
     - authorize teacher to view lessons from all users in their group
         implement: 
         - user has group permission "View Lessons Of Users In My Groups" for a group the queried user belongs to (authorize teacher)

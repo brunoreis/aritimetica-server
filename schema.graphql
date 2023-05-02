@@ -24,6 +24,7 @@ type LoginResponse {
 type Membership {
   group: Group
   groupUuid: String
+  role: Role
   roleUuid: String
   userUuid: String
 }
@@ -32,9 +33,21 @@ type Mutation {
   login(email: String!, password: String!): LoginResponse!
 }
 
+type Permission {
+  roles: [Role]
+  uuid: String
+}
+
 type Query {
   user(userUuid: String!): User!
   users: [User]!
+}
+
+type Role {
+  memberships: [Membership]
+  permissions: [Permission]
+  title: String
+  uuid: String
 }
 
 type User {

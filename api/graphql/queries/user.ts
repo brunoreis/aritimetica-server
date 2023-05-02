@@ -53,7 +53,8 @@ export const UserQuery = extendType({
       },
       authorize: async (_root, args, ctx:ContextType) => {
         return await ctx.auth.hasGlobalPermission('View All Users') || 
-        (await ctx.auth.hasGlobalPermission('View My User') && await ctx.auth.isCurrentUser(args.userUuid))
+        (await ctx.auth.hasGlobalPermission('View My User') && await ctx.auth.isCurrentUser(args.userUuid)) ||
+        (await ctx.auth.hasGlobalPermission('View Users Of My Groups') && await ctx.auth.shareGroupWithCurrentUser(args.userUuid))
       },
       resolve(_root, args, ctx, resolverInfo:GraphQLResolveInfo) {
         const requestedFields = getRequestedFields(resolverInfo)  

@@ -31,7 +31,7 @@ const extractUserIdFromAuthToken = (req: Request): string | null => {
   return null
 }
 
-const createLoadUserData =
+const createCurrentUserDataGetter =
   (db: PrismaClient, req: Request, cachedUserData: ReturnType<typeof requestCachedUserData>) => async (): Promise<UserDataType> => {
     const userId = extractUserIdFromAuthToken(req)
     const userData = await currentUserData(userId, db, cachedUserData)
@@ -43,10 +43,10 @@ export const createContext = async ({
 }: ContextInput): Promise<ContextType> => {
   const db = createDb()
   const cachedUserData = requestCachedUserData();
-  const loadUserData = createLoadUserData(db, req, cachedUserData)
+  const currentUserData = createCurrentUserDataGetter(db, req, cachedUserData)
   return {
     db,
-    auth: createAuthorizer({ loadUserData }),
-    loadUserData,
+    auth: createAuthorizer({ db, currentUserData }),
+    currentUserData,
   }
 }

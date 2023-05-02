@@ -12,13 +12,10 @@ const permissionData: Prisma.PermissionCreateInput[] = [
   // manage group users
   { uuid: 'Invite User to Group' },
   { uuid: 'Change User Group Roles' },
-  // view lessons list
-  { uuid: 'View My Lessons List' },
-  { uuid: 'View All Lessons List' },
   // view lessons
-  { uuid: 'View My Lessons' },
-  { uuid: 'View Group Lesson' },
   { uuid: 'View All Lessons' },
+  { uuid: 'View All Group Lessons' },
+  { uuid: 'View My Received Lessons' },
   // create lessons
   { uuid: 'Create Lesson' },
   // assign lessons
@@ -43,10 +40,10 @@ const roleData: Prisma.RoleCreateInput[] = [
     permissions: {
       connect: [
         { uuid: 'Log Out' },
-        { uuid: 'View My Lessons List' },
-        { uuid: 'View My Lessons' },
+        { uuid: 'View My Received Lessons' },
         { uuid: 'View My User' },
         { uuid: 'Create Lesson' },
+        { uuid: 'View Users Of My Groups' },
       ],
     },
   },
@@ -56,7 +53,6 @@ const roleData: Prisma.RoleCreateInput[] = [
     permissions: {
       connect: [
         { uuid: 'View All Users' },
-        { uuid: 'View All Lessons List' },
         { uuid: 'View All Lessons' },
       ],
     },
@@ -79,6 +75,7 @@ const roleData: Prisma.RoleCreateInput[] = [
       connect: [
         { uuid: 'Assign Lesson' },
         { uuid: 'Answer Assigned Lesson' },
+        { uuid: 'View All Group Lessons' },
       ],
     },
   },
@@ -181,10 +178,22 @@ const membershipData: Prisma.MembershipCreateInput[] = [
     role: { connect: { uuid: 'group_owner' } },
   },
   {
+    uuid: '99f5d438-5b8a-4135-85d5-5e5a604f2e5a',
+    user: { connect: { email: 'user1@example.com' } },
+    group: { connect: { uuid: 'a3d3df3e-3de3-429d-905d-2c313bea906a' } },
+    role: { connect: { uuid: 'student' } },
+  },
+  {
     uuid: 'f1c583f4-8b87-4f44-a34c-4cf7f1d58ab7',
     user: { connect: { email: 'user2@example.com' } },
     group: { connect: { uuid: '2f60f81b-6d16-4c57-93a8-fd1a87926c25' } },
     role: { connect: { uuid: 'group_owner' } },
+  },
+  {
+    uuid: '183e1686-432d-4242-a6d8-6b06a6e7c6d1',
+    user: { connect: { email: 'user2@example.com' } },
+    group: { connect: { uuid: 'a3d3df3e-3de3-429d-905d-2c313bea906a' } },
+    role: { connect: { uuid: 'student' } },
   },
 ]
 

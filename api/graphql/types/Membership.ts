@@ -6,6 +6,7 @@ interface MembershipRoot {
   userUuid?: string | null
   groupUuid?: string | null
   group?: {} | null
+  role?: {} | null
 }
 
 export const Membership = objectType({
@@ -27,6 +28,24 @@ export const Membership = objectType({
               }
             }
             return ctx.db.group.findUnique(params)
+          }
+        }
+        return null
+      }
+    })
+    t.field('role', {
+      type: 'Role',
+      resolve(root: MembershipRoot, _args, ctx: ContextType) {
+        if (root.role) {
+          return root.role
+        } else {
+          if(root.roleUuid) {
+            const params = {
+              where: {
+                uuid: root.roleUuid
+              }
+            }
+            return ctx.db.role.findUnique(params)
           }
         }
         return null

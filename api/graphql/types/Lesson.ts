@@ -13,7 +13,7 @@ interface LessonRoot {
 }
 
 export const Lesson = objectType({
-  name: 'Lesson',
+  name: 'Lesson', 
   definition(t) {
     t.string('uuid');
     t.string('title');

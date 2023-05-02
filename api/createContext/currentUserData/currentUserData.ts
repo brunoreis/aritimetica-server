@@ -7,14 +7,13 @@ import { requestCachedUserData } from '../requestCachedUserData';
 
 
 const fetchAndAddAuthUserMemberships = async (user: Exclude<UserDataQueryResult, null>, db: PrismaClient): Promise<UserDataType> => {
-    const permissions = await fetchAuthenticatedPermissions(db);
-    const authenticatedMembership = createAuthenticatedMembership(permissions);
-    const memberships = [...user.memberships, authenticatedMembership];
-
-    return {
-      ...user,
-      memberships
-    };
+  const permissions = await fetchAuthenticatedPermissions(db);
+  const authenticatedMembership = createAuthenticatedMembership(permissions);
+  const memberships = [...user.memberships, authenticatedMembership];
+  return {
+    ...user,
+    memberships
+  };
 }
 
 

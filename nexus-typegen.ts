@@ -48,7 +48,14 @@ export interface NexusGenObjects {
     userUuid?: string | null; // String
   }
   Mutation: {};
+  Permission: { // root type
+    uuid?: string | null; // String
+  }
   Query: {};
+  Role: { // root type
+    title?: string | null; // String
+    uuid?: string | null; // String
+  }
   User: { // root type
     email?: string | null; // String
     name?: string | null; // String
@@ -87,15 +94,26 @@ export interface NexusGenFieldTypes {
   Membership: { // field return type
     group: NexusGenRootTypes['Group'] | null; // Group
     groupUuid: string | null; // String
+    role: NexusGenRootTypes['Role'] | null; // Role
     roleUuid: string | null; // String
     userUuid: string | null; // String
   }
   Mutation: { // field return type
     login: NexusGenRootTypes['LoginResponse']; // LoginResponse!
   }
+  Permission: { // field return type
+    roles: Array<NexusGenRootTypes['Role'] | null> | null; // [Role]
+    uuid: string | null; // String
+  }
   Query: { // field return type
     user: NexusGenRootTypes['User']; // User!
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
+  }
+  Role: { // field return type
+    memberships: Array<NexusGenRootTypes['Membership'] | null> | null; // [Membership]
+    permissions: Array<NexusGenRootTypes['Permission'] | null> | null; // [Permission]
+    title: string | null; // String
+    uuid: string | null; // String
   }
   User: { // field return type
     assignedLessons: Array<NexusGenRootTypes['Lesson'] | null> | null; // [Lesson]
@@ -128,15 +146,26 @@ export interface NexusGenFieldTypeNames {
   Membership: { // field return type name
     group: 'Group'
     groupUuid: 'String'
+    role: 'Role'
     roleUuid: 'String'
     userUuid: 'String'
   }
   Mutation: { // field return type name
     login: 'LoginResponse'
   }
+  Permission: { // field return type name
+    roles: 'Role'
+    uuid: 'String'
+  }
   Query: { // field return type name
     user: 'User'
     users: 'User'
+  }
+  Role: { // field return type name
+    memberships: 'Membership'
+    permissions: 'Permission'
+    title: 'String'
+    uuid: 'String'
   }
   User: { // field return type name
     assignedLessons: 'Lesson'

@@ -12,6 +12,7 @@
     "prisma:seed": "npx prisma migrate reset",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
+    "prisma:studio": "npx prisma studio",
     "build": "tsc",
     "start": "node dist/api/index.js",
     "clean": "rm -rf dist/*"
