@@ -14,7 +14,7 @@ const permissionData: Prisma.PermissionCreateInput[] = [
   { uuid: 'Change User Group Roles' },
   // view lessons
   { uuid: 'View All Lessons' },
-  { uuid: 'View All Group Lessons' },
+  { uuid: 'View All Lessons Of Any User In This Group' },
   { uuid: 'View My Received Lessons' },
   // create lessons
   { uuid: 'Create Lesson' },
@@ -75,7 +75,7 @@ const roleData: Prisma.RoleCreateInput[] = [
       connect: [
         { uuid: 'Assign Lesson' },
         { uuid: 'Answer Assigned Lesson' },
-        { uuid: 'View All Group Lessons' },
+        { uuid: 'View All Lessons Of Any User In This Group' },
       ],
     },
   },
@@ -170,6 +170,12 @@ const membershipData: Prisma.MembershipCreateInput[] = [
     user: { connect: { email: 'teacher@example.com' } },
     group: { connect: { uuid: 'a3d3df3e-3de3-429d-905d-2c313bea906a' } },
     role: { connect: { uuid: 'group_owner' } },
+  },
+  {
+    uuid: 'e31edaf0-f59e-4a6a-9f79-1ee60dd92f38',
+    user: { connect: { email: 'teacher@example.com' } },
+    group: { connect: { uuid: 'a3d3df3e-3de3-429d-905d-2c313bea906a' } },
+    role: { connect: { uuid: 'teacher' } },
   },
   {
     uuid: '997b3f6c-3d98-4a75-b207-63fc74c1fc57',

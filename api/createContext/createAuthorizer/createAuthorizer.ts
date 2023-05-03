@@ -3,28 +3,35 @@ import type { UserDataType } from '../UserDataType';
 import { getMembershipsInGroup } from './getMembershipsInGroup';
 import { hasPermission } from './hasPermission';
 
-const getLoggedUserGroupUuids = (userData: UserDataType) => {
+const getLoggedUserGroupUuids = (userData: UserDataType, permissionUuid?: string) => {
     const uuids = new Set<string>();
     userData.memberships.forEach( (membership) => {
-        uuids.add(membership.group.uuid)
+        if(permissionUuid) {
+            const membershipHasPermission = membership.role.permissions.find(({uuid}) => permissionUuid === uuid)
+            if(membershipHasPermission) {
+                uuids.add(membership.group.uuid)
+            }
+        } else {
+            uuids.add(membership.group.uuid)
+        }
+
     });
     return Array.from(uuids)
 }
 
 const userHasMembershipInOneOfThisGroups = async (db:PrismaClient, userUuid:string, groupUuids: string[]) => {
-    const membershipCount = await db.membership.count({
-        where: { 
-            AND: [
-                { userUuid: userUuid },
-                { 
-                    groupUuid: {  in: groupUuids }
-                }
-            ]
-        }
-    })
-    
+    const where = { 
+        AND: [
+            { userUuid: userUuid },
+            { 
+                groupUuid: {  in: groupUuids }
+            }
+        ]
+    }
+    const membershipCount = await db.membership.count({ where })
     return membershipCount > 0;
 };
+
 
 export const createAuthorizer = ({ db, currentUserData }: { db:PrismaClient ,currentUserData: () => Promise<UserDataType> }) => {
     return {
@@ -46,9 +53,10 @@ export const createAuthorizer = ({ db, currentUserData }: { db:PrismaClient ,cur
             const loggedUserGroupUuids = getLoggedUserGroupUuids(userData)
             return await userHasMembershipInOneOfThisGroups(db, userUuid, loggedUserGroupUuids);
         },
-        hasGroupPermission: async (permissionUuid:string) => {
+        hasGroupPermissionInAGroupWithThisUser: async (permissionUuid:string, userUuid:string) => {
             const userData = await currentUserData();
-            return false;
+            const groupsWhereLoggedUserHasThisPermission = getLoggedUserGroupUuids(userData, permissionUuid)
+            return await userHasMembershipInOneOfThisGroups(db, userUuid, groupsWhereLoggedUserHasThisPermission);
         },
         isCurrentUser: async (userUuid: string) => {
             const userData = await currentUserData();

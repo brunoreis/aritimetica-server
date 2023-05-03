@@ -61,7 +61,7 @@ export const User = objectType({
         if(requestedUserUuid) {
           return await ctx.auth.hasGlobalPermission('View All Lessons') || 
           await ctx.auth.hasGlobalPermission('View My Received Lessons') && await ctx.auth.isCurrentUser(requestedUserUuid) || 
-          (await ctx.auth.hasGroupPermission('View All Lessons Of A User In The Same Group'))
+          (await ctx.auth.hasGroupPermissionInAGroupWithThisUser('View All Lessons Of Any User In This Group', requestedUserUuid))
         }
         return false;
       },

@@ -1,14 +1,15 @@
+- adjust prettier and format on save (prettier)
 - make current user data immutable/frozen
    - test assignment instead of comparisson in getMembershipsInGroup and see if there is an error
-- implement user.receivedLessons. 'View All Lessons Of A User In The Same Group' permission
-    - log as a teacher
-    - try to view a user with their received lessons
+- add new queries, think about both areas of the app:
+    - users
+    - lessons
 - create some kind of enum for permissions to avoid type errors
-- query lessons (with exercises....)    
-    - authorize teacher to view lessons from all users in their group
-        implement: 
-        - user has group permission "View Lessons Of Users In My Groups" for a group the queried user belongs to (authorize teacher)
-- adjust prettier and format on save (prettier)
+- add tests to the auth system
+    - should we use seeds as fixtures?
+- add logs to the server
+    - turn on and off
+    - redirect queries
 - create logout mutation
     - persist token in db?
     - only allow authorized users
