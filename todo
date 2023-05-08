@@ -1,7 +1,7 @@
 Login - return different payloads depending on roles
-    after the login we need to inject the correct auth user loader in the context so that it's available in the authorizer
-    check if queries are optimized
-    add specific resolvers to each screen
+    test well (including old endpoints)
+    check if queries are optimized (no n-1)
+    
 
 - make current user data immutable/frozen
    - test assignment instead of comparisson in getMembershipsInGroup and see if there is an error
@@ -19,6 +19,7 @@ LessonsScreen
 
 
 - adjust prettier and format on save (prettier)
+- improve resolver types (root)
 
 
 - add tests to the auth system
