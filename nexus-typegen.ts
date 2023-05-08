@@ -38,9 +38,12 @@ export interface NexusGenObjects {
     title?: string | null; // String
     uuid?: string | null; // String
   }
+  LessonsScreen: { // root type
+    user?: NexusGenRootTypes['User'] | null; // User
+  }
   LoginResponse: { // root type
     jwt?: string | null; // String
-    user?: NexusGenRootTypes['User'] | null; // User
+    screen?: NexusGenRootTypes['Screen'] | null; // Screen
   }
   Membership: { // root type
     groupUuid?: string | null; // String
@@ -62,15 +65,17 @@ export interface NexusGenObjects {
     password?: string | null; // String
     uuid?: string | null; // String
   }
+  UsersScreen: {};
 }
 
 export interface NexusGenInterfaces {
 }
 
 export interface NexusGenUnions {
+  Screen: NexusGenRootTypes['LessonsScreen'] | NexusGenRootTypes['UsersScreen'];
 }
 
-export type NexusGenRootTypes = NexusGenObjects
+export type NexusGenRootTypes = NexusGenObjects & NexusGenUnions
 
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
@@ -87,9 +92,12 @@ export interface NexusGenFieldTypes {
     title: string | null; // String
     uuid: string | null; // String
   }
+  LessonsScreen: { // field return type
+    user: NexusGenRootTypes['User'] | null; // User
+  }
   LoginResponse: { // field return type
     jwt: string | null; // String
-    user: NexusGenRootTypes['User'] | null; // User
+    screen: NexusGenRootTypes['Screen'] | null; // Screen
   }
   Membership: { // field return type
     group: NexusGenRootTypes['Group'] | null; // Group
@@ -124,6 +132,9 @@ export interface NexusGenFieldTypes {
     receivedLessons: Array<NexusGenRootTypes['Lesson'] | null> | null; // [Lesson]
     uuid: string | null; // String
   }
+  UsersScreen: { // field return type
+    user: NexusGenRootTypes['User'] | null; // User
+  }
 }
 
 export interface NexusGenFieldTypeNames {
@@ -139,9 +150,12 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     uuid: 'String'
   }
+  LessonsScreen: { // field return type name
+    user: 'User'
+  }
   LoginResponse: { // field return type name
     jwt: 'String'
-    user: 'User'
+    screen: 'Screen'
   }
   Membership: { // field return type name
     group: 'Group'
@@ -176,6 +190,9 @@ export interface NexusGenFieldTypeNames {
     receivedLessons: 'Lesson'
     uuid: 'String'
   }
+  UsersScreen: { // field return type name
+    user: 'User'
+  }
 }
 
 export interface NexusGenArgTypes {
@@ -193,6 +210,7 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractTypeMembers {
+  Screen: "LessonsScreen" | "UsersScreen"
 }
 
 export interface NexusGenTypeInterfaces {
@@ -208,11 +226,11 @@ export type NexusGenInterfaceNames = never;
 
 export type NexusGenScalarNames = keyof NexusGenScalars;
 
-export type NexusGenUnionNames = never;
+export type NexusGenUnionNames = keyof NexusGenUnions;
 
 export type NexusGenObjectsUsingAbstractStrategyIsTypeOf = never;
 
-export type NexusGenAbstractsUsingStrategyResolveType = never;
+export type NexusGenAbstractsUsingStrategyResolveType = "Screen";
 
 export type NexusGenFeaturesConfig = {
   abstractTypeStrategies: {

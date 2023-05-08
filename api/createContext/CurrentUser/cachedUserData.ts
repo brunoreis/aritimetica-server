@@ -1,6 +1,6 @@
-import { UserDataType } from './UserDataType';
+import { UserDataType } from '../UserDataType';
 
-const requestCachedUserData = () => {
+const cachedUserData = () => {
     let cachedData: { userUuid: string | null, data: UserDataType} | null = null;
 
     const get = (userUuid: string):UserDataType | null => {
@@ -26,4 +26,4 @@ const requestCachedUserData = () => {
 
 }
 
-export { requestCachedUserData };
+export { cachedUserData };

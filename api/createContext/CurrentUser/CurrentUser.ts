@@ -1,0 +1,50 @@
+import { cachedUserData as buildCachedUserData } from './cachedUserData'
+import { PrismaClient } from '@prisma/client';
+import { fetchUserData, UserDataQueryResult } from './fetchUserData';
+import { createAuthenticatedMembership } from './createAuthenticatedMembership';
+import { fetchAuthenticatedPermissions } from './fetchAuthenticatedPermissions';
+import type { UserDataType } from '../UserDataType';
+
+const fetchAndAddAuthUserMemberships = async (user: Exclude<UserDataQueryResult, null>, db: PrismaClient): Promise<UserDataType> => {
+    const permissions = await fetchAuthenticatedPermissions(db);
+    const authenticatedMembership = createAuthenticatedMembership(permissions);
+    const memberships = [...user.memberships, authenticatedMembership];
+    return {
+      ...user,
+      memberships
+    };
+  }
+
+const CurrentUser = (db: PrismaClient) => {
+    let cachedUserData = buildCachedUserData();
+    let currentUserUuid:string | undefined = undefined; 
+    // const cachedUserData = requestCachedUserData();
+    // const currentUserData = createCurrentUserDataGetter(db, req, cachedUserData)
+    const set = (userUuid: string) => {
+        currentUserUuid = userUuid;
+    }
+    const get = async ():Promise<UserDataType> => {
+        let user = null;
+        if(currentUserUuid) {
+            const userData = cachedUserData.get(currentUserUuid);
+            if(userData) {
+                return userData;
+            }
+            user = await fetchUserData(currentUserUuid, db);
+        }        
+        const userData = user ? await fetchAndAddAuthUserMemberships(user, db) : {
+            uuid: 'annonymous',
+            email: '',
+            name: '',
+            memberships:[] // what are the memberships of an anonymous user?
+            };
+            cachedUserData.store(userData)
+            return userData;
+    }
+    return {
+        get,
+        set
+    }
+}
+
+export { CurrentUser }

@@ -8,3 +8,6 @@ export * from './types/Group'
 export * from './types/Lesson'
 export * from './types/Role'
 export * from './types/Permission'
+
+export * from './types/UsersScreen'
+export * from './types/LessonsScreen'

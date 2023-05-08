@@ -1,10 +1,26 @@
-- adjust prettier and format on save (prettier)
+Login - return different payloads depending on roles
+    after the login we need to inject the correct auth user loader in the context so that it's available in the authorizer
+    check if queries are optimized
+    add specific resolvers to each screen
+
 - make current user data immutable/frozen
    - test assignment instead of comparisson in getMembershipsInGroup and see if there is an error
-- add new queries, think about both areas of the app:
-    - users
-    - lessons
 - create some kind of enum for permissions to avoid type errors
+
+    
+UsersScreen
+    list groups (cards)
+        list users (small "icons" with name below)
+LessonsScreen
+    list lessons
+        title
+        assigned by 
+        assigned date
+
+
+- adjust prettier and format on save (prettier)
+
+
 - add tests to the auth system
     - should we use seeds as fixtures?
 - add logs to the server
@@ -27,3 +43,4 @@
 - deploy
     - how to access running instances, query the DB, interact with the app? 
     - add restrictions on migrations, seeds, etc...
+

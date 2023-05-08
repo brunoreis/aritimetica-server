@@ -2,19 +2,16 @@ import createDb from './createDb'
 import { verify } from 'jsonwebtoken'
 import { Request } from 'express'
 import * as dotenv from 'dotenv'
-import { UserDataType } from './UserDataType'
 import { ContextType } from './ContextType'
 import { createAuthorizer } from './createAuthorizer/createAuthorizer'
-import { PrismaClient } from '@prisma/client'
-import { currentUserData } from './currentUserData/currentUserData'
-import { requestCachedUserData } from './requestCachedUserData'
+import { CurrentUser } from './CurrentUser'
 dotenv.config()
 
 type ContextInput = {
   req: Request
 }
 
-const extractUserIdFromAuthToken = (req: Request): string | null => {
+const extractUserUuidFromAuthToken = (req: Request): string | null => {
   const authHeader = req.headers.authorization
   const token = authHeader && authHeader.split(' ')[1]
   if (token) {
@@ -31,22 +28,19 @@ const extractUserIdFromAuthToken = (req: Request): string | null => {
   return null
 }
 
-const createCurrentUserDataGetter =
-  (db: PrismaClient, req: Request, cachedUserData: ReturnType<typeof requestCachedUserData>) => async (): Promise<UserDataType> => {
-    const userId = extractUserIdFromAuthToken(req)
-    const userData = await currentUserData(userId, db, cachedUserData)
-    return userData
-  }
-
 export const createContext = async ({
   req,
 }: ContextInput): Promise<ContextType> => {
   const db = createDb()
-  const cachedUserData = requestCachedUserData();
-  const currentUserData = createCurrentUserDataGetter(db, req, cachedUserData)
+  const currentUser = CurrentUser(db);
+  const userUuid = await extractUserUuidFromAuthToken(req)
+  if(userUuid) {
+    currentUser.set(userUuid)
+  }
+  
   return {
     db,
-    auth: createAuthorizer({ db, currentUserData }),
-    currentUserData,
+    auth: createAuthorizer({ db, currentUser }),
+    currentUser,
   }
 }

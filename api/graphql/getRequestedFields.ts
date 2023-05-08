@@ -12,7 +12,11 @@ const getRequestedFieldsRecursive = (selections: readonly any[], parentFieldName
     } else if (selection.kind === 'FragmentSpread') {
       // Handle fragment spreads if necessary
     } else if (selection.kind === 'InlineFragment') {
-      // Handle inline fragments if necessary
+      // const type = selection.typeCondition.name.value
+      // if (selection.selectionSet) {
+      //   console.log({ parentFieldName })
+      //   requestedFields.push(...getRequestedFieldsRecursive(selection.selectionSet.selections, `${parentFieldName}[${type}]`));
+      // }
     }
   }
   return requestedFields;

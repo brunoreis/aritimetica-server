@@ -16,9 +16,13 @@ type Lesson {
   uuid: String
 }
 
+type LessonsScreen {
+  user: User
+}
+
 type LoginResponse {
   jwt: String
-  user: User
+  screen: Screen
 }
 
 type Membership {
@@ -50,6 +54,8 @@ type Role {
   uuid: String
 }
 
+union Screen = LessonsScreen | UsersScreen
+
 type User {
   assignedLessons: [Lesson]
   email: String
@@ -58,4 +64,8 @@ type User {
   password: String
   receivedLessons: [Lesson]
   uuid: String
+}
+
+type UsersScreen {
+  user: User
 }
