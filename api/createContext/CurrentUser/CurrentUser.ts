@@ -18,8 +18,6 @@ const fetchAndAddAuthUserMemberships = async (user: Exclude<UserDataQueryResult,
 const CurrentUser = (db: PrismaClient) => {
     let cachedUserData = buildCachedUserData();
     let currentUserUuid:string | undefined = undefined; 
-    // const cachedUserData = requestCachedUserData();
-    // const currentUserData = createCurrentUserDataGetter(db, req, cachedUserData)
     const set = (userUuid: string) => {
         currentUserUuid = userUuid;
     }

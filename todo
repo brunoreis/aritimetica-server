@@ -1,8 +1,3 @@
-Login - return different payloads depending on roles
-    test well (including old endpoints)
-    check if queries are optimized (no n-1)
-    
-
 - make current user data immutable/frozen
    - test assignment instead of comparisson in getMembershipsInGroup and see if there is an error
 - create some kind of enum for permissions to avoid type errors
@@ -45,3 +40,4 @@ LessonsScreen
     - how to access running instances, query the DB, interact with the app? 
     - add restrictions on migrations, seeds, etc...
 
+Login - optimize to set the currentAuthUser with the same log in user (low prio)

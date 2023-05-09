@@ -3,7 +3,6 @@ import { sign } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { ContextType } from '../../createContext/ContextType';
 import { extendType, nonNull, stringArg, unionType } from 'nexus'
-import getRequestedFields from '../getRequestedFields';
 import { GraphQLResolveInfo } from 'graphql';
 
 // Define union type for the two possible screen types
@@ -13,8 +12,6 @@ export const Screen = unionType({
     t.members('UsersScreen', 'LessonsScreen')
   },
   resolveType(value) {
-    console.log('screen resolveType...')
-    console.log({ value })
     const isTeacher = value.user.memberships.map( m => m.role.uuid).includes('teacher')
     return isTeacher ? 'UsersScreen' :  'LessonsScreen';
   },
@@ -38,7 +35,6 @@ export const LoginMutation = extendType({
         password: nonNull(stringArg()),                  
       },
       async resolve(_root, args, ctx:ContextType, resolverInfo:GraphQLResolveInfo) {
-        const requestedFields = getRequestedFields(resolverInfo);
         const user = await ctx.db.user.findUnique({ where: { email: args.email }, include: {
           memberships: { include: { role: { select: { uuid: true}}}}
         } });
