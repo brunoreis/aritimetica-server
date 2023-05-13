@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { fetchUserData, UserDataQueryResult } from './fetchUserData';
 import { createAuthenticatedMembership } from './createAuthenticatedMembership';
 import { fetchAuthenticatedPermissions } from './fetchAuthenticatedPermissions';
+import { deepFreeze } from './deepFreeze';
 import type { UserDataType } from '../UserDataType';
 
 const fetchAndAddAuthUserMemberships = async (user: Exclude<UserDataQueryResult, null>, db: PrismaClient): Promise<UserDataType> => {
@@ -35,9 +36,10 @@ const CurrentUser = (db: PrismaClient) => {
             email: '',
             name: '',
             memberships:[] // what are the memberships of an anonymous user?
-            };
-            cachedUserData.store(userData)
-            return userData;
+        };
+        const frozenUserData = deepFreeze(userData);
+        cachedUserData.store(frozenUserData)
+        return frozenUserData;
     }
     return {
         get,

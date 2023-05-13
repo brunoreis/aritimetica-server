@@ -1,8 +1,21 @@
-- make current user data immutable/frozen
-   - test assignment instead of comparisson in getMembershipsInGroup and see if there is an error
+- add logs to the server
+    - how can we filter/show/pipe the different error levels?
+    - log each step of the authorizer
+    - apollo server logs
+        - use plugins: https://deploy-preview-2008--apollo-server-docs.netlify.app/docs/apollo-server/integrations/plugins/
+        - we need to be able to turn specific logs (queries/autorization/requests) on and off
+    - debug/check num of open connections and if there is a pg restriction on that
+    - redirect logs to specific channels (heroku/datadog?)
+    - test what happen and log errors that happens inside resolvers. Ex: types/User.ts:77
+    - add a final query count (num of queries during the request) to the logs 
+        - add a request id, other than the pid
+
+- learn how to debug js
 - create some kind of enum for permissions to avoid type errors
 
-    
+- adjust prettier and format on save (prettier)
+- improve resolver types (root)
+
 UsersScreen
     list groups (cards)
         list users (small "icons" with name below)
@@ -12,16 +25,9 @@ LessonsScreen
         assigned by 
         assigned date
 
-
-- adjust prettier and format on save (prettier)
-- improve resolver types (root)
-
-
 - add tests to the auth system
     - should we use seeds as fixtures?
-- add logs to the server
-    - turn on and off
-    - redirect queries
+
 - create logout mutation
     - persist token in db?
     - only allow authorized users

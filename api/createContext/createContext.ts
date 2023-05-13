@@ -1,10 +1,12 @@
-import createDb from './createDb'
 import { verify } from 'jsonwebtoken'
 import { Request } from 'express'
 import * as dotenv from 'dotenv'
 import { ContextType } from './ContextType'
 import { createAuthorizer } from './createAuthorizer/createAuthorizer'
 import { CurrentUser } from './CurrentUser'
+import { Logger } from 'pino'
+import { PrismaClient } from '@prisma/client'
+
 dotenv.config()
 
 type ContextInput = {
@@ -28,10 +30,11 @@ const extractUserUuidFromAuthToken = (req: Request): string | null => {
   return null
 }
 
-export const createContext = async ({
+export const createContext = ({ logger, db }: { logger: Logger, db: PrismaClient}) => async ({
   req,
 }: ContextInput): Promise<ContextType> => {
-  const db = createDb()
+  // logger.info("createContext");
+  
   const currentUser = CurrentUser(db);
   const userUuid = await extractUserUuidFromAuthToken(req)
   if(userUuid) {
@@ -42,5 +45,6 @@ export const createContext = async ({
     db,
     auth: createAuthorizer({ db, currentUser }),
     currentUser,
+    logger
   }
 }

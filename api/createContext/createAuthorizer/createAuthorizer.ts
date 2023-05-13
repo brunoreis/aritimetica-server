@@ -41,13 +41,12 @@ export const createAuthorizer = ({ db, currentUser }: { db:PrismaClient ,current
             return userData.uuid !== 'annonymous'
         },
         hasGlobalPermission: async (permissionUuid:string) => {
-            const groupUuid = 'app'
             const userData = await currentUser.get();
             // get all app permissions, keep this method to see if it is needed in the other check
-            const membershipsInGroup = getMembershipsInGroup(userData, groupUuid)
+            const membershipsInGroup = getMembershipsInGroup(userData, 'app')
             // get all authenticated role permissions
-            const has:boolean = hasPermission(membershipsInGroup, permissionUuid)
-            return has
+            const isAuthorized:boolean = hasPermission(membershipsInGroup, permissionUuid)
+            return isAuthorized
         },
         shareGroupWithCurrentUser: async (userUuid: string) => {
             const userData = await currentUser.get();
@@ -57,7 +56,8 @@ export const createAuthorizer = ({ db, currentUser }: { db:PrismaClient ,current
         hasGroupPermissionInAGroupWithThisUser: async (permissionUuid:string, userUuid:string) => {
             const userData = await currentUser.get();
             const groupsWhereLoggedUserHasThisPermission = getLoggedUserGroupUuids(userData, permissionUuid)
-            return await userHasMembershipInOneOfThisGroups(db, userUuid, groupsWhereLoggedUserHasThisPermission);
+            const isAuthorized =  await userHasMembershipInOneOfThisGroups(db, userUuid, groupsWhereLoggedUserHasThisPermission);
+            return isAuthorized
         },
         isCurrentUser: async (userUuid: string) => {
             const userData = await currentUser.get();

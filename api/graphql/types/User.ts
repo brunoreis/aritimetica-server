@@ -56,14 +56,21 @@ export const User = objectType({
     })
     t.list.field('receivedLessons', {
       type: 'Lesson',
-      authorize: async (root, args, ctx:ContextType) => {
-        const requestedUserUuid = root.uuid;
-        if(requestedUserUuid) {
-          return await ctx.auth.hasGlobalPermission('View All Lessons') || 
-          await ctx.auth.hasGlobalPermission('View My Received Lessons') && await ctx.auth.isCurrentUser(requestedUserUuid) || 
-          (await ctx.auth.hasGroupPermissionInAGroupWithThisUser('View All Lessons Of Any User In This Group', requestedUserUuid))
+      authorize: async (root, args, ctx:ContextType, u) => {
+        try {
+          const requestedUserUuid = root.uuid;
+          let isAuthorized = false;
+          if(requestedUserUuid) {
+            isAuthorized = await ctx.auth.hasGlobalPermission('View All Lessons') || 
+            await ctx.auth.hasGlobalPermission('View My Received Lessons') && await ctx.auth.isCurrentUser(requestedUserUuid) || 
+            (await ctx.auth.hasGroupPermissionInAGroupWithThisUser('View All Lessons Of Any User In This Group', requestedUserUuid))
+          }
+          return isAuthorized
+        } catch(e) {
+          ctx.logger.error('User:receivedLessons:authorize - Error')
+          ctx.logger.error(e)
+          throw e
         }
-        return false;
       },
       resolve(root: UserRoot, _args, ctx: ContextType) {
         if (root.receivedLessons) {
