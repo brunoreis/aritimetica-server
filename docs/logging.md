@@ -5,3 +5,8 @@ Pino is create with the server in the `server.ts` file. It's injected into the c
 It also logs the server lifecycle events.
 
 When there is an **error in the authorize** method in the graphql fields, it's **swallowed** by the fieldAuthorizerPlugin. So we recomend you wrap those authorize methods with a try catch block and log exceptions there. 
+
+#### log level
+
+Pino will use the LOG_LEVEL env var to set the log level it will use. 
+You can also change that level at **runtime** by calling the `changeLogLevel` GraphQL operation. Please notice that, if you run the app on multiple instances, this will set that level in one unique instance. 

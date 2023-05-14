@@ -1,12 +1,12 @@
 - add logs to the server
-    - create a mutation that changes the log level
+    - improve the typing of the changeLogLevel mutation. Use enums for the log level (and for the .env type too?)
     - add a user_id and a request_id to the child logger
     - redact user sensitive data: 
         - https://betterstack.com/community/guides/logging/how-to-install-setup-and-use-pino-to-log-node-js-applications/#keeping-sensitive-data-out-of-your-logs
     - log each step of the authorizer
     - apollo server logs
-        - use plugins: https://deploy-preview-2008--apollo-server-docs.netlify.app/docs/apollo-server/integrations/plugins/
-        - we need to be able to turn specific logs (queries/autorization/requests) on and off
+        - do we need to be able to turn specific logs (queries/autorization/requests) on and off? 
+            - maybe filters will work well here. 
     - debug/check num of open connections and if there is a pg restriction on that
     - redirect logs to specific channels (heroku/datadog?)
     - test what happen and log errors that happens inside resolvers. Ex: types/User.ts:77

@@ -20,6 +20,15 @@ type LessonsScreen {
   user: User
 }
 
+enum Level {
+  debug
+  error
+  fatal
+  info
+  trace
+  warn
+}
+
 type LoginResponse {
   jwt: String
   screen: Screen
@@ -34,6 +43,7 @@ type Membership {
 }
 
 type Mutation {
+  changeLogLevel(level: Level): Boolean!
   login(email: String!, password: String!): LoginResponse!
 }
 

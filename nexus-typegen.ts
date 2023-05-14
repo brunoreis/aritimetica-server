@@ -17,6 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  Level: "debug" | "error" | "fatal" | "info" | "trace" | "warn"
 }
 
 export interface NexusGenScalars {
@@ -77,7 +78,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects & NexusGenUnions
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Group: { // field return type
@@ -107,6 +108,7 @@ export interface NexusGenFieldTypes {
     userUuid: string | null; // String
   }
   Mutation: { // field return type
+    changeLogLevel: boolean; // Boolean!
     login: NexusGenRootTypes['LoginResponse']; // LoginResponse!
   }
   Permission: { // field return type
@@ -165,6 +167,7 @@ export interface NexusGenFieldTypeNames {
     userUuid: 'String'
   }
   Mutation: { // field return type name
+    changeLogLevel: 'Boolean'
     login: 'LoginResponse'
   }
   Permission: { // field return type name
@@ -197,6 +200,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    changeLogLevel: { // args
+      level?: NexusGenEnums['Level'] | null; // Level
+    }
     login: { // args
       email: string; // String!
       password: string; // String!
@@ -220,7 +226,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 
