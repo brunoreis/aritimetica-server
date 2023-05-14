@@ -3,9 +3,11 @@ import { schema } from './schema'
 import { createContext } from './createContext/createContext'
 import createDb from './createDb'
 import pino from 'pino'
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 const logger = pino({
-    level: 'info',
+    level: process.env.LOG_LEVEL,
     transport: {
         target: 'pino-pretty'
     }

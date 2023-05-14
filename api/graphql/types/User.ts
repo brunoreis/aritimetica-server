@@ -67,8 +67,7 @@ export const User = objectType({
           }
           return isAuthorized
         } catch(e) {
-          ctx.logger.error('User:receivedLessons:authorize - Error')
-          ctx.logger.error(e)
+          ctx.logger.error(e, 'User:receivedLessons:authorize - Unexpected Error')
           throw e
         }
       },

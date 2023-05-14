@@ -1,5 +1,8 @@
 - add logs to the server
-    - how can we filter/show/pipe the different error levels?
+    - create a mutation that changes the log level
+    - add a user_id and a request_id to the child logger
+    - redact user sensitive data: 
+        - https://betterstack.com/community/guides/logging/how-to-install-setup-and-use-pino-to-log-node-js-applications/#keeping-sensitive-data-out-of-your-logs
     - log each step of the authorizer
     - apollo server logs
         - use plugins: https://deploy-preview-2008--apollo-server-docs.netlify.app/docs/apollo-server/integrations/plugins/

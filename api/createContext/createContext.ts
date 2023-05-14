@@ -6,7 +6,6 @@ import { createAuthorizer } from './createAuthorizer/createAuthorizer'
 import { CurrentUser } from './CurrentUser'
 import { Logger } from 'pino'
 import { PrismaClient } from '@prisma/client'
-
 dotenv.config()
 
 type ContextInput = {
