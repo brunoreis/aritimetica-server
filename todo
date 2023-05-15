@@ -1,8 +1,10 @@
 - add logs to the server
     - add a user_id to the child logger
+        - (rollback) 
         - add a log visualizer/filter
             - text concurrent requests (same number of queries?)
             - inspect prisma code to see if we can pass something extra in the event.
+            - do we really need userId/requestId here? 
     - add a request_id to the child logger
     - log each step of the authorizer
     - apollo server logs
@@ -12,6 +14,8 @@
     - debug/check num of open connections and if there is a pg restriction on that
     - redirect logs to specific channels (heroku/datadog?)
 
+- telemetry: prisma / jaeger / ...
+    - telemetry: see if we already can bind prisma queries to requests: https://github.com/prisma/prisma/issues/7596
 - learn how to debug js
 - create some kind of enum for permissions to avoid type errors
 
