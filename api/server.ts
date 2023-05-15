@@ -6,11 +6,17 @@ import pino from 'pino'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
+// const transport = pino.transport();
+
 const logger = pino({
     level: process.env.LOG_LEVEL,
     transport: {
-        target: 'pino-pretty'
+      target: "@logtail/pino",
+      options: { sourceToken: process.env.LOGTAIL_TOKEN }
     }
+    // transport: {
+    //     target: 'pino-pretty'
+    // }
 });
 
 

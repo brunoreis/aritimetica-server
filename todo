@@ -1,21 +1,19 @@
 - add logs to the server
-    - add a user_id to the child logger
-        - (rollback) 
-        - add a log visualizer/filter
-            - text concurrent requests (same number of queries?)
-            - inspect prisma code to see if we can pass something extra in the event.
-            - do we really need userId/requestId here? 
+    - expand performance.md
+    - test two transports (local pino-pretty and logtail)
     - add a request_id to the child logger
+        - research best practices
+    - add summarizing query messages to show in the logger
+    - create a transport specific to my dev environment
+    - add docs
     - log each step of the authorizer
     - apollo server logs
     - test what happen and log errors that happens inside resolvers. Ex: types/User.ts:77
-    - add a final query count (num of queries during the request) to the logs 
-
     - debug/check num of open connections and if there is a pg restriction on that
-    - redirect logs to specific channels (heroku/datadog?)
 
 - telemetry: prisma / jaeger / ...
-    - telemetry: see if we already can bind prisma queries to requests: https://github.com/prisma/prisma/issues/7596
+    - telemetry: see if we already can bind prisma queries to requests (request_id/user_id): https://github.com/prisma/prisma/issues/7596
+    - add a final query count (num of queries during the request) to the logs 
 - learn how to debug js
 - create some kind of enum for permissions to avoid type errors
 

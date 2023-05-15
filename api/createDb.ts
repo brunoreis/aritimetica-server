@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { Logger } from 'pino'
 
 let dbInstance: PrismaClient;
+let queryCount: number = 1;
 
 const createDbWithLogging = ({ logger }: { logger: Logger}): PrismaClient => {
   const db = new PrismaClient({
@@ -29,6 +30,7 @@ const createDbWithLogging = ({ logger }: { logger: Logger}): PrismaClient => {
   db.$on('query', (e) => {
     logger.info({ 
       prisma: {
+        count: queryCount++,
         query: e.query,
         params: e.params,
         duration: e.duration

@@ -206,6 +206,50 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@logtail/core@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@logtail/core/-/core-0.4.0.tgz#a8e510756bf9fd1b2cc6c901225eb03685919ca8"
+  integrity sha512-xItEU5vY2LvcJyAVkxKKZ3UvG3CsK2pMvhuLDntlC+US1LlNcfQmVzvInN5j5iXl0kjNO6n+0EY2YyhhOgjWCQ==
+  dependencies:
+    "@logtail/tools" "^0.4.0"
+    "@logtail/types" "^0.4.0"
+
+"@logtail/node@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@logtail/node/-/node-0.4.0.tgz#71488911a6dc4bf218871af80e3788cd727f8474"
+  integrity sha512-0/1to4HLf95FrDlZoFLz3A0Fz/B55G82syY22Yl9N4mjC2wW6t5Lo9d4q/u/VmHBHW3PBbytbmFEoHx0H5Sarg==
+  dependencies:
+    "@logtail/core" "^0.4.0"
+    "@logtail/types" "^0.4.0"
+    "@msgpack/msgpack" "^2.5.1"
+    "@types/stack-trace" "^0.0.29"
+    cross-fetch "^3.0.4"
+    minimatch "^3.0.4"
+    stack-trace "^0.0.10"
+
+"@logtail/pino@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@logtail/pino/-/pino-0.4.0.tgz#0360674bdb5a45eb809318f145e92b5dacb93de5"
+  integrity sha512-5vjbuckqe++Po9ywl2SKle9mOuRPLWaPHlJPZOkMcTtnYjAK9SBIXIxDZc4GPPrlUm1HgleXHYekjZm1I98u6w==
+  dependencies:
+    "@logtail/node" "^0.4.0"
+    "@logtail/types" "^0.4.0"
+    pino-abstract-transport "^1.0.0"
+
+"@logtail/tools@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@logtail/tools/-/tools-0.4.0.tgz#ff1bed193a005b12007df510f6ce294b8f518207"
+  integrity sha512-7lSKdJTq7NMUvriMhkf6cTxY9QlXi+YLLuHxbSOKI56HpJN8qJGPVcmOdzlbk8pJofe9RnME8hBMLTHAD3bmsw==
+  dependencies:
+    "@logtail/types" "^0.4.0"
+
+"@logtail/types@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@logtail/types/-/types-0.4.0.tgz#39c28e08f805657c70107071dc166866153563a8"
+  integrity sha512-2CR3w7Xf5rKWbUlgiaBKeVrqWuWnVBz0Ymycw/gYwupVI0fb6Ameid9fHfeM5LI/gbIO3ZTIMADlA0FvFbuXMQ==
+  dependencies:
+    js "^0.1.0"
+
 "@mapbox/node-pre-gyp@^1.0.10":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@mapbox/node-pre-gyp/-/node-pre-gyp-1.0.10.tgz#8e6735ccebbb1581e5a7e652244cadc8a844d03c"
@@ -220,6 +264,11 @@
     rimraf "^3.0.2"
     semver "^7.3.5"
     tar "^6.1.11"
+
+"@msgpack/msgpack@^2.5.1":
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/@msgpack/msgpack/-/msgpack-2.8.0.tgz#4210deb771ee3912964f14a15ddfb5ff877e70b9"
+  integrity sha512-h9u4u/jiIRKbq25PM+zymTyW6bhTzELvOoUd+AvYriWOAKpLGnIamaET3pnHYoI5iYphAHBI4ayx0MehR+VVPQ==
 
 "@prisma/client@^4.12.0":
   version "4.12.0"
@@ -424,6 +473,11 @@
   dependencies:
     "@types/mime" "*"
     "@types/node" "*"
+
+"@types/stack-trace@^0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@types/stack-trace/-/stack-trace-0.0.29.tgz#eb7a7c60098edb35630ed900742a5ecb20cfcb4d"
+  integrity sha512-TgfOX+mGY/NyNxJLIbDWrO9DjGoVSW9+aB8H2yy1fy32jsvxijhmyJI9fDFgvz3YP4lvJaq9DzdR/M1bOgVc9g==
 
 "@types/strip-bom@^3.0.0":
   version "3.0.0"
@@ -767,6 +821,13 @@ commander@^2.20.3:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
+commander@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-1.1.1.tgz#50d1651868ae60eccff0a2d9f34595376bc6b041"
+  integrity sha512-71Rod2AhcH3JhkBikVpNd0pA+fWsmAaVoti6OR38T76chA7vE3pSerS0Jor4wDw+tOueD2zLVvFOw5H0Rcj7rA==
+  dependencies:
+    keypress "0.1.x"
+
 concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
@@ -811,6 +872,13 @@ create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
+
+cross-fetch@^3.0.4:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.6.tgz#bae05aa31a4da760969756318feeee6e70f15d6c"
+  integrity sha512-riRvo06crlE8HiqOwIpQhxwdOk4fOeR7FVM/wXoxchFEqMNUjvbs3bfo4OTgMEMHzppd4DxFBDbyySj8Cv781g==
+  dependencies:
+    node-fetch "^2.6.11"
 
 cssfilter@0.0.10:
   version "0.0.10"
@@ -1225,6 +1293,13 @@ joycon@^3.1.1:
   resolved "https://registry.yarnpkg.com/joycon/-/joycon-3.1.1.tgz#bce8596d6ae808f8b68168f5fc69280996894f03"
   integrity sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==
 
+js@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/js/-/js-0.1.0.tgz#e1d0afd55ea39c2b28da304e8143eaf2c133f366"
+  integrity sha512-ZBbGYOpact8QAH9RprFWL4RAESYwbDodxiuDjOnzwzzk9pBzKycoifGuUrHHcDixE/eLMKPHRaXenTgu1qXBqA==
+  dependencies:
+    commander "~1.1.1"
+
 jsonwebtoken@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-9.0.0.tgz#d0faf9ba1cc3a56255fe49c0961a67e520c1926d"
@@ -1251,6 +1326,11 @@ jws@^3.2.2:
   dependencies:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
+
+keypress@0.1.x:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/keypress/-/keypress-0.1.0.tgz#4a3188d4291b66b4f65edb99f806aa9ae293592a"
+  integrity sha512-x0yf9PL/nx9Nw9oLL8ZVErFAk85/lslwEP7Vz7s5SI1ODXZIgit3C5qyWjw4DxOuO/3Hb4866SQh28a1V1d+WA==
 
 lodash.sortby@^4.7.0:
   version "4.7.0"
@@ -1328,7 +1408,7 @@ mime@1.6.0:
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
   integrity sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==
 
-minimatch@^3.1.1:
+minimatch@^3.0.4, minimatch@^3.1.1:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.2.tgz#19cd194bfd3e428f049a70817c038d89ab4be35b"
   integrity sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==
@@ -1409,6 +1489,13 @@ node-addon-api@^5.0.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-5.1.0.tgz#49da1ca055e109a23d537e9de43c09cca21eb762"
   integrity sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==
+
+node-fetch@^2.6.11:
+  version "2.6.11"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
+  integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
+  dependencies:
+    whatwg-url "^5.0.0"
 
 node-fetch@^2.6.7:
   version "2.6.9"
@@ -1789,6 +1876,11 @@ split2@^4.0.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/split2/-/split2-4.2.0.tgz#c9c5920904d148bab0b9f67145f245a86aadbfa4"
   integrity sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==
+
+stack-trace@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.10.tgz#547c70b347e8d32b4e108ea1a2a159e5fdde19c0"
+  integrity sha512-KGzahc7puUKkzyMt+IqAep+TVNbKP+k2Lmwhub39m1AsTSkaDutx56aDCo+HLDzf/D26BIHTJWNiTG1KAJiQCg==
 
 statuses@2.0.1:
   version "2.0.1"
