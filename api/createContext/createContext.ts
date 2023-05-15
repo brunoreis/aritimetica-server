@@ -6,6 +6,7 @@ import { createAuthorizer } from './createAuthorizer/createAuthorizer'
 import { CurrentUser } from './CurrentUser'
 import { Logger } from 'pino'
 import { PrismaClient } from '@prisma/client'
+import { setLogger } from '../createDb'
 dotenv.config()
 
 type ContextInput = {
@@ -32,11 +33,13 @@ const extractUserUuidFromAuthToken = (req: Request): string | null => {
 export const createContext = ({ logger, db }: { logger: Logger, db: PrismaClient}) => async ({
   req,
 }: ContextInput): Promise<ContextType> => {
-  // logger.info("createContext");
-  
   const currentUser = CurrentUser(db);
   const userUuid = await extractUserUuidFromAuthToken(req)
+  const contextLogger = userUuid ? logger.child({ userUuid}) : logger;
+
   if(userUuid) {
+    // this is probabaly generating mixed/wrong results
+    setLogger(contextLogger)
     currentUser.set(userUuid)
   }
   
@@ -44,6 +47,6 @@ export const createContext = ({ logger, db }: { logger: Logger, db: PrismaClient
     db,
     auth: createAuthorizer({ db, currentUser }),
     currentUser,
-    logger
+    logger: logger.child({ userUuid })
   }
 }

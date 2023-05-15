@@ -13,6 +13,8 @@ const logger = pino({
     }
 });
 
+
+
 const db = createDb({ logger })
 
 export const server = new ApolloServer({ 

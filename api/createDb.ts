@@ -2,7 +2,21 @@ import { PrismaClient } from '@prisma/client'
 import { Logger } from 'pino'
 
 let dbInstance: PrismaClient | undefined;
-const createDbWithLogging = ({ logger }: { logger: Logger}): PrismaClient => {
+
+// this is probabaly generating mixed/wrong results
+let logger: Logger;
+const getLogger = ():Logger => {
+  return logger;
+}
+export const setLogger = (l: Logger) => {
+  logger = l
+
+}
+export const onQuery: (() => void) | undefined  = undefined;
+
+
+
+const createDbWithLogging = (): PrismaClient => {
   const db = new PrismaClient({
     log: [
       {
@@ -26,6 +40,7 @@ const createDbWithLogging = ({ logger }: { logger: Logger}): PrismaClient => {
 
   
   db.$on('query', (e) => {
+    const logger = getLogger()
     logger.info({ 
       prisma: {
         query: e.query,
@@ -39,9 +54,10 @@ const createDbWithLogging = ({ logger }: { logger: Logger}): PrismaClient => {
 
 
 const dbSingleton = ({ logger }: { logger: Logger}): PrismaClient => {
+  setLogger(logger);
   if(!dbInstance) {
     logger.info('Create new PrismaClient instance')
-    dbInstance = createDbWithLogging({ logger });
+    dbInstance = createDbWithLogging();
   }
   return dbInstance;
 }
