@@ -6,6 +6,7 @@ import { createAuthorizer } from './createAuthorizer/createAuthorizer'
 import { CurrentUser } from './CurrentUser'
 import { Logger } from 'pino'
 import { PrismaClient } from '@prisma/client'
+import { v4 as uuidv4 } from 'uuid';
 
 dotenv.config()
 
@@ -39,11 +40,13 @@ export const createContext = ({ logger, db }: { logger: Logger, db: PrismaClient
   if(userUuid) {
     currentUser.set(userUuid)
   }
+
+  const reqId = uuidv4();
   
   return {
     db,
     auth: createAuthorizer({ db, currentUser }),
     currentUser,
-    logger: logger.child({ userUuid })
+    logger: logger.child({ userUuid, reqId })
   }
 }

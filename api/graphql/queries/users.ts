@@ -28,7 +28,10 @@ export const UsersQuery = extendType({
   definition(t) {
     t.nonNull.list.field('users', {
       type: 'User',
-      authorize: (_root, _args, ctx:ContextType) => ctx.auth.loggedIn(),
+      authorize: (_root, _args, ctx:ContextType) => {
+        ctx.logger.info('users::authorize');
+        return ctx.auth.loggedIn()
+      },
       resolve(_root, _args, ctx, resolverInfo) {
         const requestedFields = getRequestedFields(resolverInfo)
         const includeFields = getIncludeFields(requestedFields)

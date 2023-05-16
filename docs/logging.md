@@ -16,6 +16,10 @@ You can also change that level at **runtime** by calling the `changeLogLevel` Gr
 Please check these docs if you need to redact data so that you don't store pii or any other sensitive information in the logs: 
 https://betterstack.com/community/guides/logging/how-to-install-setup-and-use-pino-to-log-node-js-applications/#keeping-sensitive-data-out-of-your-logs
 
-#### userId in the prisma queries
+#### Transports
 
-The userIds in the prisma queries may be wrong because we can't get them from the context. They are being set in the module and two concurrent requests may change them and mix data. 
+We are using two transports, `pino-pretty` for console logging and  [LogTail](https://betterstack.com/logtail) as a remote log management tool. 
+
+As you can see in `server.ts`, to config the LogTail logs you will neen to set the LOGTAIL_TOKEN env var. 
+
+You can also use another [transport](https://github.com/pinojs/pino/blob/master/docs/transports.md) to redirect logs to you prefered logging management tool. 

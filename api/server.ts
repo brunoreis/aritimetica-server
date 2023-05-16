@@ -1,22 +1,31 @@
 import { ApolloServer } from 'apollo-server'
 import { schema } from './schema'
 import { createContext } from './createContext/createContext'
-import createDb from './createDb'
+import { createDb } from './createDb'
 import pino from 'pino'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-// const transport = pino.transport();
+const targets = [
+  { 
+    target: 'pino-pretty',
+    level: process.env.LOG_LEVEL,
+    options: {}
+  },
+];
+
+if (process.env.LOGTAIL_TOKEN) {
+  targets.push({ 
+    target: "@logtail/pino",
+    options: { sourceToken: process.env.LOGTAIL_TOKEN },
+    level: process.env.LOG_LEVEL,
+  });
+}
+
+
 
 const logger = pino({
-    level: process.env.LOG_LEVEL,
-    transport: {
-      target: "@logtail/pino",
-      options: { sourceToken: process.env.LOGTAIL_TOKEN }
-    }
-    // transport: {
-    //     target: 'pino-pretty'
-    // }
+    transport: { targets }
 });
 
 
