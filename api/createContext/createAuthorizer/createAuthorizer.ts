@@ -3,6 +3,7 @@ import type { UserDataType } from '../UserDataType';
 import { getMembershipsInGroup } from './getMembershipsInGroup';
 import { hasPermission } from './hasPermission';
 import { CurrentUser } from '../CurrentUser';
+import { Logger } from 'pino'
 
 const getLoggedUserGroupUuids = (userData: UserDataType, permissionUuid?: string) => {
     const uuids = new Set<string>();
@@ -15,7 +16,6 @@ const getLoggedUserGroupUuids = (userData: UserDataType, permissionUuid?: string
         } else {
             uuids.add(membership.group.uuid)
         }
-
     });
     return Array.from(uuids)
 }
@@ -34,11 +34,13 @@ const userHasMembershipInOneOfThisGroups = async (db:PrismaClient, userUuid:stri
 };
 
 
-export const createAuthorizer = ({ db, currentUser }: { db:PrismaClient ,currentUser: ReturnType<typeof CurrentUser> }) => {
+export const createAuthorizer = ({ db, currentUser, logger }: { db:PrismaClient ,currentUser: ReturnType<typeof CurrentUser>, logger: Logger }) => {
     return {
         loggedIn: async () => {
             const userData = await currentUser.get();
-            return userData.uuid !== 'annonymous'
+            const isLoggedIn = userData.uuid !== 'annonymous'
+            logger.info({ isLoggedIn }, 'auth:loggedId');
+            return isLoggedIn;
         },
         hasGlobalPermission: async (permissionUuid:string) => {
             const userData = await currentUser.get();
@@ -46,22 +48,28 @@ export const createAuthorizer = ({ db, currentUser }: { db:PrismaClient ,current
             const membershipsInGroup = getMembershipsInGroup(userData, 'app')
             // get all authenticated role permissions
             const isAuthorized:boolean = hasPermission(membershipsInGroup, permissionUuid)
+            logger.info({ permissionUuid, isAuthorized },'auth:hasGlobalPermission');
             return isAuthorized
         },
         shareGroupWithCurrentUser: async (userUuid: string) => {
             const userData = await currentUser.get();
             const loggedUserGroupUuids = getLoggedUserGroupUuids(userData)
-            return await userHasMembershipInOneOfThisGroups(db, userUuid, loggedUserGroupUuids);
+            const isAuthorized = await userHasMembershipInOneOfThisGroups(db, userUuid, loggedUserGroupUuids);
+            logger.info({ userUuid, isAuthorized }, 'auth:shareGroupWithCurrentUser');
+            return isAuthorized
         },
         hasGroupPermissionInAGroupWithThisUser: async (permissionUuid:string, userUuid:string) => {
             const userData = await currentUser.get();
             const groupsWhereLoggedUserHasThisPermission = getLoggedUserGroupUuids(userData, permissionUuid)
             const isAuthorized =  await userHasMembershipInOneOfThisGroups(db, userUuid, groupsWhereLoggedUserHasThisPermission);
+            logger.info({ permissionUuid, userUuid, isAuthorized }, 'auth:hasGroupPermissionInAGroupWithThisUser');
             return isAuthorized
         },
         isCurrentUser: async (userUuid: string) => {
             const userData = await currentUser.get();
-            return userData.uuid === userUuid;
+            const isCurrentUser = userData.uuid === userUuid;
+            logger.info({ userUuid, isCurrentUser }, 'auth:isCurrentUser');
+            return isCurrentUser;
         }   
     };
 }

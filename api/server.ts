@@ -4,6 +4,9 @@ import { createContext } from './createContext/createContext'
 import { createDb } from './createDb'
 import pino from 'pino'
 import * as dotenv from 'dotenv'
+import { createLoggerPlugin } from './createLoggerPlugin'
+
+
 dotenv.config()
 
 const targets = [
@@ -22,31 +25,17 @@ if (process.env.LOGTAIL_TOKEN) {
   });
 }
 
-
-
-const logger = pino({
+const pinoLogger = pino({
     transport: { targets }
 });
-
-
-
+const logger = pinoLogger.child({ env: process.env.NODE_ENV });
 const db = createDb({ logger })
+
+const loggerPlugin = createLoggerPlugin({ logger })
 
 export const server = new ApolloServer({ 
     schema, 
     context: createContext({ logger, db }), 
     introspection: true,
-    plugins: [
-        {
-          async serverWillStart() {
-            logger.info('serverWillStart');
-            return {
-                async drainServer() {
-                logger.info('drainServer');
-                await db.$disconnect();
-              },
-            };
-          },
-        },
-    ],
+    plugins: [ loggerPlugin ]
  })

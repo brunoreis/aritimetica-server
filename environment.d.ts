@@ -4,6 +4,8 @@ declare global {
       JWT_SECRET_KEY: string;
       LOG_PRISMA_QUERIES: string;
       LOG_LEVEL: LogLevel;
+      LOGTAIL_TOKEN: string;
+      NODE_ENV: string;
     }
   }
 }

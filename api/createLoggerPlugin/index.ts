@@ -1,0 +1,1 @@
+export { createLoggerPlugin } from './createLoggerPlugin';

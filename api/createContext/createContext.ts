@@ -45,7 +45,7 @@ export const createContext = ({ logger, db }: { logger: Logger, db: PrismaClient
   
   return {
     db,
-    auth: createAuthorizer({ db, currentUser }),
+    auth: createAuthorizer({ db, currentUser, logger }),
     currentUser,
     logger: logger.child({ userUuid, reqId })
   }

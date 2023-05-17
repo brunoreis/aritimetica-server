@@ -1,13 +1,8 @@
 - add logs to the server
-    - add a request_id to the child logger
-        - research best practices
-    - create a transport specific to my dev environment
-        - add env to the log? 
-    - log each step of the authorizer
-    - apollo server logs
+    - add a better typescript error viewer
+    - improve types on apollo server logs, try to return the correct object
     - test what happen and log errors that happens inside resolvers. Ex: types/User.ts:77
-    - debug/check num of open connections and if there is a pg restriction on that
-    - add env, service and version? 
+        - add docs about try-catch on authorize field and resolvers
 
 - telemetry: prisma / jaeger / ...
     - telemetry: see if we already can bind prisma queries to requests (request_id/user_id): https://github.com/prisma/prisma/issues/7596
@@ -27,6 +22,7 @@ LessonsScreen
         assigned by 
         assigned date
 
+- add version num to the logs (git commit) 
 - add a request_id to the frontent and propagate 
 
 - add tests to the auth system
@@ -49,5 +45,7 @@ LessonsScreen
 - deploy
     - how to access running instances, query the DB, interact with the app? 
     - add restrictions on migrations, seeds, etc...
+
+- logs - add extra graphql info ?
 
 Login - optimize to set the currentAuthUser with the same log in user (low prio)
