@@ -27,7 +27,7 @@ export type PluginDefinition = ApolloServerPlugin<TContext> | (() => ApolloServe
 
 export const createLoggerPlugin = ({ logger }: { logger: Logger}): PluginDefinition  => ({
     async serverWillStart() {
-      logger.info(`Starting GraphQL on "${path}"...`)
+      logger.info(`apollo:server will start on "${path}"...`)
 
       if (process.env.DEBUG?.match(/apollo:/)) {
         logger.level = 'debug'
@@ -35,7 +35,7 @@ export const createLoggerPlugin = ({ logger }: { logger: Logger}): PluginDefinit
 
       return {
         async serverWillStop() {
-          logger.info(`Stopping GraphQL on "${path}"`)
+          logger.info(`apollo:server will stop on "${path}"`)
         },
       }
     },
@@ -49,23 +49,22 @@ export const createLoggerPlugin = ({ logger }: { logger: Logger}): PluginDefinit
       function logErrors(...errors: unknown[]) {
         for (const error of errors) {
           if (error instanceof Error) {
-            loggerWithSession.error(`${error.name}: ${error.message}`);
-            loggerWithSession.info(error);
+            loggerWithSession.error(`apollo:${error.name}: ${error.message}`);
           }
         }
       }
     
-      loggerWithSession.info('request did start');
+      loggerWithSession.info('apollo:request did start');
     
       return {
 
         executionDidStart({ operationName, operation }: GraphQLRequestContextExecutionDidStart<BaseContext>) {
           const typeName = operation?.operation || 'operation';
-          loggerWithSession.info(`execution did start --- ${typeName} ${operationName}...`);
+          loggerWithSession.info(`apollo:execution did start --- ${typeName} ${operationName}...`);
         },
 
         async didResolveSource({ source }: { source: string }) {
-          loggerWithSession.info({ source }, `didResolveSource`);
+          loggerWithSession.info({ source }, 'apollo:didResolveSource');
         },
     
         async didResolveOperation({
@@ -77,7 +76,7 @@ export const createLoggerPlugin = ({ logger }: { logger: Logger}): PluginDefinit
           const params = inspect(clean(cleanedVariableNames, variables));
           const kind = operation?.operation || 'operation';
           const name = operationName || '';
-          loggerWithSession.info({ kind, name, params }, `didResolveOperation > > > > > > > > > ${kind} ${name} < < < < < < < < <  `);
+          loggerWithSession.info({ kind, name, params }, `apollo:didResolveOperation > > > > > > > > > ${kind} ${name} < < < < < < < < <  `);
         },
 
         parsingDidStart(
@@ -86,27 +85,27 @@ export const createLoggerPlugin = ({ logger }: { logger: Logger}): PluginDefinit
           // Access the required properties
           // const { source, queryHash } = requestContext;
       
-          loggerWithSession.info('parsing did start');
+          loggerWithSession.info('apollo:parsing did start');
       
           
           return async (error?: Error): Promise<void> => {
             if (error) {
-              loggerWithSession.error('parsing failed:', error);
+              loggerWithSession.error('apollo:parsing failed:', error);
             } else {
-              loggerWithSession.info('parsing did end');
+              loggerWithSession.info('apollo:parsing did end');
             }
           };
         },      
         
         validationDidStart(): void | GraphQLRequestListenerValidationDidEnd {
-          loggerWithSession.info('validation did start');
+          loggerWithSession.info('apollo:validation did start');
     
           return async (err?: ReadonlyArray<Error>) => {
             if (err && err.length > 0) {
-              loggerWithSession.error('Failed to validate GraphQL document');
+              loggerWithSession.error('apollo:validation failed');
               logErrors(...err);
             } else {
-              loggerWithSession.info('Validation did end. Document cached.');
+              loggerWithSession.info('apollo:validation did end. Document cached.');
             }
           };
         },
@@ -117,7 +116,7 @@ export const createLoggerPlugin = ({ logger }: { logger: Logger}): PluginDefinit
           const kind = operation?.operation || 'operation';
           const name = operationName || '';
           const duration = DateTime.now().diff(started).toMillis();
-          loggerWithSession.info({ kind, name, duration }, `will send response > > > > > > > > > ${kind} ${name} < < < < < < < < <   in ${duration}ms`);
+          loggerWithSession.info({ kind, name, duration }, `apollo:will send response > > > > > > > > > ${kind} ${name} < < < < < < < < <   in ${duration}ms`);
         },        
 
         async didEncounterErrors({ errors }: GraphQLRequestContextDidEncounterErrors<BaseContext>) {
