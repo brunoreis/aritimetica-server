@@ -2,11 +2,28 @@ const path = '/graphql'
 import { v4 as uuidv4 } from 'uuid';
 import { DateTime } from 'luxon'
 import { Logger } from 'pino'
+
 import { ApolloServerPlugin } from 'apollo-server-plugin-base';
+
 import { clean } from './clean'
 import { inspect } from 'util'
 
-export type PluginDefinition = ApolloServerPlugin | (() => ApolloServerPlugin);
+import { 
+  BaseContext, 
+  WithRequired, 
+  GraphQLRequestContext, 
+  GraphQLRequestContextDidResolveOperation,
+  GraphQLRequestListenerParsingDidEnd,
+  GraphQLRequestListenerValidationDidEnd,
+  GraphQLRequestContextExecutionDidStart, 
+  GraphQLRequestContextWillSendResponse,
+  GraphQLRequestContextDidEncounterErrors, 
+  GraphQLRequestListener 
+} from 'apollo-server-plugin-base';
+
+type TContext = {};
+
+export type PluginDefinition = ApolloServerPlugin<TContext> | (() => ApolloServerPlugin<TContext>);
 
 export const createLoggerPlugin = ({ logger }: { logger: Logger}): PluginDefinition  => ({
     async serverWillStart() {
@@ -22,83 +39,92 @@ export const createLoggerPlugin = ({ logger }: { logger: Logger}): PluginDefinit
         },
       }
     },
-    
-    async requestDidStart() {
-      const apolloRequestUuid = uuidv4();
-      const loggerWithSession = logger.child({ apolloRequestUuid })
-      const started = DateTime.now()
 
+    
+    requestDidStart(_requestContext: GraphQLRequestContext<BaseContext>): GraphQLRequestListener<BaseContext> | void {
+      const apolloRequestUuid = uuidv4();
+      const loggerWithSession = logger.child({ apolloRequestUuid });
+      const started = DateTime.now();
+    
       function logErrors(...errors: unknown[]) {
         for (const error of errors) {
           if (error instanceof Error) {
-            loggerWithSession.error(`${error.name}: ${error.message}`)
-            loggerWithSession.debug(error)
+            loggerWithSession.error(`${error.name}: ${error.message}`);
+            loggerWithSession.info(error);
           }
         }
       }
-
-      loggerWithSession.debug('Starting GraphQL request...')
-
+    
+      loggerWithSession.info('request did start');
+    
       return {
-        async didResolveSource({ source }) {
-          loggerWithSession.trace(`Source:\n${source}`)
+
+        executionDidStart({ operationName, operation }: GraphQLRequestContextExecutionDidStart<BaseContext>) {
+          const typeName = operation?.operation || 'operation';
+          loggerWithSession.info(`execution did start --- ${typeName} ${operationName}...`);
         },
 
+        async didResolveSource({ source }: { source: string }) {
+          loggerWithSession.info({ source }, `didResolveSource`);
+        },
+    
         async didResolveOperation({
           operation,
           operationName,
           request: { variables },
-        }) {
-          const cleanedVariableNames = ['password', 'token', 'captcha']
-          const params = inspect(clean(cleanedVariableNames, variables))
-          const kind = operation?.operation || 'operation'
-          const name = operationName || ''
-
-          loggerWithSession.info(`Started > > > > > > > > > ${kind} ${name} < < < < < < < < <  `)
-          loggerWithSession.info(`Parameters: ${params}`)
+        }: GraphQLRequestContextDidResolveOperation<BaseContext>) {
+          const cleanedVariableNames = ['password', 'token', 'captcha'];
+          const params = inspect(clean(cleanedVariableNames, variables));
+          const kind = operation?.operation || 'operation';
+          const name = operationName || '';
+          loggerWithSession.info({ kind, name, params }, `didResolveOperation > > > > > > > > > ${kind} ${name} < < < < < < < < <  `);
         },
 
-        async didEncounterErrors({ errors }) {
-          if (errors) logErrors(...errors)
-        },
-
-        async parsingDidStart() {
-          loggerWithSession.debug('Parsing source...')
-
-          return async (error) => {
+        parsingDidStart(
+          _requestContext: WithRequired<GraphQLRequestContext<TContext>, 'source' | 'queryHash'>
+        ): void | GraphQLRequestListenerParsingDidEnd {
+          // Access the required properties
+          // const { source, queryHash } = requestContext;
+      
+          loggerWithSession.info('parsing did start');
+      
+          
+          return async (error?: Error): Promise<void> => {
             if (error) {
-              loggerWithSession.error('Failed to parse source')
-              logErrors(error)
+              loggerWithSession.error('parsing failed:', error);
             } else {
-              loggerWithSession.debug('Parsing complete')
+              loggerWithSession.info('parsing did end');
             }
-          }
-        },
-
-        async validationDidStart() {
-          loggerWithSession.debug('Validating GraphQL document...')
-
-          return async (error) => {
-            if (error) {
-              loggerWithSession.error('Failed to validate GraphQL document')
-              logErrors(error)
+          };
+        },      
+        
+        validationDidStart(): void | GraphQLRequestListenerValidationDidEnd {
+          loggerWithSession.info('validation did start');
+    
+          return async (err?: ReadonlyArray<Error>) => {
+            if (err && err.length > 0) {
+              loggerWithSession.error('Failed to validate GraphQL document');
+              logErrors(...err);
             } else {
-              loggerWithSession.debug('Validation complete. Document cached.')
+              loggerWithSession.info('Validation did end. Document cached.');
             }
-          }
+          };
+        },
+    
+        
+    
+        async willSendResponse({ operation, operationName }: GraphQLRequestContextWillSendResponse<BaseContext>) {
+          const kind = operation?.operation || 'operation';
+          const name = operationName || '';
+          const duration = DateTime.now().diff(started).toMillis();
+          loggerWithSession.info({ kind, name, duration }, `will send response > > > > > > > > > ${kind} ${name} < < < < < < < < <   in ${duration}ms`);
+        },        
+
+        async didEncounterErrors({ errors }: GraphQLRequestContextDidEncounterErrors<BaseContext>) {
+          if (errors) logErrors(...errors);
         },
 
-        async executionDidStart({ operationName, operation }) {
-          const typeName = operation?.operation || 'operation'
-          loggerWithSession.debug(`Executing ${typeName} ${operationName}...`)
-        },
-
-        async willSendResponse({ operation, operationName }) {
-          const kind = operation?.operation || 'operation'
-          const name = operationName || ''
-          const duration = DateTime.now().diff(started).toMillis()
-          loggerWithSession.info(`Completed > > > > > > > > > ${kind} ${name} < < < < < < < < <   in ${duration}ms`)
-        },
-      }
+      };
     },
+    
   })

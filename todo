@@ -1,13 +1,12 @@
 - add logs to the server
-    - add a better typescript error viewer
-    - improve types on apollo server logs, try to return the correct object
     - test what happen and log errors that happens inside resolvers. Ex: types/User.ts:77
         - add docs about try-catch on authorize field and resolvers
 
-- telemetry: prisma / jaeger / ...
-    - telemetry: see if we already can bind prisma queries to requests (request_id/user_id): https://github.com/prisma/prisma/issues/7596
-    - add a final query count (num of queries during the request) to the logs 
+
 - learn how to debug js
+
+- study rust
+
 - create some kind of enum for permissions to avoid type errors
 
 - adjust prettier and format on save (prettier)
@@ -46,6 +45,10 @@ LessonsScreen
     - how to access running instances, query the DB, interact with the app? 
     - add restrictions on migrations, seeds, etc...
 
-- logs - add extra graphql info ?
+- telemetry: prisma / jaeger / ...
+    - telemetry: see if we already can bind prisma queries to requests (request_id/user_id): https://github.com/prisma/prisma/issues/7596
+    - add a final query count (num of queries during the request) to the logs 
+
+- logs - add extra graphql info
 
 Login - optimize to set the currentAuthUser with the same log in user (low prio)
