@@ -40,6 +40,7 @@ const getIncludeFields = (requestedFields: string[]): IncludeFields => {
   if (requestedFields.includes('receivedLessons')) {
     includeFields.receivedLessons = true
   }
+  
   return includeFields
 }
 
@@ -59,6 +60,8 @@ export const UserQuery = extendType({
       resolve(_root, args, ctx, resolverInfo:GraphQLResolveInfo) {
         const requestedFields = getRequestedFields(resolverInfo)  
         const includeFields = getIncludeFields(requestedFields)
+        console.log(" ------------------------------ hey ")
+        const dude = undefinedVar;
         const params =  {
           include: {
             ...includeFields
