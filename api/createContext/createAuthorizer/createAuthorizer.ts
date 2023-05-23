@@ -48,7 +48,7 @@ export const createAuthorizer = ({ db, currentUser, logger }: { db:PrismaClient 
             const membershipsInGroup = getMembershipsInGroup(userData, 'app')
             // get all authenticated role permissions
             const isAuthorized:boolean = hasPermission(membershipsInGroup, permissionUuid)
-            logger.info({ permissionUuid, isAuthorized },'auth:hasGlobalPermission');
+            logger.info({ permissionUuid, isAuthorized },`auth:hasGlobalPermission - ${permissionUuid}`);
             return isAuthorized
         },
         shareGroupWithCurrentUser: async (userUuid: string) => {
@@ -62,7 +62,7 @@ export const createAuthorizer = ({ db, currentUser, logger }: { db:PrismaClient 
             const userData = await currentUser.get();
             const groupsWhereLoggedUserHasThisPermission = getLoggedUserGroupUuids(userData, permissionUuid)
             const isAuthorized =  await userHasMembershipInOneOfThisGroups(db, userUuid, groupsWhereLoggedUserHasThisPermission);
-            logger.info({ permissionUuid, userUuid, isAuthorized }, 'auth:hasGroupPermissionInAGroupWithThisUser');
+            logger.info({ permissionUuid, userUuid, isAuthorized }, `auth:hasGroupPermissionInAGroupWithThisUser ${permissionUuid}`);
             return isAuthorized
         },
         isCurrentUser: async (userUuid: string) => {

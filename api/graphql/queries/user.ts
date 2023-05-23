@@ -58,19 +58,22 @@ export const UserQuery = extendType({
         (await ctx.auth.hasGlobalPermission('View Users Of My Groups') && await ctx.auth.shareGroupWithCurrentUser(args.userUuid))
       },
       resolve(_root, args, ctx, resolverInfo:GraphQLResolveInfo) {
-        const requestedFields = getRequestedFields(resolverInfo)  
-        const includeFields = getIncludeFields(requestedFields)
-        console.log(" ------------------------------ hey ")
-        const dude = undefinedVar;
-        const params =  {
-          include: {
-            ...includeFields
-          },
-          where: {
-            uuid: args.userUuid
+        try {
+          const requestedFields = getRequestedFields(resolverInfo)  
+          const includeFields = getIncludeFields(requestedFields)
+          const params =  {
+            include: {
+              ...includeFields
+            },
+            where: {
+              uuid: args.userUuid
+            }
           }
+          return ctx.db.user.findUnique(params)
+        } catch(e) {
+          ctx.logger.error(e, 'query.user - Unexpected Error')
+          throw e
         }
-        return ctx.db.user.findUnique(params)
       }
     })
   },

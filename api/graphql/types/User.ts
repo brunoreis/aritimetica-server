@@ -45,7 +45,7 @@ export const User = objectType({
           if (root.uuid) {
             const params = {
               where: {
-                assignerUuid: root.uuid ?? undefined
+                assignerUuid: root.uuid
               }
             }
             return ctx.db.lesson.findMany(params)
@@ -78,7 +78,7 @@ export const User = objectType({
           if (root.uuid) {
             const params = {
               where: {
-                assigneeUuid: root.uuid ?? undefined
+                assigneeUuid: root.uuid
               }
             }
             return ctx.db.lesson.findMany(params)
