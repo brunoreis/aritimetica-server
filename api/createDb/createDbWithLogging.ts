@@ -11,34 +11,67 @@ export const createDbWithLogging = ({ logger }: { logger: Logger; }): PrismaClie
         level: 'query',
       },
       {
-        emit: 'stdout',
+        emit: 'event',
         level: 'error',
       },
       {
-        emit: 'stdout',
+        emit: 'event',
         level: 'info',
       },
       {
-        emit: 'stdout',
+        emit: 'event',
         level: 'warn',
       },
     ],
   });
 
 
+  db.$on('info', (e) => {
+    const logObject = {
+      prisma: {
+        target: e.target,
+        timestamp: e.timestamp
+      }
+    };
+    logger.info(
+      logObject,
+      `Prisma:${e.message}`
+    )
+  });
+
+  db.$on('warn', (e) => {
+    const logObject = {
+      prisma: {
+        target: e.target,
+        timestamp: e.timestamp
+      }
+    }
+    logger.info(logObject, `Prisma:WARN:${e.message}`)
+  });
+
+  db.$on('error', (e) => {
+    const logObject = {
+      prisma: {
+        target: e.target,
+        timestamp: e.timestamp
+      }
+    }
+    logger.error(logObject, `Prisma:${e.message}`)
+  });
+
   db.$on('query', (e) => {
     queryCount++
-    logger.info(
-      {
-        prisma: {
-          count: queryCount,
-          query: e.query,
-          params: e.params,
-          duration: e.duration
-        }
-      },
-      queryLogMessage({ count: queryCount, query: e.query })
-    )
+    const logObject = {
+      prisma: {
+        count: queryCount,
+        target: e.target,
+        timestamp: e.timestamp,
+        query: e.query,
+        params: e.params,
+        duration: e.duration
+      }
+    }
+    logger.info(logObject, queryLogMessage({ count: queryCount, query: e.query }))
   });
   
   return db;

@@ -1,8 +1,6 @@
 - add logs to the server
-    - add error, info and warn to prisma logs
     - test what happen and log errors that happens inside resolvers. Ex: types/User.ts:77
         - add docs about try-catch on authorize field and resolvers
-
 
 - learn how to debug js
 
