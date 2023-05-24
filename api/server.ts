@@ -6,13 +6,14 @@ import pino from 'pino'
 import * as dotenv from 'dotenv'
 import { createLoggerPlugin } from './createLoggerPlugin'
 
-
 dotenv.config()
+
+const IS_TEST = process.env.NODE_ENV === 'test';
 
 const targets = [
   { 
     target: 'pino-pretty',
-    level: process.env.LOG_LEVEL,
+    level: IS_TEST ? 'error' : process.env.LOG_LEVEL,
     options: {}
   },
 ];
@@ -21,7 +22,7 @@ if (process.env.LOGTAIL_TOKEN) {
   targets.push({ 
     target: "@logtail/pino",
     options: { sourceToken: process.env.LOGTAIL_TOKEN },
-    level: process.env.LOG_LEVEL,
+    level: IS_TEST ? 'error' : process.env.LOG_LEVEL,
   });
 }
 
@@ -38,4 +39,4 @@ export const server = new ApolloServer({
     context: createContext({ logger, db }), 
     introspection: true,
     plugins: [ loggerPlugin ]
- })
+})

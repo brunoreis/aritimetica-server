@@ -1,5 +1,7 @@
-- add tests to the login mutation: 
-     - https://nexusjs.org/docs/getting-started/tutorial/chapter-testing-your-api/
+- improve login mutation tests
+    - supress logs on test env
+    - work with an in memory db?/decouple from prisma
+    - what about seeds? Avoid redundant fixtures? How to ensure in the test that the reader understand what we are querying (explicit data being tested.).
 
 - create some kind of enum for permissions to avoid type errors
 - adjust prettier and format on save (prettier)
