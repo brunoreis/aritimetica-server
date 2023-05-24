@@ -59,7 +59,7 @@ export function createLoggerPlugin(
           const params = inspect(clean(cleanedVariableNames, variables));
           const kind = operation?.operation || 'operation';
           const name = operationName || '';
-          loggerWithSession.info({ kind, name, params }, `apollo:didResolveOperation > > > > > > > > > ${kind} ${name} < < < < < < < < <  `);
+          loggerWithSession.info({ kind, name, params }, `apollo:didResolveOperation > > > > > > > > > ${kind} ${name}`);
         },
 
         async parsingDidStart(
@@ -97,7 +97,7 @@ export function createLoggerPlugin(
           const kind = operation?.operation || 'operation';
           const name = operationName || '';
           const duration = DateTime.now().diff(started).toMillis();
-          loggerWithSession.info({ kind, name, duration }, `apollo:will send response > > > > > > > > > ${kind} ${name} < < < < < < < < <   in ${duration}ms`);
+          loggerWithSession.info({ kind, name, duration }, `apollo:will send response < < < < < < < < < ${kind} ${name} in ${duration}ms`);
         },        
 
         async didEncounterErrors({ errors }) {

@@ -1,7 +1,7 @@
-- add docs about try-catch on authorize field and resolvers?
-- try to catch autorize/resolve on a higher level
-
 - learn how to debug js
+
+- add tests to a query and a mutation: 
+     - https://nexusjs.org/docs/getting-started/tutorial/chapter-testing-your-api/
 
 - study rust
 
