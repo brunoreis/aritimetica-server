@@ -1,12 +1,7 @@
-- learn how to debug js
-
-- add tests to a query and a mutation: 
+- add tests to the login mutation: 
      - https://nexusjs.org/docs/getting-started/tutorial/chapter-testing-your-api/
 
-- study rust
-
 - create some kind of enum for permissions to avoid type errors
-
 - adjust prettier and format on save (prettier)
 - improve resolver types (root)
 
@@ -18,6 +13,8 @@ LessonsScreen
         title
         assigned by 
         assigned date
+
+- add tests to one query (to have an example of a query and another of a mutation)
 
 - add version num to the logs (git commit) 
 - add a request_id to the frontent and propagate 

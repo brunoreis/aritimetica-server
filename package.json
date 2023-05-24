@@ -9,6 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --transpile-only --no-notify api/index.ts",
+    "dev-inspect": "ts-node-dev --inspect --transpile-only --no-notify api/index.ts",
     "prisma:seed": "npx prisma migrate reset",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
