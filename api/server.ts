@@ -3,17 +3,12 @@ import { schema } from './schema'
 import { createContext } from './createContext/createContext'
 import { createDb } from './createDb'
 import pino from 'pino'
-import * as dotenv from 'dotenv'
 import { createLoggerPlugin } from './createLoggerPlugin'
-
-dotenv.config()
-
-const IS_TEST = process.env.NODE_ENV === 'test';
 
 const targets = [
   { 
     target: 'pino-pretty',
-    level: IS_TEST ? 'error' : process.env.LOG_LEVEL,
+    level:  process.env.LOG_LEVEL,
     options: {}
   },
 ];
@@ -22,7 +17,7 @@ if (process.env.LOGTAIL_TOKEN) {
   targets.push({ 
     target: "@logtail/pino",
     options: { sourceToken: process.env.LOGTAIL_TOKEN },
-    level: IS_TEST ? 'error' : process.env.LOG_LEVEL,
+    level: process.env.LOG_LEVEL,
   });
 }
 

@@ -1,7 +1,10 @@
 - improve login mutation tests
-    - supress logs on test env
-    - work with an in memory db?/decouple from prisma
-    - what about seeds? Avoid redundant fixtures? How to ensure in the test that the reader understand what we are querying (explicit data being tested.).
+    - create test db and add seed data as fixtures
+    - run test
+    - ensure we are not requiring dotenv in the code anymore (only in the package.json inclusion)
+    - write docs about .test.env
+    - write docs about the test
+    
 
 - create some kind of enum for permissions to avoid type errors
 - adjust prettier and format on save (prettier)

@@ -7,7 +7,7 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
-    "dev": "ts-node-dev --transpile-only --no-notify api/index.ts",
+    "dev": "ts-node-dev --require dotenv/config --transpile-only --no-notify api/index.ts",
     "dev-inspect": "ts-node-dev --inspect --transpile-only --no-notify api/index.ts",
     "prisma:seed": "npx prisma migrate reset",
     "prisma:generate": "npx prisma generate",
@@ -16,11 +16,14 @@
     "build": "tsc",
     "start": "node dist/api/index.js",
     "clean": "rm -rf dist/*",
-    "generate": "ts-node --transpile-only api/schema",
+    "generate": "ts-node --transpile-only api/schema --require dotenv/config dotenv_config_path=/.test.env",
     "test": "npm run generate && jest --watch"
   },
   "jest": {
     "preset": "ts-jest",
+    "setupFiles": [
+      "<rootDir>/tests-dotenv-config.js"
+    ],
     "globals": {
       "ts-jest": {
         "diagnostics": { "warnOnly": true }
