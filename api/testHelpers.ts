@@ -1,35 +1,36 @@
 import { ServerInfo } from "apollo-server";
 import getPort, { makeRange } from "get-port";
+import { execSync } from "child_process";
 import { GraphQLClient } from "graphql-request";
 import { server } from "./server";
-type TestContext = {
-  client: GraphQLClient;
-};
-export function createTestContext(): TestContext {
-  let ctx = {} as TestContext;
-  const graphqlCtx = graphqlTestContext();
-  beforeEach(async () => {                   
-    const client = await graphqlCtx.before();
-    Object.assign(ctx, {
-      client,
-    });
-  });
-  afterEach(async () => {                                         // 3
-    await graphqlCtx.after();
-  });
-  return ctx;                                                     // 8
+import { join } from "path";
+import { PrismaClient } from "@prisma/client";
+
+export async function createServerAndClient() {
+  let serverInstance: ServerInfo | null = null;
+  const port = await getPort({ port: makeRange(4000, 6000) });  
+  serverInstance = await server.listen({ port });      
+  const client = new GraphQLClient(`http://localhost:${port}`);
+  return { serverInstance , client };
 }
 
-function graphqlTestContext() {
-  let serverInstance: ServerInfo | null = null;
-  return {
-    async before() {
-      const port = await getPort({ port: makeRange(4000, 6000) });  
-      serverInstance = await server.listen({ port });               
-      return new GraphQLClient(`http://localhost:${port}`);
-    },
-    async after() {
-      serverInstance?.server.close();
-    },
-  };
+export async function createPrismaClient(): Promise<PrismaClient> {
+  const prismaBinary = join(__dirname, "..", "node_modules", ".bin", "prisma");
+  let prismaClient: null | PrismaClient = null;
+  const cmd = `DATABASE_URL=${process.env.DATABASE_URL} ${prismaBinary} db push`;
+  // use this to debug
+  //execSync(cmd,{stdio: 'inherit'});
+  execSync(cmd);
+  console.log('exec sync... 2')
+  prismaClient = new PrismaClient();
+  return prismaClient;
 }
+
+export async function closeServer(serverInstance?:ServerInfo) {
+  serverInstance?.server.close();
+}
+
+export function closePrismaClient(prismaClient?:PrismaClient) {
+  prismaClient?.$disconnect();
+}
+
