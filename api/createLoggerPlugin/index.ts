@@ -1,1 +1,1 @@
-export { createLoggerPlugin } from './createLoggerPlugin';
+export { createLoggerPlugin } from './createLoggerPlugin'

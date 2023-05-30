@@ -1,0 +1,36 @@
+mutation login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    jwt
+    screen {
+      __typename
+      ... on UsersScreen {
+        user {
+          uuid
+          email
+          name
+          memberships {
+            role {
+              uuid
+              title
+            }
+            group {
+              uuid
+              name
+            }
+          }
+        }
+      }
+      ... on LessonsScreen {
+        user {
+          uuid
+          email
+          name
+          receivedLessons {
+            uuid
+            title
+          }
+        }
+      }
+    }
+  }
+}

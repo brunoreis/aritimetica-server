@@ -8,52 +8,52 @@ datasource db {
 }
 
 model Lesson {
-  uuid          String    @id @default(uuid())
-  title         String
-  assigner      User      @relation("assigner", fields: [assignerUuid], references: [uuid])
-  assignee      User      @relation("assignee", fields: [assigneeUuid], references: [uuid])
-  assignerUuid    String
-  assigneeUuid    String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  uuid         String   @id @default(uuid())
+  title        String
+  assigner     User     @relation("assigner", fields: [assignerUuid], references: [uuid])
+  assignee     User     @relation("assignee", fields: [assigneeUuid], references: [uuid])
+  assignerUuid String
+  assigneeUuid String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model User {
-  uuid        String  @id @default(uuid())
-  email     String  @unique
-  name      String
-  password  String
-  memberships Membership[]
-  assignedLessons Lesson[] @relation("assigner")
-  receivedLessons Lesson[] @relation("assignee")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  uuid            String       @id @default(uuid())
+  email           String       @unique
+  name            String
+  password        String
+  memberships     Membership[]
+  assignedLessons Lesson[]     @relation("assigner")
+  receivedLessons Lesson[]     @relation("assignee")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
 
 model Permission {
-  uuid String  @id
+  uuid  String @id
   roles Role[]
 }
 
 model Role {
-  uuid        String  @id 
-  title     String
+  uuid        String       @id
+  title       String
   memberships Membership[]
   permissions Permission[]
 }
 
 model Group {
-  uuid          String      @id @default(uuid())
+  uuid        String       @id @default(uuid())
   name        String
   memberships Membership[]
 }
 
 model Membership {
-  uuid String @id @default(uuid())
-  user User @relation(fields: [userUuid], references: [uuid])
-  group Group @relation(fields: [groupUuid], references: [uuid])
-  role Role @relation(fields: [roleUuid], references: [uuid])
-  userUuid String
-  roleUuid String
+  uuid      String @id @default(uuid())
+  user      User   @relation(fields: [userUuid], references: [uuid])
+  group     Group  @relation(fields: [groupUuid], references: [uuid])
+  role      Role   @relation(fields: [roleUuid], references: [uuid])
+  userUuid  String
+  roleUuid  String
   groupUuid String
 }

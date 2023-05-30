@@ -1,45 +1,7 @@
 import { ServerInfo } from 'apollo-server';
-import { createServerAndClient, closeServer, createPrismaClient } from '../../testHelpers'
+import { createServerAndClient, closeServer } from '../../testHelpers'
+import loginMutation from './login.gql';
 
-
-const mutation = `            
-  mutation LoginTeacher($email: String!, $password: String!) {
-      login(email: $email, password: $password) {
-      jwt
-      screen {
-          __typename
-          ... on UsersScreen {
-          user {
-              uuid
-              email
-              name
-              memberships {
-                role {
-                    uuid
-                    title
-                }
-                group {
-                    uuid
-                    name
-                }
-              }
-          }
-          }
-          ... on LessonsScreen {
-          user {
-              uuid
-              email
-              name
-              receivedLessons {
-              uuid
-              title
-              }
-          }
-          }
-      }
-      }
-  }  
-`
 
 describe('login mutation', () => {
   let result:any = null; // @todo: type this
@@ -47,10 +9,11 @@ describe('login mutation', () => {
   beforeAll(async () => {
     let { serverInstance , client } = await createServerAndClient()
     serverI = serverInstance;
-    result = await client.request(mutation, {
+    const variables = {
       "email": "teacher@example.com",
       "password": "secretPassword123"
-    })
+    }
+    result = await client.request( loginMutation, variables )
   })
   afterAll(
     async () => {
@@ -78,10 +41,12 @@ describe('login mutation', () => {
       expect(result.login.screen.user.memberships.length).toBe(2)
     })
     
-    it.todo("return the correct user memberships")
-    // , () => {
-    //   console.log(result.login.screen.user.memberships)
-    // })
+    it("return the role and the teacher memberships", () => {
+      const groupUuid = 'a3d3df3e-3de3-429d-905d-2c313bea906a';
+      const { memberships } = result.login.screen.user
+      expect(memberships.map(m=>m.role.uuid)).toEqual(['group_owner', 'teacher'])
+      expect(memberships.map(m=>m.group.uuid)).toEqual([groupUuid, groupUuid])
+    })
   })
 
 })

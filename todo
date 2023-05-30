@@ -1,6 +1,5 @@
 - improve login mutation tests
-    - continue writing login tests
-    - think about how to setu up the db and seed test data - maybe create a command to run before running the tests
+    - add types to mutation return in login.test.ts
     - test prisma client for tests with a db change (create a create mutation?)
     - ensure we are not requiring dotenv in the code anymore (only in the package.json inclusion)
     - write docs about .test.env
