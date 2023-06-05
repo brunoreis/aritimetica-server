@@ -7,7 +7,7 @@ import type { GroupSource } from './Group';
 export type MembershipSource =  PrismaMembership & 
   {
     role?: Prisma.PrismaPromise<RoleSource> | null;
-    group?: Prisma.PrismaPromise<GroupSource> | null;
+    group?: GroupSource | null;
   } | null
 
 
