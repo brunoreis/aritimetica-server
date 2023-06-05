@@ -7,8 +7,10 @@
 import type { UserSource } from "./api/graphql/types/User"
 import type { MembershipSource } from "./api/graphql/types/Membership"
 import type { GroupSource } from "./api/graphql/types/Group"
+import type { LessonSource } from "./api/graphql/types/Lesson"
 import type { RoleSource } from "./api/graphql/types/Role"
 import type { PermissionSource } from "./api/graphql/types/Permission"
+import type { UsersScreenSource } from "./api/graphql/types/UsersScreen"
 import type { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 
 
@@ -35,12 +37,7 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Group: GroupSource;
-  Lesson: { // root type
-    assigneeUuid?: string | null; // String
-    assignerUuid?: string | null; // String
-    title?: string | null; // String
-    uuid?: string | null; // String
-  }
+  Lesson: LessonSource;
   LessonsScreen: { // root type
     user?: NexusGenRootTypes['User'] | null; // User
   }
@@ -54,7 +51,7 @@ export interface NexusGenObjects {
   Query: {};
   Role: RoleSource;
   User: UserSource;
-  UsersScreen: {};
+  UsersScreen: UsersScreenSource;
 }
 
 export interface NexusGenInterfaces {

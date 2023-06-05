@@ -1,12 +1,14 @@
 import { objectType } from 'nexus'
 import { ContextType } from '../../createContext/ContextType';
-import Prisma, { Membership as PrismaMembership, Role, Group } from '@prisma/client';
+import Prisma, { Membership as PrismaMembership } from '@prisma/client';
+import type { RoleSource } from './Role';
+import type { GroupSource } from './Group';
 
-export type MembershipSource = 
-  PrismaMembership & {
-    role?: Prisma.PrismaPromise<Role>
-    group?: Prisma.PrismaPromise<Group>
-  }
+export type MembershipSource =  PrismaMembership & 
+  {
+    role?: Prisma.PrismaPromise<RoleSource> | null;
+    group?: Prisma.PrismaPromise<GroupSource> | null;
+  } | null
 
 
 export const Membership = objectType({
@@ -22,10 +24,10 @@ export const Membership = objectType({
     t.field('group', {
       type: 'Group',
       resolve(root, _args, ctx: ContextType) {
-        if (root.group) {
+        if (root?.group) {
           return root.group
         } else {
-          if(root.groupUuid) {
+          if(root?.groupUuid) {
             const params = {
               where: {
                 uuid: root.groupUuid
@@ -40,10 +42,10 @@ export const Membership = objectType({
     t.field('role', {
       type: 'Role',
       resolve(root, _args, ctx: ContextType) {
-        if (root.role) {
+        if (root?.role) {
           return root.role
         } else {
-          if(root.roleUuid) {
+          if(root?.roleUuid) {
             const params = {
               where: {
                 uuid: root.roleUuid

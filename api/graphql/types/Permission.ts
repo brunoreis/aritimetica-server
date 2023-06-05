@@ -1,10 +1,11 @@
 import { objectType } from 'nexus'
 import { ContextType } from '../../createContext/ContextType';
-import Prisma, {Permission as PrismaPermission, Role } from '@prisma/client';
+import Prisma, {Permission as PrismaPermission } from '@prisma/client';
+import type { RoleSource } from './Role';
 
 export type PermissionSource = PrismaPermission & {
-  roles?: Prisma.PrismaPromise<Role[]>
-} 
+  roles?: Prisma.PrismaPromise<RoleSource[]>
+} | null
 
 export const Permission = objectType({
   name: 'Permission',
@@ -17,10 +18,10 @@ export const Permission = objectType({
     t.list.field('roles', {
     type: 'Role',
       async resolve(root, _args, ctx: ContextType) {
-        if (root.roles) {
+        if (root?.roles) {
           return root.roles
         } else {
-          if (root.uuid) {
+          if (root?.uuid) {
             const params = {
               where: {
                 permissions: {
