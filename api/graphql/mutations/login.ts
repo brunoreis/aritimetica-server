@@ -35,7 +35,7 @@ export const LoginMutation = extendType({
         password: nonNull(stringArg()),                  
       },
       async resolve(_root, args, ctx:ContextType, resolverInfo:GraphQLResolveInfo) {
-        const user = await ctx.db.user.findUnique({ where: { email: args.email }, include: {
+        const user = await ctx.prisma.user.findUnique({ where: { email: args.email }, include: {
           memberships: { include: { role: { select: { uuid: true}}}}
         } });
         if (!user) {

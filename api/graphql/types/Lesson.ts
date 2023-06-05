@@ -1,17 +1,6 @@
 import { objectType } from 'nexus';
 import { ContextType } from '../../createContext/ContextType';
 
-interface LessonRoot {
-    uuid?: string | null
-    title?: string | null
-    assignerUuid?: string | null
-    assigneeUuid?: string | null
-    assigner?: {} | null
-    assignee?: {} | null
-    createdAt?: Date | null
-    updatedAt?: Date | null
-}
-
 export const Lesson = objectType({
   name: 'Lesson', 
   definition(t) {
@@ -19,7 +8,7 @@ export const Lesson = objectType({
     t.string('title');
     t.field('assigner', {
         type: 'User',
-        resolve(root: LessonRoot, _args, ctx: ContextType) {
+        async resolve(root, _args, ctx: ContextType) {
           if (root.assigner) {
             return root.assigner
           } else {
@@ -29,7 +18,8 @@ export const Lesson = objectType({
                   uuid: root.assignerUuid
                 }
               }
-              return ctx.db.user.findUnique(params)
+              const assigner = await ctx.prisma.user.findUnique(params)
+              return assigner
             }
           }
           return null
@@ -37,7 +27,7 @@ export const Lesson = objectType({
       })
       t.field('assignee', {
         type: 'User',
-        resolve(root: LessonRoot, _args, ctx: ContextType) {
+        resolve(root, _args, ctx: ContextType) {
           if (root.assignee) {
             return root.assignee
           } else {
@@ -47,7 +37,7 @@ export const Lesson = objectType({
                   uuid: root.assigneeUuid
                 }
               }
-              return ctx.db.user.findUnique(params)
+              return ctx.prisma.user.findUnique(params)
             }
           }
           return null

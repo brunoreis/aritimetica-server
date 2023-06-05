@@ -6,8 +6,8 @@ import { fetchAuthenticatedPermissions } from './fetchAuthenticatedPermissions';
 import { deepFreeze } from './deepFreeze';
 import type { UserDataType } from '../UserDataType';
 
-const fetchAndAddAuthUserMemberships = async (user: Exclude<UserDataQueryResult, null>, db: PrismaClient): Promise<UserDataType> => {
-    const permissions = await fetchAuthenticatedPermissions(db);
+const fetchAndAddAuthUserMemberships = async (user: Exclude<UserDataQueryResult, null>, prisma: PrismaClient): Promise<UserDataType> => {
+    const permissions = await fetchAuthenticatedPermissions(prisma);
     const authenticatedMembership = createAuthenticatedMembership(permissions);
     const memberships = [...user.memberships, authenticatedMembership];
     return {
@@ -16,7 +16,7 @@ const fetchAndAddAuthUserMemberships = async (user: Exclude<UserDataQueryResult,
     };
   }
 
-const CurrentUser = (db: PrismaClient) => {
+const CurrentUser = (prisma: PrismaClient) => {
     let cachedUserData = buildCachedUserData();
     let currentUserUuid:string | undefined = undefined; 
     const set = (userUuid: string) => {
@@ -29,9 +29,9 @@ const CurrentUser = (db: PrismaClient) => {
             if(userData) {
                 return userData;
             }
-            user = await fetchUserData(currentUserUuid, db);
+            user = await fetchUserData(currentUserUuid, prisma);
         }        
-        const userData = user ? await fetchAndAddAuthUserMemberships(user, db) : {
+        const userData = user ? await fetchAndAddAuthUserMemberships(user, prisma) : {
             uuid: 'annonymous',
             email: '',
             name: '',

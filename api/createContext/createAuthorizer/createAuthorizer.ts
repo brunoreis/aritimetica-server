@@ -20,7 +20,7 @@ const getLoggedUserGroupUuids = (userData: UserDataType, permissionUuid?: string
     return Array.from(uuids)
 }
 
-const userHasMembershipInOneOfThisGroups = async (db:PrismaClient, userUuid:string, groupUuids: string[]) => {
+const userHasMembershipInOneOfThisGroups = async (prisma:PrismaClient, userUuid:string, groupUuids: string[]) => {
     const where = { 
         AND: [
             { userUuid: userUuid },
@@ -29,12 +29,12 @@ const userHasMembershipInOneOfThisGroups = async (db:PrismaClient, userUuid:stri
             }
         ]
     }
-    const membershipCount = await db.membership.count({ where })
+    const membershipCount = await prisma.membership.count({ where })
     return membershipCount > 0;
 };
 
 
-export const createAuthorizer = ({ db, currentUser, logger }: { db:PrismaClient ,currentUser: ReturnType<typeof CurrentUser>, logger: Logger }) => {
+export const createAuthorizer = ({ prisma, currentUser, logger }: { prisma:PrismaClient ,currentUser: ReturnType<typeof CurrentUser>, logger: Logger }) => {
     return {
         loggedIn: async () => {
             const userData = await currentUser.get();
@@ -54,14 +54,14 @@ export const createAuthorizer = ({ db, currentUser, logger }: { db:PrismaClient 
         shareGroupWithCurrentUser: async (userUuid: string) => {
             const userData = await currentUser.get();
             const loggedUserGroupUuids = getLoggedUserGroupUuids(userData)
-            const isAuthorized = await userHasMembershipInOneOfThisGroups(db, userUuid, loggedUserGroupUuids);
+            const isAuthorized = await userHasMembershipInOneOfThisGroups(prisma, userUuid, loggedUserGroupUuids);
             logger.info({ userUuid, isAuthorized }, 'auth:shareGroupWithCurrentUser');
             return isAuthorized
         },
         hasGroupPermissionInAGroupWithThisUser: async (permissionUuid:string, userUuid:string) => {
             const userData = await currentUser.get();
             const groupsWhereLoggedUserHasThisPermission = getLoggedUserGroupUuids(userData, permissionUuid)
-            const isAuthorized =  await userHasMembershipInOneOfThisGroups(db, userUuid, groupsWhereLoggedUserHasThisPermission);
+            const isAuthorized =  await userHasMembershipInOneOfThisGroups(prisma, userUuid, groupsWhereLoggedUserHasThisPermission);
             logger.info({ permissionUuid, userUuid, isAuthorized }, `auth:hasGroupPermissionInAGroupWithThisUser ${permissionUuid}`);
             return isAuthorized
         },

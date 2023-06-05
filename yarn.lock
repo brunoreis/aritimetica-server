@@ -1075,16 +1075,6 @@
     resolve-from "5.0.0"
     tslib "^2.4.0"
 
-"@graphql-tools/jest-transform@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/jest-transform/-/jest-transform-2.0.0.tgz#03c19771fd917597f39340c70629518bf4d794b1"
-  integrity sha512-7dVVs7f9qlJp2l3CSpy+B1sbaWprNNy72/KTC6fp4k1lNtXYPP9g76D7HpNbgwvdUBRZfiPlOiztnwTcKCzUdA==
-  dependencies:
-    "@graphql-tools/webpack-loader" "7.0.0"
-    "@jest/transform" "^29.0.0"
-    "@jest/types" "^29.0.0"
-    tslib "^2.4.0"
-
 "@graphql-tools/json-file-loader@^8.0.0":
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@graphql-tools/json-file-loader/-/json-file-loader-8.0.0.tgz#9b1b62902f766ef3f1c9cd1c192813ea4f48109c"
@@ -1139,7 +1129,7 @@
     fast-json-stable-stringify "^2.1.0"
     tslib "^2.4.0"
 
-"@graphql-tools/optimize@2.0.0", "@graphql-tools/optimize@^2.0.0":
+"@graphql-tools/optimize@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@graphql-tools/optimize/-/optimize-2.0.0.tgz#7a9779d180824511248a50c5a241eff6e7a2d906"
   integrity sha512-nhdT+CRGDZ+bk68ic+Jw1OZ99YCDIKYA5AlVAnBHJvMawSx9YQqQAIj4refNc1/LRieGiuWvhbG3jvPVYho0Dg==
@@ -1249,20 +1239,6 @@
   integrity sha512-ndBPc6zgR+eGU/jHLpuojrs61kYN3Z89JyMLwK3GCRkPv4EQn9EOr1UWqF1JO0iM+/jAVHY0mvfUxyrFFN9DUQ==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
-    tslib "^2.4.0"
-
-"@graphql-tools/webpack-loader-runtime@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/webpack-loader-runtime/-/webpack-loader-runtime-7.0.0.tgz#22000c99dfe757c0af812e671b3d2032f70632ad"
-  integrity sha512-E5Flr2NbuTH+sfiMY2HacLbczJEDmqfKC0haOsc24wN0hV3rJvvPiqYIROgILgwVSJPQIQ4cOf/XcRsatrGDvQ==
-
-"@graphql-tools/webpack-loader@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/webpack-loader/-/webpack-loader-7.0.0.tgz#a417b88882f3d94beffd1196ef58b940ab80bf50"
-  integrity sha512-Mf2ZkoVR5+J5pFu5P0LPjvHZCObIs61IuQR8sFanMQXQDaM/f2dMn1Ie8pQ42YfDgLDbvJ+4XIikicJH1oDIDw==
-  dependencies:
-    "@graphql-tools/optimize" "2.0.0"
-    "@graphql-tools/webpack-loader-runtime" "7.0.0"
     tslib "^2.4.0"
 
 "@graphql-tools/wrap@^10.0.0":
@@ -1456,7 +1432,7 @@
     jest-haste-map "^29.5.0"
     slash "^3.0.0"
 
-"@jest/transform@^29.0.0", "@jest/transform@^29.5.0":
+"@jest/transform@^29.5.0":
   version "29.5.0"
   resolved "https://registry.yarnpkg.com/@jest/transform/-/transform-29.5.0.tgz#cf9c872d0965f0cbd32f1458aa44a2b1988b00f9"
   integrity sha512-8vbeZWqLJOvHaDfeMuoHITGKSz5qWc9u04lnWrQE3VyuSw604PzQM824ZeX9XSjUCeDiE3GuxZe5UKa8J61NQw==
@@ -1477,7 +1453,7 @@
     slash "^3.0.0"
     write-file-atomic "^4.0.2"
 
-"@jest/types@^29.0.0", "@jest/types@^29.5.0":
+"@jest/types@^29.5.0":
   version "29.5.0"
   resolved "https://registry.yarnpkg.com/@jest/types/-/types-29.5.0.tgz#f59ef9b031ced83047c67032700d8c807d6e1593"
   integrity sha512-qbu7kN6czmVRc3xWFQcAN03RAUamgppVUdXrvl1Wr3jlNF93o9mJbGcDWrwGB6ht44u7efB1qCFgVQmca24Uog==

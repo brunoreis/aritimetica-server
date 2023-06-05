@@ -4,6 +4,11 @@
  */
 
 
+import type { UserSource } from "./api/graphql/types/User"
+import type { MembershipSource } from "./api/graphql/types/Membership"
+import type { GroupSource } from "./api/graphql/types/Group"
+import type { RoleSource } from "./api/graphql/types/Role"
+import type { PermissionSource } from "./api/graphql/types/Permission"
 import type { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 
 
@@ -29,10 +34,7 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  Group: { // root type
-    name?: string | null; // String
-    uuid?: string | null; // String
-  }
+  Group: GroupSource;
   Lesson: { // root type
     assigneeUuid?: string | null; // String
     assignerUuid?: string | null; // String
@@ -46,26 +48,12 @@ export interface NexusGenObjects {
     jwt?: string | null; // String
     screen?: NexusGenRootTypes['Screen'] | null; // Screen
   }
-  Membership: { // root type
-    groupUuid?: string | null; // String
-    roleUuid?: string | null; // String
-    userUuid?: string | null; // String
-  }
+  Membership: MembershipSource;
   Mutation: {};
-  Permission: { // root type
-    uuid?: string | null; // String
-  }
+  Permission: PermissionSource;
   Query: {};
-  Role: { // root type
-    title?: string | null; // String
-    uuid?: string | null; // String
-  }
-  User: { // root type
-    email?: string | null; // String
-    name?: string | null; // String
-    password?: string | null; // String
-    uuid?: string | null; // String
-  }
+  Role: RoleSource;
+  User: UserSource;
   UsersScreen: {};
 }
 

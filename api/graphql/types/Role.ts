@@ -1,25 +1,28 @@
 import { objectType } from 'nexus'
 import { ContextType } from '../../createContext/ContextType';
+import Prisma, {Role as PrismaRole, Membership, Permission } from '@prisma/client';
 
-interface RoleRoot {
-  uuid?: string | null
-  title?: string | null
-  memberships?: {}[] | null
-  permissions?: {}[] | null
-}
+export type RoleSource = PrismaRole & {
+  memberships?: Prisma.PrismaPromise<Membership[]> | null
+  permissions?: Prisma.PrismaPromise<Permission[]> | null
+} | null
 
 export const Role = objectType({
   name: 'Role',
+  sourceType: {
+    module: __filename,
+    export: 'RoleSource'
+  },
   definition(t) {
     t.string('uuid')
     t.string('title')
     t.list.field('memberships', {
       type: 'Membership',
-      resolve(root: RoleRoot, _args, ctx: ContextType) {
-        if (root.memberships) {
+      async resolve(root, _args, ctx: ContextType) {
+        if (root?.memberships) {
           return root.memberships
         } else {
-          if (root.uuid) {
+          if (root?.uuid) {
             const params = {
               where: {
                 roleUuid: root.uuid ?? undefined // set roleUuid to undefined if uuid is null or undefined
@@ -29,7 +32,7 @@ export const Role = objectType({
                 user: true
               }
             }
-            return ctx.db.membership.findMany(params)
+            return ctx.prisma.membership.findMany(params)
           }
         }
         return null
@@ -37,11 +40,11 @@ export const Role = objectType({
     })
     t.list.field('permissions', {
       type: 'Permission',
-      resolve(root: RoleRoot, _args, ctx: ContextType) {
-        if (root.permissions) {
+      resolve(root, _args, ctx: ContextType) {
+        if (root?.permissions) {
           return root.permissions
         } else {
-          if (root.uuid) {
+          if (root?.uuid) {
             const params = {
               where: {
                 roles: {
@@ -51,7 +54,7 @@ export const Role = objectType({
                 }
               }
             }
-            return ctx.db.permission.findMany(params)
+            return ctx.prisma.permission.findMany(params)
           }
         }
         return null

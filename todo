@@ -1,14 +1,26 @@
+- improve resolver types (root)
+    - add missing source types
+
 - improve login mutation tests
-    - add types to mutation return in login.test.ts
-    - test prisma client for tests with a db change (create a create mutation?)
+    - why would we have memberships without roles?
+        - in other words, why membership.role is optional? 
+    - write the test cases thinking we are on the server
+        - explain why the login query has an union
+    - expand docs about tests
+        - parsing gql files
+            - ts support
     - ensure we are not requiring dotenv in the code anymore (only in the package.json inclusion)
     - write docs about .test.env
     - write docs about the test
+    - test a resover with a db change 
+        - verify the db using the prisma client
+    - test a query
+
     
+
 
 - create some kind of enum for permissions to avoid type errors
 - adjust prettier and format on save (prettier)
-- improve resolver types (root)
 
 UsersScreen
     list groups (cards)
@@ -18,8 +30,6 @@ LessonsScreen
         title
         assigned by 
         assigned date
-
-- add tests to one query (to have an example of a query and another of a mutation)
 
 - add version num to the logs (git commit) 
 - add a request_id to the frontent and propagate 

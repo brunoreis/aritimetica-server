@@ -40,7 +40,7 @@ export const UsersQuery = extendType({
             ...includeFields
           } 
         }
-        return ctx.db.user.findMany(params)
+        return ctx.prisma.user.findMany(params)
       }
     })
   },

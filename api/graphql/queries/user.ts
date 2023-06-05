@@ -3,11 +3,10 @@ import { extendType, nonNull, stringArg } from 'nexus'
 import getRequestedFields from '../getRequestedFields';
 import { GraphQLResolveInfo } from 'graphql';
 
-
 type IncludeFields = {
   memberships?: boolean | { include: { group: boolean } }
   assignedLessons?: boolean | { include: { assignee: boolean, assigner: boolean } }
-  receivedLessons?: boolean | { include: { assignee: boolean, assigner: boolean } }
+  // receivedLessons?: boolean | { include: { assignee: boolean, assigner: boolean } }
 }
 
 const getIncludeFields = (requestedFields: string[]): IncludeFields => {
@@ -16,13 +15,13 @@ const getIncludeFields = (requestedFields: string[]): IncludeFields => {
   if (requestedFields.includes('memberships')) {
     includeFields.memberships = true
 
-    if (requestedFields.includes('memberships.group')) {
-      includeFields.memberships = {
-        include: {
-          group: true
-        }
-      }
-    }
+    // if (requestedFields.includes('memberships.group')) {
+    //   includeFields.memberships = {
+    //     include: {
+    //       group: true
+    //     }
+    //   }
+    // }
   }
 
   if (requestedFields.includes('assignedLessons')) {
@@ -37,9 +36,9 @@ const getIncludeFields = (requestedFields: string[]): IncludeFields => {
     }
   }
 
-  if (requestedFields.includes('receivedLessons')) {
-    includeFields.receivedLessons = true
-  }
+  // if (requestedFields.includes('receivedLessons')) {
+  //   includeFields.receivedLessons = true
+  // }
   
   return includeFields
 }
@@ -57,7 +56,7 @@ export const UserQuery = extendType({
         (await ctx.auth.hasGlobalPermission('View My User') && await ctx.auth.isCurrentUser(args.userUuid)) ||
         (await ctx.auth.hasGlobalPermission('View Users Of My Groups') && await ctx.auth.shareGroupWithCurrentUser(args.userUuid))
       },
-      resolve(_root, args, ctx, resolverInfo:GraphQLResolveInfo) {
+      resolve: async(_root, args, ctx:ContextType, resolverInfo:GraphQLResolveInfo) => {
         const requestedFields = getRequestedFields(resolverInfo)  
         const includeFields = getIncludeFields(requestedFields)
         const params =  {
@@ -68,7 +67,7 @@ export const UserQuery = extendType({
             uuid: args.userUuid
           }
         }
-        return ctx.db.user.findUnique(params)
+        return ctx.prisma.user.findUnique(params)
       }
     })
   },

@@ -1,23 +1,27 @@
 import { objectType } from 'nexus'
 import { ContextType } from '../../createContext/ContextType';
+import Prisma, { Membership as PrismaMembership, Role, Group } from '@prisma/client';
 
-interface MembershipRoot {
-  roleUuid?: string | null
-  userUuid?: string | null
-  groupUuid?: string | null
-  group?: {} | null
-  role?: {} | null
-}
+export type MembershipSource = 
+  PrismaMembership & {
+    role?: Prisma.PrismaPromise<Role>
+    group?: Prisma.PrismaPromise<Group>
+  }
+
 
 export const Membership = objectType({
   name: 'Membership',
+  sourceType: {
+    module: __filename,
+    export: 'MembershipSource'
+  },
   definition(t) {
     t.string('roleUuid')
     t.string('userUuid')
     t.string('groupUuid')
     t.field('group', {
       type: 'Group',
-      resolve(root: MembershipRoot, _args, ctx: ContextType) {
+      resolve(root, _args, ctx: ContextType) {
         if (root.group) {
           return root.group
         } else {
@@ -27,7 +31,7 @@ export const Membership = objectType({
                 uuid: root.groupUuid
               }
             }
-            return ctx.db.group.findUnique(params)
+            return ctx.prisma.group.findUnique(params)
           }
         }
         return null
@@ -35,7 +39,7 @@ export const Membership = objectType({
     })
     t.field('role', {
       type: 'Role',
-      resolve(root: MembershipRoot, _args, ctx: ContextType) {
+      resolve(root, _args, ctx: ContextType) {
         if (root.role) {
           return root.role
         } else {
@@ -45,7 +49,7 @@ export const Membership = objectType({
                 uuid: root.roleUuid
               }
             }
-            return ctx.db.role.findUnique(params)
+            return ctx.prisma.role.findUnique(params)
           }
         }
         return null

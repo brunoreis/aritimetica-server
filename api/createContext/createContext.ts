@@ -31,10 +31,10 @@ const extractUserUuidFromAuthToken = (req: Request): string | null => {
   return null
 }
 
-export const createContext = ({ logger, db }: { logger: Logger, db: PrismaClient}) => async ({
+export const createContext = ({ logger, prisma }: { logger: Logger, prisma: PrismaClient}) => async ({
   req,
 }: ContextInput): Promise<ContextType> => {
-  const currentUser = CurrentUser(db);
+  const currentUser = CurrentUser(prisma);
   const userUuid = await extractUserUuidFromAuthToken(req)
 
   if(userUuid) {
@@ -43,9 +43,10 @@ export const createContext = ({ logger, db }: { logger: Logger, db: PrismaClient
 
   const reqId = uuidv4();
   
+  
   return {
-    db,
-    auth: createAuthorizer({ db, currentUser, logger }),
+    prisma,
+    auth: createAuthorizer({ prisma, currentUser, logger }),
     currentUser,
     logger: logger.child({ userUuid, reqId })
   }

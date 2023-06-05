@@ -29,7 +29,7 @@
     "transform": {
       "\\.(gql|graphql)$": "@graphql-tools/jest-transform",
       ".*": [
-        "ts-jest", 
+        "ts-jest",
         {
           "diagnostics": {
             "warnOnly": true

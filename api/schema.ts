@@ -1,5 +1,4 @@
 import { makeSchema, fieldAuthorizePlugin, plugin } from 'nexus'
-
 import { join } from 'path'
 import * as types from './graphql'
 
