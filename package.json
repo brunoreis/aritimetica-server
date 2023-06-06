@@ -61,6 +61,7 @@
     "@graphql-codegen/typed-document-node": "^5.0.0",
     "@graphql-codegen/typescript": "^4.0.0",
     "@graphql-codegen/typescript-operations": "^4.0.0",
+    "@graphql-tools/jest-transform": "^2.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.5.1",
     "@types/jsonwebtoken": "^9.0.1",

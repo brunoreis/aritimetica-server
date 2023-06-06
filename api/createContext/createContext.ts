@@ -1,14 +1,11 @@
 import { verify } from 'jsonwebtoken'
 import { Request } from 'express'
-import * as dotenv from 'dotenv'
 import { ContextType } from './ContextType'
 import { createAuthorizer } from './createAuthorizer/createAuthorizer'
 import { CurrentUser } from './CurrentUser'
 import { Logger } from 'pino'
 import { PrismaClient } from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid';
-
-dotenv.config()
 
 type ContextInput = {
   req: Request

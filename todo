@@ -1,6 +1,3 @@
-- improve resolver types (root)
-    - add missing source types
-
 - improve login mutation tests
     - why would we have memberships without roles?
         - in other words, why membership.role is optional? 
@@ -9,7 +6,6 @@
     - expand docs about tests
         - parsing gql files
             - ts support
-    - ensure we are not requiring dotenv in the code anymore (only in the package.json inclusion)
     - write docs about .test.env
     - write docs about the test
     - test a resover with a db change 

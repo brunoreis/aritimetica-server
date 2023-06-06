@@ -4,7 +4,7 @@ import { queryLogMessage } from './queryLogMessage';
 let queryCount = 1;
 
 export const createDbWithLogging = ({ logger }: { logger: Logger; }): PrismaClient => {
-  const db = new PrismaClient({
+  const prisma = new PrismaClient({
     log: [
       {
         emit: 'event',
@@ -26,7 +26,7 @@ export const createDbWithLogging = ({ logger }: { logger: Logger; }): PrismaClie
   });
 
 
-  db.$on('info', (e) => {
+  prisma.$on('info', (e) => {
     const logObject = {
       prisma: {
         target: e.target,
@@ -39,7 +39,7 @@ export const createDbWithLogging = ({ logger }: { logger: Logger; }): PrismaClie
     )
   });
 
-  db.$on('warn', (e) => {
+  prisma.$on('warn', (e) => {
     const logObject = {
       prisma: {
         target: e.target,
@@ -49,7 +49,7 @@ export const createDbWithLogging = ({ logger }: { logger: Logger; }): PrismaClie
     logger.info(logObject, `Prisma:WARN:${e.message}`)
   });
 
-  db.$on('error', (e) => {
+  prisma.$on('error', (e) => {
     const logObject = {
       prisma: {
         target: e.target,
@@ -59,7 +59,7 @@ export const createDbWithLogging = ({ logger }: { logger: Logger; }): PrismaClie
     logger.error(logObject, `Prisma:${e.message}`)
   });
 
-  db.$on('query', (e) => {
+  prisma.$on('query', (e) => {
     queryCount++
     const logObject = {
       prisma: {
@@ -74,5 +74,5 @@ export const createDbWithLogging = ({ logger }: { logger: Logger; }): PrismaClie
     logger.info(logObject, queryLogMessage({ count: queryCount, query: e.query }))
   });
   
-  return db;
+  return prisma;
 };
