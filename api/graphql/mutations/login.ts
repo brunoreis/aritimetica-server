@@ -1,43 +1,30 @@
-import { objectType } from 'nexus'
 import { sign } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { ContextType } from '../../createContext/ContextType';
-import { extendType, nonNull, stringArg, unionType } from 'nexus'
+import { extendType, nonNull, stringArg } from 'nexus'
 import { GraphQLResolveInfo } from 'graphql';
-
-// Define union type for the two possible screen types
-export const Screen = unionType({
-  name: 'Screen',
-  definition(t) {
-    t.members('UsersScreen', 'LessonsScreen')
-  },
-  resolveType(value) {
-    const isTeacher = value.user.memberships.map( m => m.role.uuid).includes('teacher')
-    return isTeacher ? 'UsersScreen' :  'LessonsScreen';
-  },
-})
-
-export const LoginResponse = objectType({
-  name: 'LoginResponse',
-  definition(t) {
-    t.string('jwt')
-    t.field('screen', { type: Screen })
-  },
-})
 
 export const LoginMutation = extendType({
   type: 'Mutation',
   definition(t) {
     t.nonNull.field('login', {
       type: 'LoginResponse',
-      args: {                                        
-        email: nonNull(stringArg()),                 
+      args: {
+        email: nonNull(stringArg()),
         password: nonNull(stringArg()),                  
       },
       async resolve(_root, args, ctx:ContextType, resolverInfo:GraphQLResolveInfo) {
-        const user = await ctx.prisma.user.findUnique({ where: { email: args.email }, include: {
-          memberships: { include: { role: { select: { uuid: true}}}}
-        } });
+        const query = { 
+          where: { email: args.email }, 
+          include: {
+            memberships: { 
+              include: { 
+                role: { select: { uuid: true }}
+              }
+            }
+          }
+        }
+        const user = await ctx.prisma.user.findUnique(query);
         if (!user) {
           throw new Error("Invalid Email or password");
         }

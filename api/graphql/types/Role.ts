@@ -1,12 +1,14 @@
 import { objectType } from 'nexus'
 import { ContextType } from '../../createContext/ContextType';
-import Prisma, {Role as PrismaRole } from '@prisma/client';
+import {Role as PrismaRole } from '@prisma/client';
 import type { MembershipSource } from './Membership'
 import type { PermissionSource } from './Permission'
 
-export type RoleSource = PrismaRole & {
-  memberships?: Prisma.PrismaPromise<MembershipSource[]> | null
-  permissions?: Prisma.PrismaPromise<PermissionSource[]> | null
+type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+
+export type RoleSource = Optional<PrismaRole, 'title'> & {
+  memberships?: MembershipSource[] | null
+  permissions?: PermissionSource[] | null
 } | null
 
 export const Role = objectType({
@@ -17,7 +19,7 @@ export const Role = objectType({
   },
   definition(t) {
     t.string('uuid')
-    t.string('title')
+    t.string('title') // title is optional in the source
     t.list.field('memberships', {
       type: 'Membership',
       async resolve(root, _args, ctx: ContextType) {

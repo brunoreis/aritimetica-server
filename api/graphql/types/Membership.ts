@@ -1,13 +1,13 @@
 import { objectType } from 'nexus'
 import { ContextType } from '../../createContext/ContextType';
-import Prisma, { Membership as PrismaMembership } from '@prisma/client';
+import { Membership as PrismaMembership } from '@prisma/client';
 import type { RoleSource } from './Role';
 import type { GroupSource } from './Group';
 
 export type MembershipSource =  PrismaMembership & 
   {
-    role?: Prisma.PrismaPromise<RoleSource> | null;
-    group?: GroupSource | null;
+    role: RoleSource | null;
+    group: GroupSource | null;
   } | null
 
 

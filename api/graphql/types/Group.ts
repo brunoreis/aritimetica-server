@@ -1,9 +1,9 @@
 import { objectType } from 'nexus'
-import Prisma, {Group as PrismaGroup } from '@prisma/client';
+import {Group as PrismaGroup } from '@prisma/client';
 import { MembershipSource } from './Membership';
 
 export type GroupSource = PrismaGroup & {
-  memberships?: Prisma.PrismaPromise<MembershipSource[]> | null
+  memberships?: MembershipSource[] | null
 } | null
 
 export const Group = objectType({

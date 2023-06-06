@@ -6,12 +6,12 @@ import { createLoggerPlugin } from './createLoggerPlugin'
 import { createLogger } from './createLogger'
 
 const logger = createLogger();
-const db = createDb({ logger })
+const prisma = createDb({ logger })
 const loggerPlugin = createLoggerPlugin({ logger })
 
 export const server = new ApolloServer({ 
     schema, 
-    context: createContext({ logger, db }), 
+    context: createContext({ logger, prisma }), 
     introspection: true,
     plugins: [ loggerPlugin ]
 })

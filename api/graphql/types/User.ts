@@ -1,13 +1,13 @@
 import { objectType } from 'nexus'
 import { ContextType } from '../../createContext/ContextType';
-import Prisma, { User as PrismaUser } from '@prisma/client'
+import { User as PrismaUser } from '@prisma/client'
 import type { MembershipSource } from './Membership'
 import type { LessonSource } from './Lesson'
 
 export type UserSource = PrismaUser & {
-  memberships?: Prisma.PrismaPromise<MembershipSource[]> | null
-  assignedLessons?: Prisma.PrismaPromise<LessonSource[]> | null
-  receivedLessons?: Prisma.PrismaPromise<LessonSource[]> | null
+  memberships?: MembershipSource[] | null
+  assignedLessons?: LessonSource[] | null
+  receivedLessons?: LessonSource[] | null
 } | null
 
 export const User = objectType({

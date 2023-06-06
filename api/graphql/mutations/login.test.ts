@@ -3,6 +3,7 @@ import { createServerAndClient, closeServer } from '../../testHelpers'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import untypedLoginMutation from './login.gql';
 import { LoginMutation, LoginMutationVariables } from '../../../apiClientTypes'
+
 const loginMutation: TypedDocumentNode<LoginMutation,LoginMutationVariables> = untypedLoginMutation as unknown as TypedDocumentNode<LoginMutation,LoginMutationVariables>;
 
 describe('login mutation', () => {

@@ -1,10 +1,10 @@
 import { objectType } from 'nexus'
 import { ContextType } from '../../createContext/ContextType';
-import Prisma, {Permission as PrismaPermission } from '@prisma/client';
+import {Permission as PrismaPermission } from '@prisma/client';
 import type { RoleSource } from './Role';
 
 export type PermissionSource = PrismaPermission & {
-  roles?: Prisma.PrismaPromise<RoleSource[]>
+  roles?: RoleSource[]
 } | null
 
 export const Permission = objectType({

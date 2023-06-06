@@ -1,20 +1,10 @@
 - improve login mutation tests
-    - why would we have memberships without roles?
-        - in other words, why membership.role is optional? 
     - write the test cases thinking we are on the server
         - explain why the login query has an union
-    - expand docs about tests
-        - parsing gql files
-            - ts support
-    - write docs about .test.env
-    - write docs about the test
-    - test a resover with a db change 
-        - verify the db using the prisma client
+    - test a resover with a db change - create User/Lesson?
+        - assert the db change on tests using the prisma client available in the test context
     - test a query
-
     
-
-
 - create some kind of enum for permissions to avoid type errors
 - adjust prettier and format on save (prettier)
 

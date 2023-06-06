@@ -1,11 +1,11 @@
 import { objectType } from 'nexus';
 import { ContextType } from '../../createContext/ContextType';
-import Prisma, { Lesson as PrismaLesson } from '@prisma/client';
+import { Lesson as PrismaLesson } from '@prisma/client';
 import type { UserSource } from './User';
 
 export type LessonSource = PrismaLesson & {
-  assigner?: Prisma.PrismaPromise<UserSource> | null
-  assignee?: Prisma.PrismaPromise<UserSource> | null
+  assigner?: UserSource | null
+  assignee?: UserSource | null
 } | null
 
 export const Lesson = objectType({

@@ -4,6 +4,7 @@
  */
 
 
+import type { InitialScreenSource } from "./api/graphql/mutations/InitialScreen"
 import type { UserSource } from "./api/graphql/types/User"
 import type { MembershipSource } from "./api/graphql/types/Membership"
 import type { GroupSource } from "./api/graphql/types/Group"
@@ -11,6 +12,7 @@ import type { LessonSource } from "./api/graphql/types/Lesson"
 import type { RoleSource } from "./api/graphql/types/Role"
 import type { PermissionSource } from "./api/graphql/types/Permission"
 import type { UsersScreenSource } from "./api/graphql/types/UsersScreen"
+import type { LessonsScreenSource } from "./api/graphql/types/LessonsScreen"
 import type { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 
 
@@ -38,12 +40,10 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Group: GroupSource;
   Lesson: LessonSource;
-  LessonsScreen: { // root type
-    user?: NexusGenRootTypes['User'] | null; // User
-  }
+  LessonsScreen: LessonsScreenSource;
   LoginResponse: { // root type
     jwt?: string | null; // String
-    screen?: NexusGenRootTypes['Screen'] | null; // Screen
+    screen?: NexusGenRootTypes['InitialScreen'] | null; // InitialScreen
   }
   Membership: MembershipSource;
   Mutation: {};
@@ -58,7 +58,7 @@ export interface NexusGenInterfaces {
 }
 
 export interface NexusGenUnions {
-  Screen: NexusGenRootTypes['LessonsScreen'] | NexusGenRootTypes['UsersScreen'];
+  InitialScreen: InitialScreenSource;
 }
 
 export type NexusGenRootTypes = NexusGenObjects & NexusGenUnions
@@ -83,7 +83,7 @@ export interface NexusGenFieldTypes {
   }
   LoginResponse: { // field return type
     jwt: string | null; // String
-    screen: NexusGenRootTypes['Screen'] | null; // Screen
+    screen: NexusGenRootTypes['InitialScreen'] | null; // InitialScreen
   }
   Membership: { // field return type
     group: NexusGenRootTypes['Group'] | null; // Group
@@ -142,7 +142,7 @@ export interface NexusGenFieldTypeNames {
   }
   LoginResponse: { // field return type name
     jwt: 'String'
-    screen: 'Screen'
+    screen: 'InitialScreen'
   }
   Membership: { // field return type name
     group: 'Group'
@@ -201,7 +201,7 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractTypeMembers {
-  Screen: "LessonsScreen" | "UsersScreen"
+  InitialScreen: "LessonsScreen" | "UsersScreen"
 }
 
 export interface NexusGenTypeInterfaces {
@@ -221,7 +221,7 @@ export type NexusGenUnionNames = keyof NexusGenUnions;
 
 export type NexusGenObjectsUsingAbstractStrategyIsTypeOf = never;
 
-export type NexusGenAbstractsUsingStrategyResolveType = "Screen";
+export type NexusGenAbstractsUsingStrategyResolveType = "InitialScreen";
 
 export type NexusGenFeaturesConfig = {
   abstractTypeStrategies: {
