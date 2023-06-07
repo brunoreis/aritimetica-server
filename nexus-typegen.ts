@@ -111,12 +111,12 @@ export interface NexusGenFieldTypes {
     uuid: string | null; // String
   }
   User: { // field return type
-    assignedLessons: Array<NexusGenRootTypes['Lesson'] | null> | null; // [Lesson]
+    assignedLessons: NexusGenRootTypes['Lesson'][] | null; // [Lesson!]
     email: string | null; // String
     memberships: Array<NexusGenRootTypes['Membership'] | null> | null; // [Membership]
     name: string | null; // String
     password: string | null; // String
-    receivedLessons: Array<NexusGenRootTypes['Lesson'] | null> | null; // [Lesson]
+    receivedLessons: NexusGenRootTypes['Lesson'][] | null; // [Lesson!]
     uuid: string | null; // String
   }
   UsersScreen: { // field return type

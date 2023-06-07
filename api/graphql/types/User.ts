@@ -1,4 +1,4 @@
-import { objectType } from 'nexus'
+import { objectType, nonNull } from 'nexus'
 import { ContextType } from '../../createContext/ContextType';
 import { User as PrismaUser } from '@prisma/client'
 import type { MembershipSource } from './Membership'
@@ -40,7 +40,7 @@ export const User = objectType({
       },
     })
     t.list.field('assignedLessons', {
-      type: 'Lesson',
+      type: nonNull('Lesson'),
       resolve(root, _args, ctx: ContextType) {
         
         if (root?.assignedLessons) {
@@ -59,7 +59,7 @@ export const User = objectType({
       },
     })
     t.list.field('receivedLessons', {
-      type: 'Lesson',
+      type: nonNull('Lesson'),
       authorize: async (root, _args, ctx:ContextType) => {
         try {
           const requestedUserUuid = root?.uuid;

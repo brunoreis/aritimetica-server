@@ -6,7 +6,7 @@ import type { UserSource } from './User';
 export type LessonSource = PrismaLesson & {
   assigner?: UserSource | null
   assignee?: UserSource | null
-} | null
+} 
 
 export const Lesson = objectType({
   name: 'Lesson', 

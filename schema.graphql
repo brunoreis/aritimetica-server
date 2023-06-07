@@ -67,12 +67,12 @@ type Role {
 }
 
 type User {
-  assignedLessons: [Lesson]
+  assignedLessons: [Lesson!]
   email: String
   memberships: [Membership]
   name: String
   password: String
-  receivedLessons: [Lesson]
+  receivedLessons: [Lesson!]
   uuid: String
 }
 
