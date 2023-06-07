@@ -42,6 +42,7 @@ export interface NexusGenObjects {
   Lesson: LessonSource;
   LessonsScreen: LessonsScreenSource;
   LoginResponse: { // root type
+    errorMessage?: string | null; // String
     jwt?: string | null; // String
     screen?: NexusGenRootTypes['InitialScreen'] | null; // InitialScreen
   }
@@ -82,6 +83,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User'] | null; // User
   }
   LoginResponse: { // field return type
+    errorMessage: string | null; // String
     jwt: string | null; // String
     screen: NexusGenRootTypes['InitialScreen'] | null; // InitialScreen
   }
@@ -141,6 +143,7 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
   }
   LoginResponse: { // field return type name
+    errorMessage: 'String'
     jwt: 'String'
     screen: 'InitialScreen'
   }

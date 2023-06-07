@@ -27,7 +27,7 @@ export const LoginMutation = extendType({
         }
         const user = await ctx.prisma.user.findUnique(query);
         if (!user) {
-          throw new Error("Invalid Email or password");
+          return { errorMessage: "Invalid Email or password" };
         }
         const isValidPassword = await bcrypt.compare(args.password, user.password);
         if (!isValidPassword) {

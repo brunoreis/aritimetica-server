@@ -32,6 +32,7 @@ enum Level {
 }
 
 type LoginResponse {
+  errorMessage: String
   jwt: String
   screen: InitialScreen
 }
