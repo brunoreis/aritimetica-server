@@ -1,9 +1,9 @@
 export * from './queries/user'
 export * from './queries/users'
 
-export * from './mutations/login'
-export * from './mutations/InitialScreen'
-export * from './mutations/LoginResponse'
+export * from './mutations/login/login'
+export * from './mutations/login/InitialScreen'
+export * from './mutations/login/LoginResponse'
 
 export * from './mutations/changeLogLevel'
 

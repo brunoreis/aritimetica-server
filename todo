@@ -1,4 +1,5 @@
 - improve login mutation tests
+    - create dedicated folder and folder export to export all files inside it
     - write the test cases thinking we are on the server
         - explain why the login query has an union
     - test a resover with a db change - create User/Lesson?
@@ -17,10 +18,11 @@ LessonsScreen
         assigned by 
         assigned date
 
-- add version num to the logs (git commit) 
+- add version/commit num to the logs (git commit) 
 - add a request_id to the frontent and propagate 
 
 - add tests to the auth system
+    - authorizations? General or per query/mutation? 
     - should we use seeds as fixtures?
 
 - create logout mutation

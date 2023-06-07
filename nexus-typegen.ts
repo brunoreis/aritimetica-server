@@ -4,7 +4,7 @@
  */
 
 
-import type { InitialScreenSource } from "./api/graphql/mutations/InitialScreen"
+import type { InitialScreenSource } from "./api/graphql/mutations/login/InitialScreen"
 import type { UserSource } from "./api/graphql/types/User"
 import type { MembershipSource } from "./api/graphql/types/Membership"
 import type { GroupSource } from "./api/graphql/types/Group"

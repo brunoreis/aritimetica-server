@@ -1,4 +1,4 @@
-import type { UserSource } from '../types/User'
+import type { UserSource } from '../../types/User'
 import { unionType } from 'nexus'
 
 export type InitialScreenSource = {

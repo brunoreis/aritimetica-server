@@ -6,8 +6,8 @@ import type { GroupSource } from './Group';
 
 export type MembershipSource =  PrismaMembership & 
   {
-    role: RoleSource | null;
-    group: GroupSource | null;
+    role?: RoleSource | null;
+    group?: GroupSource | null;
   } | null
 
 

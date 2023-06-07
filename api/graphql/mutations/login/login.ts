@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { ContextType } from '../../createContext/ContextType';
+import { ContextType } from '../../../createContext/ContextType';
 import { extendType, nonNull, stringArg } from 'nexus'
 import { GraphQLResolveInfo } from 'graphql';
 
@@ -19,7 +19,8 @@ export const LoginMutation = extendType({
           include: {
             memberships: { 
               include: { 
-                role: { select: { uuid: true }}
+                role: { select: { uuid: true }},
+                group: true
               }
             }
           }
