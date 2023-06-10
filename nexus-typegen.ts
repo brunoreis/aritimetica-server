@@ -38,6 +38,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  CreateGroupResponse: { // root type
+    errorMessage?: string | null; // String
+    group?: NexusGenRootTypes['Group'] | null; // Group
+  }
   Group: GroupSource;
   Lesson: LessonSource;
   LessonsScreen: LessonsScreenSource;
@@ -67,9 +71,13 @@ export type NexusGenRootTypes = NexusGenObjects & NexusGenUnions
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  CreateGroupResponse: { // field return type
+    errorMessage: string | null; // String
+    group: NexusGenRootTypes['Group'] | null; // Group
+  }
   Group: { // field return type
     name: string | null; // String
-    uuid: string | null; // String
+    uuid: string; // String!
   }
   Lesson: { // field return type
     assignee: NexusGenRootTypes['User'] | null; // User
@@ -96,6 +104,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     changeLogLevel: boolean; // Boolean!
+    createGroup: NexusGenRootTypes['CreateGroupResponse']; // CreateGroupResponse!
     login: NexusGenRootTypes['LoginResponse']; // LoginResponse!
   }
   Permission: { // field return type
@@ -127,6 +136,10 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  CreateGroupResponse: { // field return type name
+    errorMessage: 'String'
+    group: 'Group'
+  }
   Group: { // field return type name
     name: 'String'
     uuid: 'String'
@@ -156,6 +169,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     changeLogLevel: 'Boolean'
+    createGroup: 'CreateGroupResponse'
     login: 'LoginResponse'
   }
   Permission: { // field return type name
@@ -190,6 +204,9 @@ export interface NexusGenArgTypes {
   Mutation: {
     changeLogLevel: { // args
       level?: NexusGenEnums['Level'] | null; // Level
+    }
+    createGroup: { // args
+      name: string; // String!
     }
     login: { // args
       email: string; // String!

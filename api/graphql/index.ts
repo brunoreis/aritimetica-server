@@ -5,6 +5,9 @@ export * from './mutations/login/login'
 export * from './mutations/login/InitialScreen'
 export * from './mutations/login/LoginResponse'
 
+export * from './mutations/createGroup/createGroup'
+export * from './mutations/createGroup/CreateGroupResponse'
+
 export * from './mutations/changeLogLevel'
 
 export * from './types/User'

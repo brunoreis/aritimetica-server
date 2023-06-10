@@ -2,9 +2,14 @@
 ### Do not make changes to this file directly
 
 
+type CreateGroupResponse {
+  errorMessage: String
+  group: Group
+}
+
 type Group {
   name: String
-  uuid: String
+  uuid: String!
 }
 
 union InitialScreen = LessonsScreen | UsersScreen
@@ -47,6 +52,7 @@ type Membership {
 
 type Mutation {
   changeLogLevel(level: Level): Boolean!
+  createGroup(name: String!): CreateGroupResponse!
   login(email: String!, password: String!): LoginResponse!
 }
 

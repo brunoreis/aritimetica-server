@@ -14,7 +14,7 @@ export async function createServerAndClient() {
   return { serverInstance , client };
 }
 
-export async function createPrismaClient(): Promise<PrismaClient> {
+export async function createPrismaClient() {
   const prismaBinary = join(__dirname, "..", "node_modules", ".bin", "prisma");
   let prismaClient: null | PrismaClient = null;
   const cmd = `DATABASE_URL=${process.env.DATABASE_URL} ${prismaBinary} db push`;
@@ -22,8 +22,8 @@ export async function createPrismaClient(): Promise<PrismaClient> {
   //execSync(cmd,{stdio: 'inherit'});
   execSync(cmd);
   console.log('exec sync... 2')
-  prismaClient = new PrismaClient();
-  return prismaClient;
+  const prisma = new PrismaClient();
+  return { prisma };
 }
 
 export async function closeServer(serverInstance?:ServerInfo) {

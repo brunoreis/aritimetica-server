@@ -13,7 +13,7 @@ export const Group = objectType({
     export: 'GroupSource'
   },
   definition(t) {
-    t.string('uuid')
+    t.nonNull.string('uuid')
     t.string('name')
   },
 })

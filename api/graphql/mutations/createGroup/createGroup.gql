@@ -1,0 +1,9 @@
+mutation createGroup($name: String!) {
+  createGroup(name: $name) {
+    errorMessage
+    group {
+      uuid
+      name
+    }
+  }
+}
