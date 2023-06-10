@@ -23,6 +23,7 @@ describe('createGroup mutation', () => {
   let serverI: ServerInfo
   let clientI: GraphQLClient
   let prismaI: PrismaClient
+  
   beforeAll(async () => {
     let { serverInstance, client } = await createServerAndClient()
     let { prisma } = await createPrismaClient();
@@ -30,6 +31,7 @@ describe('createGroup mutation', () => {
     clientI = client
     prismaI = prisma
   })
+
   afterAll(async () => {
     closeServer(serverI)
   })
@@ -64,5 +66,10 @@ describe('createGroup mutation', () => {
       expect(dbGroup.name).toBe(createdGroup.name)
     })
 
+    fit('creates a membership assigning the current user as the group owner', async () => {
+      const createdGroup = result.createGroup.group;
+      const memberships = await prismaI.membership.findMany();
+      console.log(memberships)
+    })
   })
 })

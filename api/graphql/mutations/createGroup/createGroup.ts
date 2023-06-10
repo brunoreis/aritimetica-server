@@ -1,8 +1,5 @@
-import { sign } from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import { ContextType } from '../../../createContext/ContextType';
 import { extendType, nonNull, stringArg } from 'nexus'
-import { GraphQLResolveInfo } from 'graphql';
 
 export const CreateGroupMutation = extendType({
   type: 'Mutation',
@@ -12,11 +9,34 @@ export const CreateGroupMutation = extendType({
       args: {
         name: nonNull(stringArg()),
       },
-      async resolve(_root, args, ctx:ContextType, resolverInfo:GraphQLResolveInfo) {
+      description: `
+        Creates a new group
+
+        The current user will be added to the group as the group owner.
+
+        **Requires Authentication**.
+      `,
+      authorize: (_root, _args, ctx:ContextType) => {
+        ctx.logger.info('createGroup::authorize');
+        return ctx.auth.loggedIn()
+      },
+      async resolve(_root, args, ctx:ContextType) {
         try {
+            const currentUser = await ctx.currentUser.get()
             const group = await ctx.prisma.group.create({
                 data: {
                     name: args.name,
+                    memberships: {
+                      create: 
+                        {
+                          roleUuid: 'group_owner',
+                          userUuid: currentUser.uuid,
+                        }
+                      
+                    }
+                },
+                include: {
+                  memberships: true
                 }
             })
             return { group }

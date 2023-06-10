@@ -4,6 +4,12 @@ mutation createGroup($name: String!) {
     group {
       uuid
       name
+      memberships {
+        uuid
+        roleUuid
+        groupUuid
+        userUuid
+      }
     }
   }
 }

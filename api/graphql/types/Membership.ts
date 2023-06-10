@@ -18,6 +18,7 @@ export const Membership = objectType({
     export: 'MembershipSource'
   },
   definition(t) {
+    t.string('uuid')
     t.string('roleUuid')
     t.string('userUuid')
     t.string('groupUuid')

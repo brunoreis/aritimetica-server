@@ -1,6 +1,7 @@
 - tests 
-    - test a resover with a db change - create Group
-        - assert the db change on tests using the prisma client available in the test context
+    - createGroup 
+        - log in the user in the createGroup test and test the creation of the membership
+
     
 - check heroku payment values
 - create some kind of enum for permissions to avoid type errors

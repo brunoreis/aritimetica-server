@@ -8,8 +8,9 @@ type CreateGroupResponse {
 }
 
 type Group {
+  memberships: [Membership]
   name: String
-  uuid: String!
+  uuid: String
 }
 
 union InitialScreen = LessonsScreen | UsersScreen
@@ -48,10 +49,13 @@ type Membership {
   role: Role
   roleUuid: String
   userUuid: String
+  uuid: String
 }
 
 type Mutation {
   changeLogLevel(level: Level): Boolean!
+
+  "\n        Creates a new group\n\n        The current user will be added to the group as the group owner.\n\n        **Requires Authentication**.\n      "
   createGroup(name: String!): CreateGroupResponse!
   login(email: String!, password: String!): LoginResponse!
 }

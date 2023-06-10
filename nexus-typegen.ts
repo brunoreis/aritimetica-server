@@ -76,8 +76,9 @@ export interface NexusGenFieldTypes {
     group: NexusGenRootTypes['Group'] | null; // Group
   }
   Group: { // field return type
+    memberships: Array<NexusGenRootTypes['Membership'] | null> | null; // [Membership]
     name: string | null; // String
-    uuid: string; // String!
+    uuid: string | null; // String
   }
   Lesson: { // field return type
     assignee: NexusGenRootTypes['User'] | null; // User
@@ -101,6 +102,7 @@ export interface NexusGenFieldTypes {
     role: NexusGenRootTypes['Role'] | null; // Role
     roleUuid: string | null; // String
     userUuid: string | null; // String
+    uuid: string | null; // String
   }
   Mutation: { // field return type
     changeLogLevel: boolean; // Boolean!
@@ -141,6 +143,7 @@ export interface NexusGenFieldTypeNames {
     group: 'Group'
   }
   Group: { // field return type name
+    memberships: 'Membership'
     name: 'String'
     uuid: 'String'
   }
@@ -166,6 +169,7 @@ export interface NexusGenFieldTypeNames {
     role: 'Role'
     roleUuid: 'String'
     userUuid: 'String'
+    uuid: 'String'
   }
   Mutation: { // field return type name
     changeLogLevel: 'Boolean'
