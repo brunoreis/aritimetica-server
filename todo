@@ -1,8 +1,6 @@
-- improve login mutation tests
-    - catch an unexpected error on the login mutation and notify the client through the errorMessage
-    - test a resover with a db change - create User/Lesson?
+- tests 
+    - test a resover with a db change - create Group
         - assert the db change on tests using the prisma client available in the test context
-    - test a query
     
 - check heroku payment values
 - create some kind of enum for permissions to avoid type errors
@@ -16,6 +14,8 @@ LessonsScreen
         title
         assigned by 
         assigned date
+
+- deploy: https://keenethics.com/blog/digital-ocean-server-node-js-postgresql
 
 - add version/commit num to the logs (git commit) 
 - add a request_id to the frontent and propagate 
