@@ -2,6 +2,7 @@ import { ContextType } from '../../createContext/ContextType';
 import { extendType, nonNull, stringArg } from 'nexus'
 import getRequestedFields from '../getRequestedFields';
 import { GraphQLResolveInfo } from 'graphql';
+import { permissions } from '../../../seed-data'
 
 type IncludeFields = {
   memberships?: boolean | { include: { group: boolean } }
@@ -52,9 +53,9 @@ export const UserQuery = extendType({
         userUuid: nonNull(stringArg()),
       },
       authorize: async (_root, args, ctx:ContextType) => {
-        return await ctx.auth.hasGlobalPermission('View All Users') || 
-        (await ctx.auth.hasGlobalPermission('View My User') && await ctx.auth.isCurrentUser(args.userUuid)) ||
-        (await ctx.auth.hasGlobalPermission('View Users Of My Groups') && await ctx.auth.shareGroupWithCurrentUser(args.userUuid))
+        return await ctx.auth.hasGlobalPermission(permissions.view_all_users.uuid) || 
+        (await ctx.auth.hasGlobalPermission(permissions.view_my_user.uuid) && await ctx.auth.isCurrentUser(args.userUuid)) ||
+        (await ctx.auth.hasGlobalPermission(permissions.view_users_of_my_groups.uuid) && await ctx.auth.shareGroupWithCurrentUser(args.userUuid))
       },
       resolve: async(_root, args, ctx:ContextType, resolverInfo:GraphQLResolveInfo) => {
         const requestedFields = getRequestedFields(resolverInfo)  

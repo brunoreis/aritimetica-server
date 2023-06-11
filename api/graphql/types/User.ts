@@ -3,6 +3,7 @@ import { ContextType } from '../../createContext/ContextType';
 import { User as PrismaUser } from '@prisma/client'
 import type { MembershipSource } from './Membership'
 import type { LessonSource } from './Lesson'
+import { permissions } from '../../../seed-data'
 
 export type UserSource = PrismaUser & {
   memberships?: MembershipSource[] | null
@@ -65,9 +66,9 @@ export const User = objectType({
           const requestedUserUuid = root?.uuid;
           let isAuthorized = false;
           if(requestedUserUuid) {
-            isAuthorized = await ctx.auth.hasGlobalPermission('View All Lessons') || 
-            await ctx.auth.hasGlobalPermission('View My Received Lessons') && await ctx.auth.isCurrentUser(requestedUserUuid) || 
-            (await ctx.auth.hasGroupPermissionInAGroupWithThisUser('View All Lessons Of Any User In This Group', requestedUserUuid))
+            isAuthorized = await ctx.auth.hasGlobalPermission(permissions.view_all_lessons.uuid) || 
+            await ctx.auth.hasGlobalPermission(permissions.view_my_received_lessons.uuid) && await ctx.auth.isCurrentUser(requestedUserUuid) || 
+            (await ctx.auth.hasGroupPermissionInAGroupWithThisUser(permissions.view_all_lessons_of_any_user_in_this_group.uuid, requestedUserUuid))
           }
           return isAuthorized
         } catch(e) {

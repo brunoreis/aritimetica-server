@@ -4,6 +4,7 @@ import { getMembershipsInGroup } from './getMembershipsInGroup';
 import { hasPermission } from './hasPermission';
 import { CurrentUser } from '../CurrentUser';
 import { Logger } from 'pino'
+import { users, groups } from '../../../seed-data'
 
 const getLoggedUserGroupUuids = (userData: UserDataType, permissionUuid?: string) => {
     const uuids = new Set<string>();
@@ -38,14 +39,14 @@ export const createAuthorizer = ({ prisma, currentUser, logger }: { prisma:Prism
     return {
         loggedIn: async () => {
             const userData = await currentUser.get();
-            const isLoggedIn = userData.uuid !== 'annonymous'
+            const isLoggedIn = userData.uuid !== users.unauthenticated.uuid
             logger.info({ isLoggedIn }, 'auth:loggedId');
             return isLoggedIn;
         },
         hasGlobalPermission: async (permissionUuid:string) => {
             const userData = await currentUser.get();
             // get all app permissions, keep this method to see if it is needed in the other check
-            const membershipsInGroup = getMembershipsInGroup(userData, 'app')
+            const membershipsInGroup = getMembershipsInGroup(userData, groups.app.uuid)
             // get all authenticated role permissions
             const isAuthorized:boolean = hasPermission(membershipsInGroup, permissionUuid)
             logger.info({ permissionUuid, isAuthorized },`auth:hasGlobalPermission - ${permissionUuid}`);
