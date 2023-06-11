@@ -1,5 +1,5 @@
 import { PrismaClient, Prisma } from '@prisma/client'
-
+import seedUsers from '../seedUsers'
 const prisma = new PrismaClient()
 
 const permissionData: Prisma.PermissionCreateInput[] = [
@@ -90,39 +90,7 @@ const roleData: Prisma.RoleCreateInput[] = [
   },
 ]
 
-const userData: Prisma.UserCreateInput[] = [
-  {
-    uuid: 'unauthenticated',
-    email: 'unauthenticated@example.com',
-    name: 'Unauthenticated User',
-    password: '',
-  },
-  {
-    uuid: 'admin',
-    email: 'admin@example.com',
-    name: 'Admin',
-    password: '$2b$10$KBPVsOCqVBJBCEEzI2S9n.2exIlJoQUX4l6KLjk5pSy5TbZdmo6.O',
-  },
-  {
-    uuid: 'cfd7d883-93a6-4f15-b7a8-cba0ffc52363',
-    email: 'teacher@example.com',
-    password: '$2b$10$CqlCrFqv5KlEeg926QRAaOAft2t/dINTreuFkn1irQnQl7W.WClNq',
-    name: 'Teacher',
-  },
-  {
-    uuid: 'c1f875d9-1889-42f3-8c3b-5f5aa35d1a5f',
-    email: 'user1@example.com',
-    password: '$2b$10$CqlCrFqv5KlEeg926QRAaOAft2t/dINTreuFkn1irQnQl7W.WClNq',
-    name: 'User 1',
-  },
-  {
-    uuid: 'a918c10a-6d89-4f67-b814-14b86c9e60d2',
-    email: 'user2@example.com',
-    password: '$2b$10$CqlCrFqv5KlEeg926QRAaOAft2t/dINTreuFkn1irQnQl7W.WClNq',
-    name: 'User 2',
-  },
-]
-
+const userData: Prisma.UserCreateInput[] = Object.values(seedUsers)
 const groupData: Prisma.GroupCreateInput[] = [
   {
     uuid: 'app',

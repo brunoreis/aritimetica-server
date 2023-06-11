@@ -4,6 +4,7 @@ import { ContextType } from '../../../createContext/ContextType';
 import { extendType, nonNull, stringArg } from 'nexus'
 import { GraphQLResolveInfo } from 'graphql';
 
+const invalidLoginMessage = "Invalid Email or password"
 export const LoginMutation = extendType({
   type: 'Mutation',
   definition(t) {
@@ -28,11 +29,11 @@ export const LoginMutation = extendType({
           }
           const user = await ctx.prisma.user.findUnique(query);
           if (!user) {
-            return { errorMessage: "Invalid Email or password" };
+            return { errorMessage: invalidLoginMessage };
           }
           const isValidPassword = await bcrypt.compare(args.password, user.password);
           if (!isValidPassword) {
-            throw new Error("Invalid email or Password");
+            return { errorMessage: invalidLoginMessage };
           }
           if(!process.env.JWT_SECRET_KEY) {
             ctx.logger.error("Please provide the JWT_SECRET_KEY")

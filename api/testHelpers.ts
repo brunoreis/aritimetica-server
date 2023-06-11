@@ -5,6 +5,7 @@ import { GraphQLClient } from "graphql-request";
 import { server } from "./server";
 import { join } from "path";
 import { PrismaClient } from "@prisma/client";
+import { sign } from 'jsonwebtoken';
 
 export async function createServerAndClient() {
   let serverInstance: ServerInfo | null = null;
@@ -16,12 +17,8 @@ export async function createServerAndClient() {
 
 export async function createPrismaClient() {
   const prismaBinary = join(__dirname, "..", "node_modules", ".bin", "prisma");
-  let prismaClient: null | PrismaClient = null;
   const cmd = `DATABASE_URL=${process.env.DATABASE_URL} ${prismaBinary} db push`;
-  // use this to debug
-  //execSync(cmd,{stdio: 'inherit'});
   execSync(cmd);
-  console.log('exec sync... 2')
   const prisma = new PrismaClient();
   return { prisma };
 }
@@ -32,5 +29,11 @@ export async function closeServer(serverInstance?:ServerInfo) {
 
 export function closePrismaClient(prismaClient?:PrismaClient) {
   prismaClient?.$disconnect();
+}
+
+export function createAuthJwt(userUuid: string) {
+  return sign({ userUuid  }, process.env.JWT_SECRET_KEY, {
+    expiresIn: "1h",
+  });
 }
 

@@ -1,13 +1,16 @@
 import { ServerInfo } from 'apollo-server'
-import { createServerAndClient, closeServer, createPrismaClient } from '../../../testHelpers'
+import { createServerAndClient, closeServer, createPrismaClient, closePrismaClient, createAuthJwt } from '../../../testHelpers'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import untypedCreateGroupMutation from './createGroup.gql'
+import seedUsers from '../../../../seedUsers'
+
 import {
   CreateGroupMutation,
   CreateGroupMutationVariables,
 } from '../../../../apiClientTypes'
 import { GraphQLClient } from 'graphql-request'
 import { PrismaClient } from "@prisma/client";
+
 
 const createGroupMutation: TypedDocumentNode<
   CreateGroupMutation,
@@ -34,6 +37,7 @@ describe('createGroup mutation', () => {
 
   afterAll(async () => {
     closeServer(serverI)
+    closePrismaClient(prismaI)
   })
 
   describe(`creates the "${groupName}" group`, () => {
@@ -43,7 +47,12 @@ describe('createGroup mutation', () => {
       const variables: CreateGroupMutationVariables = {
         name: groupName,
       }
-      result = await clientI.request(createGroupMutation, variables)
+
+      result = await clientI.request(
+        createGroupMutation, 
+        variables, 
+        { authorization: `Bearer ${createAuthJwt(seedUsers.teacher.uuid)}`
+      })
     })
 
     it('return the group, with the name and a uuid', () => {
@@ -66,10 +75,22 @@ describe('createGroup mutation', () => {
       expect(dbGroup.name).toBe(createdGroup.name)
     })
 
-    fit('creates a membership assigning the current user as the group owner', async () => {
+    it('creates a membership assigning the current user as the group owner', async () => {
       const createdGroup = result.createGroup.group;
-      const memberships = await prismaI.membership.findMany();
-      console.log(memberships)
+      if(createdGroup) {
+        const memberships = await prismaI.membership.findMany({
+          where: {
+            groupUuid: createdGroup.uuid
+          }
+        });
+        expect(memberships[0].uuid).toBeTruthy();
+        expect(memberships[0].roleUuid).toBe('group_owner')
+        expect(memberships[0].userUuid).toBe(seedUsers.teacher.uuid)        
+      } 
+      else {
+        fail('group was not created')
+      }
+      
     })
   })
 })

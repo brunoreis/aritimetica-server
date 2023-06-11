@@ -1,9 +1,3 @@
-- tests 
-    - createGroup 
-        - log in the user in the createGroup test and test the creation of the membership
-
-    
-- check heroku payment values
 - create some kind of enum for permissions to avoid type errors
 - adjust prettier and format on save (prettier)
 
@@ -23,7 +17,6 @@ LessonsScreen
 
 - add tests to the auth system
     - authorizations? General or per query/mutation? 
-    - should we use seeds as fixtures?
 
 - create logout mutation
     - persist token in db?
