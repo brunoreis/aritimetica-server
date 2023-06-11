@@ -1,5 +1,4 @@
 export const roles = {
-    
   // app roles
   unauthenticated: {
     uuid: 'unauthenticated',

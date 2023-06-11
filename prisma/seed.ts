@@ -6,17 +6,17 @@ async function main() {
   console.log(`Start seeding ...`)
   // PERMISSIONS
   for (const permission of Object.values(permissions)) {
-    await prisma.permission.create({ data: permission})
+    await prisma.permission.create({ data: permission })
     console.log(`Permissions ${permission.uuid}`)
   }
 
   for (const role of Object.values(roles)) {
-    await prisma.role.create({ data: role})
+    await prisma.role.create({ data: role })
     console.log(`Role ${role.uuid}`)
   }
 
   for (const user of Object.values(users)) {
-    await prisma.user.create({ data: user})
+    await prisma.user.create({ data: user })
     console.log(`User ${user.email} - ${user.name}`)
   }
 
@@ -41,7 +41,7 @@ async function main() {
   ]
 
   for (const group of groupData) {
-    await prisma.group.create({ data: group})
+    await prisma.group.create({ data: group })
     console.log(`Group ${group.name} - ${group.uuid}`)
   }
 
@@ -103,7 +103,7 @@ async function main() {
   ]
 
   for (const membership of membershipData) {
-    await prisma.membership.create({ data: membership})
+    await prisma.membership.create({ data: membership })
     console.log(`Membership ${membership.uuid}`)
   }
 
@@ -138,16 +138,15 @@ async function main() {
       assignerUuid: users.teacher.uuid,
       assigneeUuid: users.user2.uuid,
     },
-  ];
+  ]
 
   for (const lesson of lessonData) {
-    await prisma.lesson.create({ data: lesson})
+    await prisma.lesson.create({ data: lesson })
     console.log(`Lesson ${lesson.uuid}`)
   }
 
   console.log(`Seeding finished.`)
 }
-
 
 main()
   .then(async () => {
