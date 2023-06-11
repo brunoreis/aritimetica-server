@@ -1,8 +1,6 @@
-- generated files
-    - move gen files to /generated
-
 - allow tests to run in parallel 
-     - one setup and teardown for the client/server
+    - https://jestjs.io/docs/configuration#globalsetup-string
+    - one setup and teardown for the client/server
      
 - login - optimize to set the currentAuthUser with the same log in user (low prio)
 
