@@ -1,7 +1,6 @@
-import bcrypt from 'bcrypt';
-
 const hashed_password_secretPassword123 = '$2b$10$CqlCrFqv5KlEeg926QRAaOAft2t/dINTreuFkn1irQnQl7W.WClNq'
-export default {
+
+export const users = {
     unauthenticated: {
         uuid: 'unauthenticated',
         email: 'unauthenticated@example.com',

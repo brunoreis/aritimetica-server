@@ -19,6 +19,7 @@
     "codegen": "graphql-codegen",
     "generate": "ts-node --transpile-only api/schema --require dotenv/config dotenv_config_path=/.test.env",
     "test": "npm run generate && jest --watch",
+    "test:prisma:migrate": "dotenv -e .test.env -e .env -- npx prisma migrate dev",
     "test:prisma:seed": "dotenv -e .test.env -e .env -- npx prisma migrate reset"
   },
   "jest": {

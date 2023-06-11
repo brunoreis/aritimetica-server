@@ -15,7 +15,6 @@ CREATE TABLE "User" (
     "uuid" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "bio" TEXT,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -26,6 +25,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Permission" (
     "uuid" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
 
     CONSTRAINT "Permission_pkey" PRIMARY KEY ("uuid")
 );

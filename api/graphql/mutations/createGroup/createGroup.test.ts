@@ -2,7 +2,7 @@ import { ServerInfo } from 'apollo-server'
 import { createServerAndClient, closeServer, createPrismaClient, closePrismaClient, createAuthJwt } from '../../../testHelpers'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import untypedCreateGroupMutation from './createGroup.gql'
-import seedUsers from '../../../../seedUsers'
+import { users } from '../../../../seed-data'
 
 import {
   CreateGroupMutation,
@@ -51,7 +51,7 @@ describe('createGroup mutation', () => {
       result = await clientI.request(
         createGroupMutation, 
         variables, 
-        { authorization: `Bearer ${createAuthJwt(seedUsers.teacher.uuid)}`
+        { authorization: `Bearer ${createAuthJwt(users.teacher.uuid)}`
       })
     })
 
@@ -85,7 +85,7 @@ describe('createGroup mutation', () => {
         });
         expect(memberships[0].uuid).toBeTruthy();
         expect(memberships[0].roleUuid).toBe('group_owner')
-        expect(memberships[0].userUuid).toBe(seedUsers.teacher.uuid)        
+        expect(memberships[0].userUuid).toBe(users.teacher.uuid)        
       } 
       else {
         fail('group was not created')

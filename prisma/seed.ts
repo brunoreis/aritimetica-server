@@ -1,96 +1,11 @@
 import { PrismaClient, Prisma } from '@prisma/client'
-import seedUsers from '../seedUsers'
+import { users, permissions, roles } from '../seed-data'
 const prisma = new PrismaClient()
 
-const permissionData: Prisma.PermissionCreateInput[] = [
-  { uuid: 'Log In' },
-  { uuid: 'Log Out' },
-  // view user (with memberships, groups...)
-  { uuid: 'View All Users' },
-  { uuid: 'View My User' },
-  { uuid: 'View Users Of My Groups' },
-  // manage group users
-  { uuid: 'Invite User to Group' },
-  { uuid: 'Change User Group Roles' },
-  // view lessons
-  { uuid: 'View All Lessons' },
-  { uuid: 'View All Lessons Of Any User In This Group' },
-  { uuid: 'View My Received Lessons' },
-  // create lessons
-  { uuid: 'Create Lesson' },
-  // assign lessons
-  { uuid: 'Assign Lesson' },
-  // answer lesson
-  { uuid: 'Answer Assigned Lesson' },
-  
-]
+const permissionData: Prisma.PermissionCreateInput[] = Object.values(permissions)
+const roleData: Prisma.RoleCreateInput[] = Object.values(roles)
+const userData: Prisma.UserCreateInput[] = Object.values(users)
 
-const roleData: Prisma.RoleCreateInput[] = [
-  // app roles
-  {
-    uuid: 'unauthenticated',
-    title: 'Unauthenticated',
-    permissions: {
-      connect: { uuid: 'Log In' },
-    },
-  },
-  {
-    uuid: 'authenticated',
-    title: 'Authenticated',
-    permissions: {
-      connect: [
-        { uuid: 'Log Out' },
-        { uuid: 'View My Received Lessons' },
-        { uuid: 'View My User' },
-        { uuid: 'Create Lesson' },
-        { uuid: 'View Users Of My Groups' },
-      ],
-    },
-  },
-  {
-    uuid: 'admin',
-    title: 'Admin',
-    permissions: {
-      connect: [
-        { uuid: 'View All Users' },
-        { uuid: 'View All Lessons' },
-      ],
-    },
-  },
-  // group roles
-  {
-    uuid: 'group_owner',
-    title: 'Group Owner',
-    permissions: {
-      connect: [
-        { uuid: 'Invite User to Group' },
-        { uuid: 'Change User Group Roles' },
-      ],
-    },
-  },
-  {
-    uuid: 'teacher',
-    title: 'Teacher',
-    permissions: {
-      connect: [
-        { uuid: 'Assign Lesson' },
-        { uuid: 'Answer Assigned Lesson' },
-        { uuid: 'View All Lessons Of Any User In This Group' },
-      ],
-    },
-  },
-  {
-    uuid: 'student',
-    title: 'Student',
-    permissions: {
-      connect: [
-        { uuid: 'Answer Assigned Lesson' },
-      ],
-    },
-  },
-]
-
-const userData: Prisma.UserCreateInput[] = Object.values(seedUsers)
 const groupData: Prisma.GroupCreateInput[] = [
   {
     uuid: 'app',
@@ -206,51 +121,41 @@ const lessonData = [
 
 async function main() {
   console.log(`Start seeding ...`)
+
   // PERMISSIONS
-  for (const p of permissionData) {
-    const permission = await prisma.permission.create({
-      data: p,
-    })
-    console.log(`Created permission with uuid: ${p.uuid}`)
+  for (const permission of permissionData) {
+    await prisma.permission.create({ data: permission})
+    console.log(`Permissions ${permission.uuid}`)
   }
-  // ROLES
-  for (const r of roleData) {
-    const role = await prisma.role.create({
-      data: r,
-    })
-    console.log(`Created role with uuid: ${r.uuid}`)
+
+  for (const role of roleData) {
+    await prisma.role.create({ data: role})
+    console.log(`Role ${role.uuid}`)
   }
-  // USERS
-  for (const u of userData) {
-    const user = await prisma.user.create({
-      data: u,
-    })
-    console.log(`Created user with uuid: ${user.uuid}`)
+
+  for (const user of userData) {
+    await prisma.user.create({ data: user})
+    console.log(`User ${user.email} - ${user.name}`)
   }
-  // // GROUPS
-  for (const g of groupData) {
-    const group = await prisma.group.create({
-      data: g,
-    })
-    console.log(`Created group with uuid: ${g.uuid}`)
+
+  for (const group of groupData) {
+    await prisma.group.create({ data: group})
+    console.log(`Group ${group.name} - ${group.uuid}`)
   }
-  // // MEMBERSHIPS
-  for (const m of membershipData) {
-    const membership = await prisma.membership.create({
-      data: m,
-    })
-    console.log(`Created membership with uuid: ${m.uuid}`)
+
+  for (const membership of membershipData) {
+    await prisma.membership.create({ data: membership})
+    console.log(`Membership ${membership.uuid}`)
   }
-  // // LESSONS
-  for (const l of lessonData) {
-    const lesson = await prisma.lesson.create({
-      data: l,
-    })
-    console.log(`Created lesson with uuid: ${l.uuid}`)
+
+  for (const lesson of lessonData) {
+    await prisma.lesson.create({ data: lesson})
+    console.log(`Lesson ${lesson.uuid}`)
   }
 
   console.log(`Seeding finished.`)
 }
+
 
 main()
   .then(async () => {
