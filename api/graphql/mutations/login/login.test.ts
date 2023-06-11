@@ -5,7 +5,7 @@ import untypedLoginMutation from './login.gql'
 import {
   LoginMutation,
   LoginMutationVariables,
-} from '../../../../apiClientTypes'
+} from '../../../../generated/api-client-types'
 import { GraphQLClient } from 'graphql-request'
 
 const loginMutation: TypedDocumentNode<LoginMutation, LoginMutationVariables> =

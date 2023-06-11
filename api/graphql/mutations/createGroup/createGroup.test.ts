@@ -13,7 +13,7 @@ import { users } from '../../../../seed-data'
 import {
   CreateGroupMutation,
   CreateGroupMutationVariables,
-} from '../../../../apiClientTypes'
+} from '../../../../generated/api-client-types'
 import { GraphQLClient } from 'graphql-request'
 import { PrismaClient } from '@prisma/client'
 

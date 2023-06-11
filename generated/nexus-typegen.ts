@@ -4,15 +4,15 @@
  */
 
 
-import type { InitialScreenSource } from "./api/graphql/mutations/login/InitialScreen"
-import type { UserSource } from "./api/graphql/types/User"
-import type { MembershipSource } from "./api/graphql/types/Membership"
-import type { GroupSource } from "./api/graphql/types/Group"
-import type { LessonSource } from "./api/graphql/types/Lesson"
-import type { RoleSource } from "./api/graphql/types/Role"
-import type { PermissionSource } from "./api/graphql/types/Permission"
-import type { UsersScreenSource } from "./api/graphql/types/UsersScreen"
-import type { LessonsScreenSource } from "./api/graphql/types/LessonsScreen"
+import type { InitialScreenSource } from "./../api/graphql/mutations/login/InitialScreen"
+import type { UserSource } from "./../api/graphql/types/User"
+import type { MembershipSource } from "./../api/graphql/types/Membership"
+import type { GroupSource } from "./../api/graphql/types/Group"
+import type { LessonSource } from "./../api/graphql/types/Lesson"
+import type { RoleSource } from "./../api/graphql/types/Role"
+import type { PermissionSource } from "./../api/graphql/types/Permission"
+import type { UsersScreenSource } from "./../api/graphql/types/UsersScreen"
+import type { LessonsScreenSource } from "./../api/graphql/types/LessonsScreen"
 import type { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 
 
