@@ -1,7 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-import { UserDataQueryResult } from './UserDataQueryResult';
+import { PrismaClient } from '@prisma/client'
+import { UserDataQueryResult } from './UserDataQueryResult'
 
-export const fetchUserData = async (userUuid: string, prisma: PrismaClient): Promise<UserDataQueryResult> => {
+export const fetchUserData = async (
+  userUuid: string,
+  prisma: PrismaClient,
+): Promise<UserDataQueryResult> => {
   return await prisma.user.findUnique({
     where: { uuid: userUuid },
     select: {
@@ -13,17 +16,17 @@ export const fetchUserData = async (userUuid: string, prisma: PrismaClient): Pro
           group: {
             select: {
               uuid: true,
-              name: true
-            }
+              name: true,
+            },
           },
           role: {
             select: {
               uuid: true,
-              permissions: true
-            }
-          }
-        }
-      }
+              permissions: true,
+            },
+          },
+        },
+      },
     },
-  });
-};
+  })
+}

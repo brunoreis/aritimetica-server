@@ -1,18 +1,9 @@
 - adjust prettier and format on save (prettier)
 
-UsersScreen
-    list groups (cards)
-        list users (small "icons" with name below)
-LessonsScreen
-    list lessons
-        title
-        assigned by 
-        assigned date
-
-- deploy: https://keenethics.com/blog/digital-ocean-server-node-js-postgresql
-
-- add version/commit num to the logs (git commit) 
-- add a request_id to the frontent and propagate 
+- allow tests to run in parallel 
+     - one setup and teardown for the client/server
+     
+- login - optimize to set the currentAuthUser with the same log in user (low prio)
 
 - add tests to the auth system
     - authorizations? General or per query/mutation? 
@@ -22,24 +13,61 @@ LessonsScreen
     - only allow authorized users
         - login (only allowed for unauthenticated users)
         - logout (allowed for most users)
-    - think about only running authorized queries in prod
-        - security
-        - avoid recursive queries to compromise the server
+
+- createUser mutation
+    - create default group and membership
+    - use in the seed code
+
+- deleteUser mutation
+    - delete memberships and groups where the user is the owner
+
+- review documentation
+    - lifecycles
+        - write an operation
+        - write a test
+
+UsersScreen
+    list groups (cards)
+        - createGroup
+        - deleteGroup
+        list users (small "icons" with name below)
+        - associate user? 
+        - desassociate user?
+        - create user?
+
+-LessonsScreen
+    list lessons
+        title
+        assigned by 
+        assigned date
+
+- deploy
+    - how to access running instances, query the DB, interact with the app? 
+    - add restrictions on migrations, seeds, etc...
+    - https://keenethics.com/blog/digital-ocean-server-node-js-postgresql
+
+- add version/commit num to the logs (git commit) 
+- add a request_id to the frontent and propagate 
+
+- think about only running authorized queries in prod
+    - security
+    - avoid recursive queries to compromise the server
+
 - frontend
+
+- deploy
+    - how to access running instances, query the DB, interact with the app? 
+    - add restrictions on migrations, seeds, etc...
+
 - postgress db
     - migrate password field types to varchars(since PG native are richer)
     - create enum for roles field
     - postgress tool to see the db
-- take a look on prisma's data guide
-- deploy
-    - how to access running instances, query the DB, interact with the app? 
-    - add restrictions on migrations, seeds, etc...
 
 - telemetry: prisma / jaeger / ...
     - use LogRocket
     - telemetry: see if we already can bind prisma queries to requests (request_id/user_id): https://github.com/prisma/prisma/issues/7596
     - add a final query count (num of queries during the request) to the logs 
 
-- logs - add extra graphql info
 
-Login - optimize to set the currentAuthUser with the same log in user (low prio)
+

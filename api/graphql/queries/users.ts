@@ -1,7 +1,6 @@
-import { ContextType } from '../../createContext/ContextType';
+import { ContextType } from '../../createContext/ContextType'
 import { extendType } from 'nexus'
-import getRequestedFields from '../getRequestedFields';
-
+import getRequestedFields from '../getRequestedFields'
 
 type IncludeFields = { memberships?: boolean | { include: { group: boolean } } }
 
@@ -14,8 +13,8 @@ const getIncludeFields = (requestedFields: string[]): IncludeFields => {
     if (requestedFields.includes('memberships.group')) {
       includeFields.memberships = {
         include: {
-          group: true
-        }
+          group: true,
+        },
       }
     }
   }
@@ -28,20 +27,20 @@ export const UsersQuery = extendType({
   definition(t) {
     t.nonNull.list.field('users', {
       type: 'User',
-      authorize: (_root, _args, ctx:ContextType) => {
-        ctx.logger.info('users::authorize');
+      authorize: (_root, _args, ctx: ContextType) => {
+        ctx.logger.info('users::authorize')
         return ctx.auth.loggedIn()
       },
       resolve(_root, _args, ctx, resolverInfo) {
         const requestedFields = getRequestedFields(resolverInfo)
         const includeFields = getIncludeFields(requestedFields)
-        const params =  {
+        const params = {
           include: {
-            ...includeFields
-          } 
+            ...includeFields,
+          },
         }
         return ctx.prisma.user.findMany(params)
-      }
+      },
     })
   },
 })

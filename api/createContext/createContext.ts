@@ -5,7 +5,7 @@ import { createAuthorizer } from './createAuthorizer/createAuthorizer'
 import { CurrentUser } from './CurrentUser'
 import { Logger } from 'pino'
 import { PrismaClient } from '@prisma/client'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 type ContextInput = {
   req: Request
@@ -28,23 +28,22 @@ const extractUserUuidFromAuthToken = (req: Request): string | null => {
   return null
 }
 
-export const createContext = ({ logger, prisma }: { logger: Logger, prisma: PrismaClient}) => async ({
-  req,
-}: ContextInput): Promise<ContextType> => {
-  const currentUser = CurrentUser(prisma);
-  const userUuid = await extractUserUuidFromAuthToken(req)
+export const createContext =
+  ({ logger, prisma }: { logger: Logger; prisma: PrismaClient }) =>
+  async ({ req }: ContextInput): Promise<ContextType> => {
+    const currentUser = CurrentUser(prisma)
+    const userUuid = await extractUserUuidFromAuthToken(req)
 
-  if(userUuid) {
-    currentUser.set(userUuid)
-  }
+    if (userUuid) {
+      currentUser.set(userUuid)
+    }
 
-  const reqId = uuidv4();
-  
-  
-  return {
-    prisma,
-    auth: createAuthorizer({ prisma, currentUser, logger }),
-    currentUser,
-    logger: logger.child({ userUuid, reqId })
+    const reqId = uuidv4()
+
+    return {
+      prisma,
+      auth: createAuthorizer({ prisma, currentUser, logger }),
+      currentUser,
+      logger: logger.child({ userUuid, reqId }),
+    }
   }
-}

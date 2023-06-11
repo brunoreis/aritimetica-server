@@ -9,7 +9,7 @@ export const LessonsScreen = objectType({
   name: 'LessonsScreen',
   sourceType: {
     module: __filename,
-    export: 'LessonsScreenSource'
+    export: 'LessonsScreenSource',
   },
   definition(t) {
     t.field('user', { type: 'User' })

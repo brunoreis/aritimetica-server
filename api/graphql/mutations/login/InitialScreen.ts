@@ -10,14 +10,18 @@ export const InitialScreen = unionType({
   name: 'InitialScreen',
   sourceType: {
     module: __filename,
-    export: 'InitialScreenSource'
+    export: 'InitialScreenSource',
   },
   definition(t) {
     t.members('UsersScreen', 'LessonsScreen')
   },
   async resolveType(value) {
-    const memberships = await value.user?.memberships 
-    const isTeacher = memberships && memberships.map(membership => membership?.role?.uuid).includes('teacher')
-    return isTeacher ? 'UsersScreen' :  'LessonsScreen';
+    const memberships = await value.user?.memberships
+    const isTeacher =
+      memberships &&
+      memberships
+        .map((membership) => membership?.role?.uuid)
+        .includes('teacher')
+    return isTeacher ? 'UsersScreen' : 'LessonsScreen'
   },
 })

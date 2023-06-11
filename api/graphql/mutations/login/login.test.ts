@@ -15,7 +15,6 @@ const loginMutation: TypedDocumentNode<LoginMutation, LoginMutationVariables> =
   >
 
 describe('login mutation', () => {
-  
   let serverI: ServerInfo
   let clientI: GraphQLClient
   beforeAll(async () => {
@@ -38,12 +37,11 @@ describe('login mutation', () => {
       result = await clientI.request(loginMutation, variables)
     })
     it('return error for invalid email or password', () => {
-      expect(result?.login.errorMessage).toBe("Invalid Email or password")
+      expect(result?.login.errorMessage).toBe('Invalid Email or password')
     })
     it('does not return the jwt token', () => {
       expect(result?.login.jwt).toBe(null)
     })
-
   })
 
   describe('successful login', () => {
@@ -56,7 +54,6 @@ describe('login mutation', () => {
       }
       result = await clientI.request(loginMutation, variables)
     })
-
 
     it('returns a jwt token', () => {
       expect(result?.login.jwt).toBeTruthy()
@@ -88,8 +85,9 @@ describe('login mutation', () => {
           if (res?.login.screen?.__typename == 'LessonsScreen') {
             const user = res.login.screen?.user
             if (user && 'receivedLessons' in user) {
-  
-              expect(user.receivedLessons?.map(lesson => lesson?.title)).toEqual(['Lesson 1', 'Lesson 2', 'Lesson 3'])
+              expect(
+                user.receivedLessons?.map((lesson) => lesson?.title),
+              ).toEqual(['Lesson 1', 'Lesson 2', 'Lesson 3'])
             }
           }
         })
@@ -98,22 +96,23 @@ describe('login mutation', () => {
         it('returns a UsersScreen', () => {
           expect(result?.login.screen?.__typename).toBe('UsersScreen')
         })
-  
+
         it('return the correct user uuid, email and name', () => {
           const { uuid, email, name } = result?.login.screen?.user || {}
           expect(uuid).toBe('cfd7d883-93a6-4f15-b7a8-cba0ffc52363')
           expect(email).toBe('teacher@example.com')
           expect(name).toBe('Teacher')
         })
-  
+
         it('return two user memberships', () => {
           let numMemberships = 0
           if (result?.login.screen?.__typename == 'UsersScreen') {
-            numMemberships = result?.login.screen?.user?.memberships?.length || 0
+            numMemberships =
+              result?.login.screen?.user?.memberships?.length || 0
           }
           expect(numMemberships).toBe(2)
         })
-  
+
         it('return the role and the teacher memberships', () => {
           const groupUuid = 'a3d3df3e-3de3-429d-905d-2c313bea906a'
           if (result?.login.screen?.__typename == 'UsersScreen') {
@@ -135,9 +134,4 @@ describe('login mutation', () => {
       })
     })
   })
-
-
-
-
-  
 })

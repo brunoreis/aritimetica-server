@@ -1,22 +1,24 @@
 import { objectType } from 'nexus'
-import { ContextType } from '../../createContext/ContextType';
-import {Permission as PrismaPermission } from '@prisma/client';
-import type { RoleSource } from './Role';
+import { ContextType } from '../../createContext/ContextType'
+import { Permission as PrismaPermission } from '@prisma/client'
+import type { RoleSource } from './Role'
 
-export type PermissionSource = PrismaPermission & {
-  roles?: RoleSource[]
-} | null
+export type PermissionSource =
+  | (PrismaPermission & {
+      roles?: RoleSource[]
+    })
+  | null
 
 export const Permission = objectType({
   name: 'Permission',
   sourceType: {
     module: __filename,
-    export: 'PermissionSource'
+    export: 'PermissionSource',
   },
   definition(t) {
     t.string('uuid')
     t.list.field('roles', {
-    type: 'Role',
+      type: 'Role',
       async resolve(root, _args, ctx: ContextType) {
         if (root?.roles) {
           return root.roles
@@ -26,17 +28,17 @@ export const Permission = objectType({
               where: {
                 permissions: {
                   some: {
-                    uuid: root.uuid
-                  }
-                }
-              }
+                    uuid: root.uuid,
+                  },
+                },
+              },
             }
             const roles = await ctx.prisma.role.findMany(params)
             return roles
           }
         }
         return null
-      }
+      },
     })
-  }
+  },
 })

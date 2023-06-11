@@ -1,1 +1,1 @@
-export { createDb } from './createDb';
+export { createDb } from './createDb'

@@ -1,5 +1,11 @@
 import { ServerInfo } from 'apollo-server'
-import { createServerAndClient, closeServer, createPrismaClient, closePrismaClient, createAuthJwt } from '../../../testHelpers'
+import {
+  createServerAndClient,
+  closeServer,
+  createPrismaClient,
+  closePrismaClient,
+  createAuthJwt,
+} from '../../../testHelpers'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import untypedCreateGroupMutation from './createGroup.gql'
 import { users } from '../../../../seed-data'
@@ -9,8 +15,7 @@ import {
   CreateGroupMutationVariables,
 } from '../../../../apiClientTypes'
 import { GraphQLClient } from 'graphql-request'
-import { PrismaClient } from "@prisma/client";
-
+import { PrismaClient } from '@prisma/client'
 
 const createGroupMutation: TypedDocumentNode<
   CreateGroupMutation,
@@ -20,16 +25,16 @@ const createGroupMutation: TypedDocumentNode<
   CreateGroupMutationVariables
 >
 
-const groupName = "Test Group"
+const groupName = 'Test Group'
 
 describe('createGroup mutation', () => {
   let serverI: ServerInfo
   let clientI: GraphQLClient
   let prismaI: PrismaClient
-  
+
   beforeAll(async () => {
     let { serverInstance, client } = await createServerAndClient()
-    let { prisma } = await createPrismaClient();
+    let { prisma } = await createPrismaClient()
     serverI = serverInstance
     clientI = client
     prismaI = prisma
@@ -48,10 +53,8 @@ describe('createGroup mutation', () => {
         name: groupName,
       }
 
-      result = await clientI.request(
-        createGroupMutation, 
-        variables, 
-        { authorization: `Bearer ${createAuthJwt(users.teacher.uuid)}`
+      result = await clientI.request(createGroupMutation, variables, {
+        authorization: `Bearer ${createAuthJwt(users.teacher.uuid)}`,
       })
     })
 
@@ -61,36 +64,36 @@ describe('createGroup mutation', () => {
     })
 
     it('insert that group in the db', async () => {
-      const createdGroup = result.createGroup.group;
-      if(!createdGroup) {
-        fail("group was not created")
+      const createdGroup = result.createGroup.group
+      if (!createdGroup) {
+        fail('group was not created')
       }
-      const dbGroup = await prismaI.group.findUnique({ where: { 
-        uuid: createdGroup.uuid
-      }})
-      if(!dbGroup) {
-        fail("group was not inserted into the db")
+      const dbGroup = await prismaI.group.findUnique({
+        where: {
+          uuid: createdGroup.uuid,
+        },
+      })
+      if (!dbGroup) {
+        fail('group was not inserted into the db')
       }
       expect(dbGroup.uuid).toBe(createdGroup.uuid)
       expect(dbGroup.name).toBe(createdGroup.name)
     })
 
     it('creates a membership assigning the current user as the group owner', async () => {
-      const createdGroup = result.createGroup.group;
-      if(createdGroup) {
+      const createdGroup = result.createGroup.group
+      if (createdGroup) {
         const memberships = await prismaI.membership.findMany({
           where: {
-            groupUuid: createdGroup.uuid
-          }
-        });
-        expect(memberships[0].uuid).toBeTruthy();
+            groupUuid: createdGroup.uuid,
+          },
+        })
+        expect(memberships[0].uuid).toBeTruthy()
         expect(memberships[0].roleUuid).toBe('group_owner')
-        expect(memberships[0].userUuid).toBe(users.teacher.uuid)        
-      } 
-      else {
+        expect(memberships[0].userUuid).toBe(users.teacher.uuid)
+      } else {
         fail('group was not created')
       }
-      
     })
   })
 })

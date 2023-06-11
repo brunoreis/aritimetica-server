@@ -1,17 +1,17 @@
 export type UserDataQueryResult = {
-  uuid: string;
-  email: string;
-  name: string;
+  uuid: string
+  email: string
+  name: string
   memberships: {
     group: {
-      uuid: string;
-      name: string;
-    };
+      uuid: string
+      name: string
+    }
     role: {
-      uuid: string;
+      uuid: string
       permissions: {
-        uuid: string;
-      }[];
-    };
-  }[];
-} | null;
+        uuid: string
+      }[]
+    }
+  }[]
+} | null

@@ -1,21 +1,21 @@
 import { objectType } from 'nexus'
-import { ContextType } from '../../createContext/ContextType';
-import { Membership as PrismaMembership } from '@prisma/client';
-import type { RoleSource } from './Role';
-import type { GroupSource } from './Group';
+import { ContextType } from '../../createContext/ContextType'
+import { Membership as PrismaMembership } from '@prisma/client'
+import type { RoleSource } from './Role'
+import type { GroupSource } from './Group'
 
-export type MembershipSource =  PrismaMembership & 
-  {
-    role?: RoleSource | null;
-    group?: GroupSource | null;
-  } | null
-
+export type MembershipSource =
+  | (PrismaMembership & {
+      role?: RoleSource | null
+      group?: GroupSource | null
+    })
+  | null
 
 export const Membership = objectType({
   name: 'Membership',
   sourceType: {
     module: __filename,
-    export: 'MembershipSource'
+    export: 'MembershipSource',
   },
   definition(t) {
     t.string('uuid')
@@ -28,17 +28,17 @@ export const Membership = objectType({
         if (root?.group) {
           return root.group
         } else {
-          if(root?.groupUuid) {
+          if (root?.groupUuid) {
             const params = {
               where: {
-                uuid: root.groupUuid
-              }
+                uuid: root.groupUuid,
+              },
             }
             return ctx.prisma.group.findUnique(params)
           }
         }
         return null
-      }
+      },
     })
     t.field('role', {
       type: 'Role',
@@ -46,17 +46,17 @@ export const Membership = objectType({
         if (root?.role) {
           return root.role
         } else {
-          if(root?.roleUuid) {
+          if (root?.roleUuid) {
             const params = {
               where: {
-                uuid: root.roleUuid
-              }
+                uuid: root.roleUuid,
+              },
             }
             return ctx.prisma.role.findUnique(params)
           }
         }
         return null
-      }
+      },
     })
-  }
+  },
 })
