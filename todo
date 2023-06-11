@@ -1,4 +1,5 @@
-- adjust prettier and format on save (prettier)
+- generated files
+    - move gen files to /generated
 
 - allow tests to run in parallel 
      - one setup and teardown for the client/server
@@ -42,6 +43,7 @@ UsersScreen
         assigned date
 
 - deploy
+    - generated files
     - how to access running instances, query the DB, interact with the app? 
     - add restrictions on migrations, seeds, etc...
     - https://keenethics.com/blog/digital-ocean-server-node-js-postgresql
