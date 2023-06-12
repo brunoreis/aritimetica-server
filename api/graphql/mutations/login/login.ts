@@ -14,6 +14,10 @@ export const LoginMutation = extendType({
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
+      authorize: async (_root, _args, ctx: ContextType) => {
+        const isNotLoggedIn = !(await ctx.auth.loggedIn())
+        return isNotLoggedIn
+      },
       async resolve(
         _root,
         args,
@@ -53,7 +57,7 @@ export const LoginMutation = extendType({
               expiresIn: '1h',
             },
           )
-          ctx.currentUser.set(user.uuid)
+          ctx.currentUser.setUuid(user.uuid)
           return { jwt, screen: { user } }
         } catch (e) {
           ctx.logger.error(e)

@@ -35,7 +35,7 @@ export const createContext =
     const userUuid = await extractUserUuidFromAuthToken(req)
 
     if (userUuid) {
-      currentUser.set(userUuid)
+      currentUser.setUuid(userUuid)
     }
 
     const reqId = uuidv4()

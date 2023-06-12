@@ -5,7 +5,7 @@ import {
   createPrismaClient,
   closePrismaClient,
   createAuthJwt,
-} from '../../../testHelpers'
+} from '../../../../testHelpers'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import untypedCreateGroupMutation from './createGroup.gql'
 import { users } from '../../../../seed-data'

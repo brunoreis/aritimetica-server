@@ -5,6 +5,7 @@ import { createAuthenticatedMembership } from './createAuthenticatedMembership'
 import { fetchAuthenticatedPermissions } from './fetchAuthenticatedPermissions'
 import { deepFreeze } from './deepFreeze'
 import type { UserDataType } from '../UserDataType'
+import { users } from '../../../seed-data'
 
 const fetchAndAddAuthUserMemberships = async (
   user: Exclude<UserDataQueryResult, null>,
@@ -22,7 +23,7 @@ const fetchAndAddAuthUserMemberships = async (
 const CurrentUser = (prisma: PrismaClient) => {
   let cachedUserData = buildCachedUserData()
   let currentUserUuid: string | undefined = undefined
-  const set = (userUuid: string) => {
+  const setUuid = (userUuid: string) => {
     currentUserUuid = userUuid
   }
   const get = async (): Promise<UserDataType> => {
@@ -37,7 +38,7 @@ const CurrentUser = (prisma: PrismaClient) => {
     const userData = user
       ? await fetchAndAddAuthUserMemberships(user, prisma)
       : {
-          uuid: 'annonymous',
+          uuid: users.unauthenticated.uuid,
           email: '',
           name: '',
           memberships: [], // what are the memberships of an anonymous user?
@@ -48,7 +49,7 @@ const CurrentUser = (prisma: PrismaClient) => {
   }
   return {
     get,
-    set,
+    setUuid,
   }
 }
 

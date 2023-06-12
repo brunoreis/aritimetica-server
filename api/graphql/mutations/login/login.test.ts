@@ -1,5 +1,9 @@
 import { ServerInfo } from 'apollo-server'
-import { createServerAndClient, closeServer } from '../../../testHelpers'
+import {
+  createServerAndClient,
+  closeServer,
+  createAuthJwt,
+} from '../../../../testHelpers'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import untypedLoginMutation from './login.gql'
 import {
@@ -7,6 +11,7 @@ import {
   LoginMutationVariables,
 } from '../../../../generated/api-client-types'
 import { GraphQLClient } from 'graphql-request'
+import { users } from '../../../../seed-data'
 
 const loginMutation: TypedDocumentNode<LoginMutation, LoginMutationVariables> =
   untypedLoginMutation as unknown as TypedDocumentNode<
@@ -24,6 +29,23 @@ describe('login mutation', () => {
   })
   afterAll(async () => {
     closeServer(serverI)
+  })
+
+  describe('a logged in user cannot login again', () => {
+    it('try to login a logged in user', async () => {
+      const variables: LoginMutationVariables = {
+        email: 'teacher@example.com',
+        password: 'secretPassword123',
+      }
+      try {
+        await clientI.request(loginMutation, variables, {
+          authorization: `Bearer ${createAuthJwt(users.user1.uuid)}`,
+        })
+        expect(false).toBe('should not allow a logged user to log in again')
+      } catch (e: any) {
+        expect(e.message).toMatch(/Not authorized/)
+      }
+    })
   })
 
   describe('failed login', () => {

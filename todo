@@ -1,11 +1,4 @@
-- allow tests to run in parallel 
-    - https://jestjs.io/docs/configuration#globalsetup-string
-    - one setup and teardown for the client/server
-     
-- login - optimize to set the currentAuthUser with the same log in user (low prio)
-
 - add tests to the auth system
-    - authorizations? General or per query/mutation? 
 
 - create logout mutation
     - persist token in db?
@@ -69,5 +62,9 @@ UsersScreen
     - telemetry: see if we already can bind prisma queries to requests (request_id/user_id): https://github.com/prisma/prisma/issues/7596
     - add a final query count (num of queries during the request) to the logs 
 
+- login - optimize to set the currentAuthUser with the same log in user (low prio)
+    - add CurrentUser::setCacheduserData method
+        - add auth memberships with fetchAndAddAuthUserMemberships
+        - store in the cache, so that further get operations will restore it
 
 

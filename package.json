@@ -27,8 +27,6 @@
     "setupFiles": [
       "<rootDir>/jest-dotenv-config.js"
     ],
-    "globalSetup": "<rootDir>/jest-global-setup.js",
-    "globalTeardown": "<rootDir>/jest-global-teardown.js",
     "transform": {
       "\\.(gql|graphql)$": "@graphql-tools/jest-transform",
       ".*": [
