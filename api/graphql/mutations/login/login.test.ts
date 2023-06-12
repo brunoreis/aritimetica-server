@@ -104,7 +104,7 @@ describe('login mutation', () => {
           expect(name).toBe('Teacher')
         })
 
-        it('return two user memberships', () => {
+        it('return user memberships', () => {
           let numMemberships = 0
           if (result?.login.screen?.__typename == 'UsersScreen') {
             numMemberships =
