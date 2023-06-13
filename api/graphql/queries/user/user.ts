@@ -1,8 +1,8 @@
-import { ContextType } from '../../createContext/ContextType'
+import { ContextType } from '../../../createContext/ContextType'
 import { extendType, nonNull, stringArg } from 'nexus'
-import getRequestedFields from '../getRequestedFields'
+import getRequestedFields from '../../getRequestedFields'
 import { GraphQLResolveInfo } from 'graphql'
-import { permissions } from '../../../seed-data'
+import { permissions } from '../../../../seed-data'
 
 type IncludeFields = {
   memberships?: boolean | { include: { group: boolean } }

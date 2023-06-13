@@ -1,4 +1,4 @@
-export * from './queries/user'
+export * from './queries/user/user'
 export * from './queries/users'
 
 export * from './mutations/login/login'

@@ -2,6 +2,8 @@ import { ContextType } from '../../createContext/ContextType'
 import { extendType } from 'nexus'
 import getRequestedFields from '../getRequestedFields'
 
+// do we really need this query?
+
 type IncludeFields = { memberships?: boolean | { include: { group: boolean } } }
 
 const getIncludeFields = (requestedFields: string[]): IncludeFields => {

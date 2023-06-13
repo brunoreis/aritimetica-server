@@ -1,10 +1,5 @@
 - add tests to the auth system
-
-- create logout mutation
-    - persist token in db?
-    - only allow authorized users
-        - login (only allowed for unauthenticated users)
-        - logout (allowed for most users)
+    - continue user.test.ts
 
 - createUser mutation
     - create default group and membership
@@ -12,6 +7,9 @@
 
 - deleteUser mutation
     - delete memberships and groups where the user is the owner
+
+- updateUserMembership
+    - add/delete user roles in an specific group
 
 - review documentation
     - lifecycles
@@ -32,6 +30,12 @@ UsersScreen
         title
         assigned by 
         assigned date
+
+- create logout mutation
+    - persist token in db?
+    - only allow authorized users
+        - login (only allowed for unauthenticated users)
+        - logout (allowed for most users)
 
 - deploy
     - generated files
