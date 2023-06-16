@@ -16,7 +16,7 @@ export async function createServerAndClient() {
 }
 
 export async function createPrismaClient() {
-  const prismaBinary = join(__dirname, '..', 'node_modules', '.bin', 'prisma')
+  const prismaBinary = join(__dirname, 'node_modules', '.bin', 'prisma')
   const cmd = `DATABASE_URL=${process.env.DATABASE_URL} ${prismaBinary} db push`
   execSync(cmd)
   const prisma = new PrismaClient()

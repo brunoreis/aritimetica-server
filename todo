@@ -1,15 +1,15 @@
-- add tests to the auth system
-    - continue user.test.ts
-
 - createUser mutation
-    - create default group and membership
+    - cleanup db
+        - user and membership are ok. We still need to cleanup the group. 
+    - write tests
+        - user was created correctly (data)?
+        - group was created correctly? 
+        - memberhsip was created correctly?
+    - validate password  - check if we can login
     - use in the seed code
 
 - deleteUser mutation
     - delete memberships and groups where the user is the owner
-
-- updateUserMembership
-    - add/delete user roles in an specific group
 
 - review documentation
     - lifecycles
@@ -30,6 +30,9 @@ UsersScreen
         title
         assigned by 
         assigned date
+
+- updateUserMembership
+    - add/delete user roles in an specific group
 
 - create logout mutation
     - persist token in db?

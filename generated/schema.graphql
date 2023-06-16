@@ -7,6 +7,11 @@ type CreateGroupResponse {
   group: Group
 }
 
+type CreateUserResponse {
+  errorMessage: String
+  user: User
+}
+
 type Group {
   memberships: [Membership]
   name: String
@@ -57,6 +62,7 @@ type Mutation {
 
   "\n        Creates a new group\n\n        The current user will be added to the group as the group owner.\n\n        **Requires Authentication**.\n      "
   createGroup(name: String!): CreateGroupResponse!
+  createUser(email: String!, name: String!, password: String!): CreateUserResponse!
   login(email: String!, password: String!): LoginResponse!
 }
 

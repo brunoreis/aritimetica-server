@@ -1,0 +1,21 @@
+query userWithReceivedLessons($userUuid: String!) {
+  user(userUuid: $userUuid) {
+    uuid
+    name
+    memberships {
+      group {
+        uuid
+        name
+      }
+      role {
+        uuid
+      }
+    }
+    receivedLessons {
+      title
+      assigner {
+        name
+      }
+    }
+  }
+}

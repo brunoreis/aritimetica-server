@@ -42,6 +42,10 @@ export interface NexusGenObjects {
     errorMessage?: string | null; // String
     group?: NexusGenRootTypes['Group'] | null; // Group
   }
+  CreateUserResponse: { // root type
+    errorMessage?: string | null; // String
+    user?: NexusGenRootTypes['User'] | null; // User
+  }
   Group: GroupSource;
   Lesson: LessonSource;
   LessonsScreen: LessonsScreenSource;
@@ -75,6 +79,10 @@ export interface NexusGenFieldTypes {
     errorMessage: string | null; // String
     group: NexusGenRootTypes['Group'] | null; // Group
   }
+  CreateUserResponse: { // field return type
+    errorMessage: string | null; // String
+    user: NexusGenRootTypes['User'] | null; // User
+  }
   Group: { // field return type
     memberships: Array<NexusGenRootTypes['Membership'] | null> | null; // [Membership]
     name: string | null; // String
@@ -107,6 +115,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     changeLogLevel: boolean; // Boolean!
     createGroup: NexusGenRootTypes['CreateGroupResponse']; // CreateGroupResponse!
+    createUser: NexusGenRootTypes['CreateUserResponse']; // CreateUserResponse!
     login: NexusGenRootTypes['LoginResponse']; // LoginResponse!
   }
   Permission: { // field return type
@@ -142,6 +151,10 @@ export interface NexusGenFieldTypeNames {
     errorMessage: 'String'
     group: 'Group'
   }
+  CreateUserResponse: { // field return type name
+    errorMessage: 'String'
+    user: 'User'
+  }
   Group: { // field return type name
     memberships: 'Membership'
     name: 'String'
@@ -174,6 +187,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     changeLogLevel: 'Boolean'
     createGroup: 'CreateGroupResponse'
+    createUser: 'CreateUserResponse'
     login: 'LoginResponse'
   }
   Permission: { // field return type name
@@ -211,6 +225,11 @@ export interface NexusGenArgTypes {
     }
     createGroup: { // args
       name: string; // String!
+    }
+    createUser: { // args
+      email: string; // String!
+      name: string; // String!
+      password: string; // String!
     }
     login: { // args
       email: string; // String!

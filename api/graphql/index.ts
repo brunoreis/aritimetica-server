@@ -8,6 +8,9 @@ export * from './mutations/login/LoginResponse'
 export * from './mutations/createGroup/createGroup'
 export * from './mutations/createGroup/CreateGroupResponse'
 
+export * from './mutations/createUser/createUser'
+export * from './mutations/createUser/CreateUserResponse'
+
 export * from './mutations/changeLogLevel'
 
 export * from './types/User'
