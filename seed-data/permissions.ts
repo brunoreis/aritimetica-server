@@ -19,8 +19,8 @@ export const permissions = {
     uuid: 'view_users_of_my_groups',
     description: 'Allows user to view users of their own groups',
   },
-  invite_user_to_group: {
-    uuid: 'invite_user_to_group',
+  create_user_into_group: {
+    uuid: 'create_user_into_group',
     description: 'Allows user to invite other users to their group',
   },
   change_user_group_roles: {

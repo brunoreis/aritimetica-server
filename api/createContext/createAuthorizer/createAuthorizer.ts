@@ -88,6 +88,11 @@ export const createAuthorizer = ({
       logger.info({ userUuid, isAuthorized }, 'auth:shareGroupWithCurrentUser')
       return isAuthorized
     },
+    hasGroupPermission: async (groupUuid: string, permissionUuid: string) => {
+      const userData = await currentUser.get()
+      const groupUuids = getLoggedUserGroupUuids(userData, permissionUuid)
+      return groupUuids.includes(groupUuid)
+    },
     hasGroupPermissionInAGroupWithThisUser: async (
       permissionUuid: string,
       userUuid: string,

@@ -34,7 +34,7 @@ export const roles = {
     title: 'Group Owner',
     permissions: {
       connect: [
-        { uuid: 'invite_user_to_group' },
+        { uuid: 'create_user_into_group' },
         { uuid: 'change_user_group_roles' },
       ],
     },

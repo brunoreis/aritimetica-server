@@ -1,12 +1,13 @@
 - createUser mutation
-    - cleanup db
-        - user and membership are ok. We still need to cleanup the group. 
+    - refactor group creation? Isolate into service layer?
     - write tests
         - user was created correctly (data)?
         - group was created correctly? 
         - memberhsip was created correctly?
+    - cleanup db
+        - user and membership are ok. We still need to cleanup the group. 
     - validate password  - check if we can login
-    - use in the seed code
+    - use service code in the seed code
 
 - deleteUser mutation
     - delete memberships and groups where the user is the owner

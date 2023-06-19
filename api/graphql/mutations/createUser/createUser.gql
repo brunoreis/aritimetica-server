@@ -1,5 +1,15 @@
-mutation createUser($email: String!, $name: String!, $password: String!) {
-  createUser(email: $email, name: $name, password: $password) {
+mutation createUser(
+  $email: String!
+  $name: String!
+  $password: String!
+  $addToGroupUuid: String
+) {
+  createUser(
+    email: $email
+    name: $name
+    password: $password
+    addToGroupUuid: $addToGroupUuid
+  ) {
     errorMessage
     user {
       uuid

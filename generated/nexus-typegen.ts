@@ -227,6 +227,7 @@ export interface NexusGenArgTypes {
       name: string; // String!
     }
     createUser: { // args
+      addToGroupUuid?: string | null; // String
       email: string; // String!
       name: string; // String!
       password: string; // String!

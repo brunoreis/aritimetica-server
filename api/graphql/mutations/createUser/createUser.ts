@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { ContextType } from '../../../createContext/ContextType'
 import { extendType, nonNull, stringArg } from 'nexus'
-import { roles } from '../../../../seed-data'
+import { roles, permissions } from '../../../../seed-data'
 
 const invalidLoginMessage = 'Invalid Email or password'
 
@@ -14,11 +14,19 @@ export const CreateUserMutation = extendType({
         email: nonNull(stringArg()),
         name: nonNull(stringArg()),
         password: nonNull(stringArg()),
+        addToGroupUuid: stringArg(),
       },
-      // authorize: async (_root, _args, ctx: ContextType) => {
-      //   const isNotLoggedIn = !(await ctx.auth.loggedIn())
-      //   return isNotLoggedIn
-      // },
+      authorize: async (_root, args, ctx: ContextType) => {
+        if (args.addToGroupUuid) {
+          const hasPermission = await ctx.auth.hasGroupPermission(
+            args.addToGroupUuid,
+            permissions.create_user_into_group.uuid,
+          )
+          return hasPermission
+        } else {
+          return true
+        }
+      },
       async resolve(_root, args, ctx: ContextType) {
         try {
           const user = await ctx.prisma.$transaction(async (tx) => {
