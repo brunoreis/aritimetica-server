@@ -1,9 +1,7 @@
-import bcrypt from 'bcrypt'
 import { ContextType } from '../../../createContext/ContextType'
 import { extendType, nonNull, stringArg } from 'nexus'
-import { roles, permissions } from '../../../../seed-data'
-
-const invalidLoginMessage = 'Invalid Email or password'
+import { permissions } from '../../../../seed-data'
+import { createUserWithGroup } from '../../../../service'
 
 export const CreateUserMutation = extendType({
   type: 'Mutation',
@@ -29,29 +27,10 @@ export const CreateUserMutation = extendType({
       },
       async resolve(_root, args, ctx: ContextType) {
         try {
-          const user = await ctx.prisma.$transaction(async (tx) => {
-            const group = await tx.group.create({
-              data: {
-                name: 'Default',
-              },
-            })
-            const user = await tx.user.create({
-              data: {
-                email: args.email,
-                name: args.name,
-                password: bcrypt.hashSync(
-                  args.password,
-                  await bcrypt.genSalt(),
-                ),
-                memberships: {
-                  create: {
-                    roleUuid: roles.group_owner.uuid,
-                    groupUuid: group.uuid,
-                  },
-                },
-              },
-            })
-            return user
+          const user = createUserWithGroup(ctx.prisma, {
+            name: args.name,
+            email: args.email,
+            password: args.password,
           })
           return { user }
         } catch (e: any) {

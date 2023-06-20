@@ -1,5 +1,7 @@
-import { PrismaClient, Prisma } from '@prisma/client'
-import { users, permissions, roles, groups, memberships } from '../seed-data'
+import { PrismaClient } from '@prisma/client'
+import { users, permissions, roles, groups } from '../seed-data'
+import { createUserWithGroup } from '../service'
+
 const prisma = new PrismaClient()
 
 async function main() {
@@ -15,42 +17,70 @@ async function main() {
     console.log(`Role ${role.uuid}`)
   }
 
-  for (const user of Object.values(users)) {
-    await prisma.user.create({ data: user })
-    console.log(`User ${user.email} - ${user.name}`)
+  const { unauthenticated, ...otherUsers } = users
+
+  await prisma.user.create({ data: unauthenticated })
+  console.log(`User: ${unauthenticated.email} - ${unauthenticated.name}`)
+
+  for (const user of Object.values(otherUsers)) {
+    await createUserWithGroup(prisma, user)
+    console.log(
+      `User with group_owner membership and own group: ${user.email} - ${user.name}`,
+    )
   }
 
-  const groupData: Prisma.GroupCreateInput[] = [
-    ...Object.values(groups),
+  await prisma.group.create({
+    data: groups.app,
+  })
+
+  const memberships = [
     {
-      uuid: '5c5b0bf5-5f9d-49a1-bdc5-3bbda3a847af',
-      name: 'Admin Default(Owned) Group',
+      user: { connect: { uuid: users.admin.uuid } },
+      group: { connect: { uuid: 'app' } },
+      role: { connect: { uuid: roles.admin.uuid } },
     },
     {
-      uuid: 'a3d3df3e-3de3-429d-905d-2c313bea906a',
-      name: 'Teacher Default(Owned) Group',
-    },
-    {
-      uuid: '95d3005c-18e1-4e9e-a034-e717d262d7ce',
-      name: 'User 1 Default(Owned) Group',
-    },
-    {
-      uuid: '2f60f81b-6d16-4c57-93a8-fd1a87926c25',
-      name: 'User 2 Default(Owned) Group',
+      user: { connect: { uuid: users.unauthenticated.uuid } },
+      group: { connect: { uuid: 'app' } },
+      role: { connect: { uuid: roles.unauthenticated.uuid } },
     },
   ]
 
-  for (const group of groupData) {
-    await prisma.group.create({ data: group })
-    console.log(`Group ${group.name} - ${group.uuid}`)
-  }
-
-  const membershipData: Prisma.MembershipCreateInput[] = memberships
-
-  for (const membership of membershipData) {
+  for (const membership of Object.values(memberships)) {
     await prisma.membership.create({ data: membership })
-    console.log(`Membership ${membership.uuid}`)
+    console.log(`Membership`)
   }
+
+  const teacherUser = await prisma.user.findUnique({
+    where: { uuid: users.teacher.uuid },
+    include: { memberships: { include: { group: true } } },
+  })
+
+  const membership = teacherUser?.memberships.find(
+    (membership) => membership.roleUuid === roles.group_owner.uuid,
+  )
+
+  if (!membership?.group) throw 'teacher group was not created'
+  const group = membership.group
+  await prisma.membership.createMany({
+    data: [
+      {
+        groupUuid: group.uuid,
+        userUuid: users.teacher.uuid,
+        roleUuid: roles.teacher.uuid,
+      },
+      {
+        groupUuid: group.uuid,
+        userUuid: users.user1.uuid,
+        roleUuid: roles.student.uuid,
+      },
+      {
+        groupUuid: group.uuid,
+        userUuid: users.user2.uuid,
+        roleUuid: roles.student.uuid,
+      },
+    ],
+  })
 
   const lessonData = [
     {

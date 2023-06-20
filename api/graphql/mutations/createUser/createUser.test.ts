@@ -8,7 +8,7 @@ import {
 } from '../../../../testHelpers'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import untypedCreateUserMutation from './createUser.gql'
-import { users, roles, memberships } from '../../../../seed-data'
+import { users } from '../../../../seed-data'
 import {
   CreateUserMutation,
   CreateUserMutationVariables,
@@ -57,9 +57,6 @@ describe('createUser mutation', () => {
         }
 
         result = await clientI.request(createUserMutation, variables)
-        //   result = await clientI.request(createUserMutation, variables, {
-        //     authorization: `Bearer ${createAuthJwt(users.user1.uuid)}`,
-        //   })
       })
 
       afterAll(async () => {
@@ -82,11 +79,16 @@ describe('createUser mutation', () => {
 
       beforeAll(async () => {
         await prismaI.user.deleteMany({ where: { email: testEmail2 } })
-        const user1GroupUuid = memberships.find(
-          (membership) =>
-            membership.role.connect.uuid === roles.group_owner.uuid &&
-            membership.user.connect.uuid === users.user1.uuid,
-        )?.group.connect.uuid
+        const user1 = await prismaI.user.findUnique({
+          where: { uuid: users.user1.uuid },
+          include: {
+            memberships: {
+              include: { group: true },
+            },
+          },
+        })
+        const user1GroupUuid = user1?.memberships[0].groupUuid
+
         if (user1GroupUuid) {
           const variables: CreateUserMutationVariables = {
             name: 'Create User Group Owner',
@@ -135,17 +137,22 @@ describe('createUser mutation', () => {
 
       it('cannot create a user in a group the current user is not an onwner', async () => {
         try {
-          const user1StudentGroup = memberships.find(
-            (membership) =>
-              membership.role.connect.uuid === roles.student.uuid &&
-              membership.user.connect.uuid === users.user1.uuid,
-          )
-          if (user1StudentGroup) {
+          const teacher = await prismaI.user.findUnique({
+            where: { uuid: users.teacher.uuid },
+            include: {
+              memberships: {
+                include: { group: true },
+              },
+            },
+          })
+          const teacherGroupUuid = teacher?.memberships[0].groupUuid
+
+          if (teacherGroupUuid) {
             const variables: CreateUserMutationVariables = {
               name: 'Create User Group Owner',
               email: testEmail2,
               password: 'xpto',
-              addToGroupUuid: user1StudentGroup.uuid,
+              addToGroupUuid: teacherGroupUuid,
             }
             result = await clientI.request(createUserMutation, variables, {
               authorization: `Bearer ${createAuthJwt(users.user1.uuid)}`,

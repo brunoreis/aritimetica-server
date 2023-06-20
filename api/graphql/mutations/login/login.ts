@@ -36,14 +36,18 @@ export const LoginMutation = extendType({
               },
             },
           }
+
           const user = await ctx.prisma.user.findUnique(query)
+
           if (!user) {
             return { errorMessage: invalidLoginMessage }
           }
+
           const isValidPassword = await bcrypt.compare(
             args.password,
             user.password,
           )
+
           if (!isValidPassword) {
             return { errorMessage: invalidLoginMessage }
           }
@@ -58,6 +62,7 @@ export const LoginMutation = extendType({
             },
           )
           ctx.currentUser.setUuid(user.uuid)
+
           return { jwt, screen: { user } }
         } catch (e) {
           ctx.logger.error(e)

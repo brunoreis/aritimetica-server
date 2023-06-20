@@ -1,5 +1,5 @@
 - createUser mutation
-    - refactor group creation? Isolate into service layer?
+    - 
     - write tests
         - user was created correctly (data)?
         - group was created correctly? 

@@ -3,6 +3,8 @@ import {
   createServerAndClient,
   closeServer,
   createAuthJwt,
+  createPrismaClient,
+  closePrismaClient,
 } from '../../../../testHelpers'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import untypedLoginMutation from './login.gql'
@@ -11,6 +13,7 @@ import {
   LoginMutationVariables,
 } from '../../../../generated/api-client-types'
 import { GraphQLClient } from 'graphql-request'
+import { PrismaClient } from '@prisma/client'
 import { users } from '../../../../seed-data'
 
 const loginMutation: TypedDocumentNode<LoginMutation, LoginMutationVariables> =
@@ -22,13 +25,17 @@ const loginMutation: TypedDocumentNode<LoginMutation, LoginMutationVariables> =
 describe('login mutation', () => {
   let serverI: ServerInfo
   let clientI: GraphQLClient
+  let prismaI: PrismaClient
   beforeAll(async () => {
     let { serverInstance, client } = await createServerAndClient()
+    let { prisma } = await createPrismaClient()
     serverI = serverInstance
     clientI = client
+    prismaI = prisma
   })
   afterAll(async () => {
     closeServer(serverI)
+    closePrismaClient(prismaI)
   })
 
   describe('a logged in user cannot login again', () => {
@@ -99,9 +106,9 @@ describe('login mutation', () => {
         })
         it('return the correct user uuid, email and name', () => {
           const { uuid, email, name } = res?.login.screen?.user || {}
-          expect(uuid).toBe('c1f875d9-1889-42f3-8c3b-5f5aa35d1a5f')
-          expect(email).toBe('user1@example.com')
-          expect(name).toBe('User 1')
+          expect(uuid).toBe(users.user1.uuid)
+          expect(email).toBe(users.user1.email)
+          expect(name).toBe(users.user1.name)
         })
         it('returns the received lessons', () => {
           if (res?.login.screen?.__typename == 'LessonsScreen') {
@@ -121,9 +128,9 @@ describe('login mutation', () => {
 
         it('return the correct user uuid, email and name', () => {
           const { uuid, email, name } = result?.login.screen?.user || {}
-          expect(uuid).toBe('cfd7d883-93a6-4f15-b7a8-cba0ffc52363')
-          expect(email).toBe('teacher@example.com')
-          expect(name).toBe('Teacher')
+          expect(uuid).toBe(users.teacher.uuid)
+          expect(email).toBe(users.teacher.email)
+          expect(name).toBe(users.teacher.name)
         })
 
         it('return user memberships', () => {
@@ -135,8 +142,16 @@ describe('login mutation', () => {
           expect(numMemberships).toBe(2)
         })
 
-        it('return the role and the teacher memberships', () => {
-          const groupUuid = 'a3d3df3e-3de3-429d-905d-2c313bea906a'
+        it('return the role and the teacher memberships', async () => {
+          const teacherUser = await prismaI.user.findUnique({
+            where: { uuid: users.teacher.uuid },
+            include: {
+              memberships: {
+                include: { group: true },
+              },
+            },
+          })
+          const groupUuid = teacherUser?.memberships[0].groupUuid
           if (result?.login.screen?.__typename == 'UsersScreen') {
             const memberships = result?.login.screen?.user?.memberships
             if (memberships) {
