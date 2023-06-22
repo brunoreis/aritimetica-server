@@ -9,7 +9,7 @@ import type { UserSource } from "./../api/graphql/types/User"
 import type { MembershipSource } from "./../api/graphql/types/Membership"
 import type { GroupSource } from "./../api/graphql/types/Group"
 import type { LessonSource } from "./../api/graphql/types/Lesson"
-import type { RoleSource } from "./../api/graphql/types/Role"
+import type { MembershipRoleSource } from "./../api/graphql/types/MembershipRole"
 import type { PermissionSource } from "./../api/graphql/types/Permission"
 import type { UsersScreenSource } from "./../api/graphql/types/UsersScreen"
 import type { LessonsScreenSource } from "./../api/graphql/types/LessonsScreen"
@@ -55,10 +55,10 @@ export interface NexusGenObjects {
     screen?: NexusGenRootTypes['InitialScreen'] | null; // InitialScreen
   }
   Membership: MembershipSource;
+  MembershipRole: MembershipRoleSource;
   Mutation: {};
   Permission: PermissionSource;
   Query: {};
-  Role: RoleSource;
   User: UserSource;
   UsersScreen: UsersScreenSource;
 }
@@ -107,9 +107,15 @@ export interface NexusGenFieldTypes {
   Membership: { // field return type
     group: NexusGenRootTypes['Group'] | null; // Group
     groupUuid: string | null; // String
-    role: NexusGenRootTypes['Role'] | null; // Role
-    roleUuid: string | null; // String
+    membershipRole: NexusGenRootTypes['MembershipRole'] | null; // MembershipRole
+    membershipRoleUuid: string | null; // String
     userUuid: string | null; // String
+    uuid: string | null; // String
+  }
+  MembershipRole: { // field return type
+    memberships: Array<NexusGenRootTypes['Membership'] | null> | null; // [Membership]
+    permissions: Array<NexusGenRootTypes['Permission'] | null> | null; // [Permission]
+    title: string | null; // String
     uuid: string | null; // String
   }
   Mutation: { // field return type
@@ -119,18 +125,12 @@ export interface NexusGenFieldTypes {
     login: NexusGenRootTypes['LoginResponse']; // LoginResponse!
   }
   Permission: { // field return type
-    roles: Array<NexusGenRootTypes['Role'] | null> | null; // [Role]
+    membershipRoles: Array<NexusGenRootTypes['MembershipRole'] | null> | null; // [MembershipRole]
     uuid: string | null; // String
   }
   Query: { // field return type
     user: NexusGenRootTypes['User']; // User!
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
-  }
-  Role: { // field return type
-    memberships: Array<NexusGenRootTypes['Membership'] | null> | null; // [Membership]
-    permissions: Array<NexusGenRootTypes['Permission'] | null> | null; // [Permission]
-    title: string | null; // String
-    uuid: string | null; // String
   }
   User: { // field return type
     assignedLessons: NexusGenRootTypes['Lesson'][] | null; // [Lesson!]
@@ -179,9 +179,15 @@ export interface NexusGenFieldTypeNames {
   Membership: { // field return type name
     group: 'Group'
     groupUuid: 'String'
-    role: 'Role'
-    roleUuid: 'String'
+    membershipRole: 'MembershipRole'
+    membershipRoleUuid: 'String'
     userUuid: 'String'
+    uuid: 'String'
+  }
+  MembershipRole: { // field return type name
+    memberships: 'Membership'
+    permissions: 'Permission'
+    title: 'String'
     uuid: 'String'
   }
   Mutation: { // field return type name
@@ -191,18 +197,12 @@ export interface NexusGenFieldTypeNames {
     login: 'LoginResponse'
   }
   Permission: { // field return type name
-    roles: 'Role'
+    membershipRoles: 'MembershipRole'
     uuid: 'String'
   }
   Query: { // field return type name
     user: 'User'
     users: 'User'
-  }
-  Role: { // field return type name
-    memberships: 'Membership'
-    permissions: 'Permission'
-    title: 'String'
-    uuid: 'String'
   }
   User: { // field return type name
     assignedLessons: 'Lesson'

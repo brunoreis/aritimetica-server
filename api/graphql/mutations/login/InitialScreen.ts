@@ -20,7 +20,7 @@ export const InitialScreen = unionType({
     const isTeacher =
       memberships &&
       memberships
-        .map((membership) => membership?.role?.uuid)
+        .map((membership) => membership?.membershipRole?.uuid)
         .includes('teacher')
     return isTeacher ? 'UsersScreen' : 'LessonsScreen'
   },

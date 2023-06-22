@@ -28,7 +28,7 @@ export const CreateGroupMutation = extendType({
               name: args.name,
               memberships: {
                 create: {
-                  roleUuid: 'group_owner',
+                  membershipRoleUuid: 'group_owner',
                   userUuid: currentUser.uuid,
                 },
               },

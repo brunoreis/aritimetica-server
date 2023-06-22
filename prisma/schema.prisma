@@ -32,10 +32,10 @@ model User {
 model Permission {
   uuid  String @id
   description String
-  roles Role[]
+  membershipRoles MembershipRole[]
 }
 
-model Role {
+model MembershipRole {
   uuid        String       @id
   title       String
   memberships Membership[]
@@ -52,8 +52,8 @@ model Membership {
   uuid      String @id @default(uuid())
   user      User   @relation(fields: [userUuid], references: [uuid], onDelete: Cascade)
   group     Group  @relation(fields: [groupUuid], references: [uuid])
-  role      Role   @relation(fields: [roleUuid], references: [uuid])
+  membershipRole      MembershipRole   @relation(fields: [membershipRoleUuid], references: [uuid])
   userUuid  String
-  roleUuid  String
+  membershipRoleUuid  String
   groupUuid String
 }

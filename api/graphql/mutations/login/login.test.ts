@@ -14,7 +14,7 @@ import {
 } from '../../../../generated/api-client-types'
 import { GraphQLClient } from 'graphql-request'
 import { PrismaClient } from '@prisma/client'
-import { users } from '../../../../seed-data'
+import { users, membershipRoles } from '../../../../seed-data'
 
 const loginMutation: TypedDocumentNode<LoginMutation, LoginMutationVariables> =
   untypedLoginMutation as unknown as TypedDocumentNode<
@@ -88,8 +88,8 @@ describe('login mutation', () => {
       expect(result?.login.jwt).toBeTruthy()
     })
 
-    describe('returns different screens accordigly to the roles of the user being logged in', () => {
-      describe('if the user does not have the role teacher', () => {
+    describe('returns different screens accordigly to the membershipRoles of the user being logged in', () => {
+      describe('if the user does not have the membershipRole teacher', () => {
         let res: LoginMutation
         beforeAll(async () => {
           const variables: LoginMutationVariables = {
@@ -121,7 +121,7 @@ describe('login mutation', () => {
           }
         })
       })
-      describe('if the user has the role teacher (seed fixture)', () => {
+      describe('if the user has the membershipRole teacher (seed fixture)', () => {
         it('returns a UsersScreen', () => {
           expect(result?.login.screen?.__typename).toBe('UsersScreen')
         })
@@ -142,7 +142,7 @@ describe('login mutation', () => {
           expect(numMemberships).toBe(2)
         })
 
-        it('return the role and the teacher memberships', async () => {
+        it('return the membershipRole and the teacher memberships', async () => {
           const teacherUser = await prismaI.user.findUnique({
             where: { uuid: users.teacher.uuid },
             include: {
@@ -155,9 +155,9 @@ describe('login mutation', () => {
           if (result?.login.screen?.__typename == 'UsersScreen') {
             const memberships = result?.login.screen?.user?.memberships
             if (memberships) {
-              expect(memberships.map((m) => m?.role?.uuid)).toEqual([
-                'group_owner',
-                'teacher',
+              expect(memberships.map((m) => m?.membershipRole?.uuid)).toEqual([
+                membershipRoles.group_owner.uuid,
+                membershipRoles.teacher.uuid,
               ])
               expect(memberships.map((m) => m?.group?.uuid)).toEqual([
                 groupUuid,

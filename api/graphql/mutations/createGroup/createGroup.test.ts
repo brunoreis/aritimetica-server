@@ -90,7 +90,7 @@ describe('createGroup mutation', () => {
           },
         })
         expect(memberships[0].uuid).toBeTruthy()
-        expect(memberships[0].roleUuid).toBe('group_owner')
+        expect(memberships[0].membershipRoleUuid).toBe('group_owner')
         expect(memberships[0].userUuid).toBe(users.user1.uuid)
       } else {
         fail('group was not created')

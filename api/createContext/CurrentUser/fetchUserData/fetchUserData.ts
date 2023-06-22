@@ -19,7 +19,7 @@ export const fetchUserData = async (
               name: true,
             },
           },
-          role: {
+          membershipRole: {
             select: {
               uuid: true,
               permissions: true,

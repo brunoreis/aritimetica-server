@@ -1,7 +1,8 @@
 import { ContextType } from '../../../createContext/ContextType'
 import { extendType, nonNull, stringArg } from 'nexus'
-import { permissions } from '../../../../seed-data'
-import { createUserWithGroup } from '../../../../service'
+import { permissions, membershipRoles } from '../../../../seed-data'
+import { createUserIntoGroup } from '../../../../service'
+import { User } from '@prisma/client'
 
 export const CreateUserMutation = extendType({
   type: 'Mutation',
@@ -27,11 +28,24 @@ export const CreateUserMutation = extendType({
       },
       async resolve(_root, args, ctx: ContextType) {
         try {
-          const user = createUserWithGroup(ctx.prisma, {
+          const userData = {
             name: args.name,
             email: args.email,
             password: args.password,
-          })
+          }
+          let user: User
+          if (args.addToGroupUuid) {
+            user = await createUserIntoGroup(
+              ctx.prisma,
+              userData,
+              args.addToGroupUuid,
+              membershipRoles.student.uuid,
+            )
+          } else {
+            user = await ctx.prisma.user.create({
+              data: userData,
+            })
+          }
           return { user }
         } catch (e: any) {
           if (e?.code == 'P2002' && e?.message.match(/email/)) {

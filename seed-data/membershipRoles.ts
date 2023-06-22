@@ -1,5 +1,5 @@
-export const roles = {
-  // app roles
+export const membershipRoles = {
+  // app memberhipRoles
   unauthenticated: {
     uuid: 'unauthenticated',
     title: 'Unauthenticated',
@@ -28,7 +28,7 @@ export const roles = {
     },
   },
 
-  // group roles
+  // group memberhipRoles
   group_owner: {
     uuid: 'group_owner',
     title: 'Group Owner',

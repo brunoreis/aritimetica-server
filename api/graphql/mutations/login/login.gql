@@ -10,7 +10,7 @@ mutation login($email: String!, $password: String!) {
           email
           name
           memberships {
-            role {
+            membershipRole {
               uuid
               title
             }

@@ -51,9 +51,16 @@ type LoginResponse {
 type Membership {
   group: Group
   groupUuid: String
-  role: Role
-  roleUuid: String
+  membershipRole: MembershipRole
+  membershipRoleUuid: String
   userUuid: String
+  uuid: String
+}
+
+type MembershipRole {
+  memberships: [Membership]
+  permissions: [Permission]
+  title: String
   uuid: String
 }
 
@@ -67,20 +74,13 @@ type Mutation {
 }
 
 type Permission {
-  roles: [Role]
+  membershipRoles: [MembershipRole]
   uuid: String
 }
 
 type Query {
   user(userUuid: String!): User!
   users: [User]!
-}
-
-type Role {
-  memberships: [Membership]
-  permissions: [Permission]
-  title: String
-  uuid: String
 }
 
 type User {

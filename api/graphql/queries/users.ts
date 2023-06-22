@@ -33,7 +33,7 @@ export const UsersQuery = extendType({
         ctx.logger.info('users::authorize')
         return ctx.auth.loggedIn()
       },
-      resolve(_root, _args, ctx, resolverInfo) {
+      async resolve(_root, _args, ctx, resolverInfo) {
         const requestedFields = getRequestedFields(resolverInfo)
         const includeFields = getIncludeFields(requestedFields)
         const params = {
@@ -41,7 +41,8 @@ export const UsersQuery = extendType({
             ...includeFields,
           },
         }
-        return ctx.prisma.user.findMany(params)
+        const users = await ctx.prisma.user.findMany(params)
+        return users
       },
     })
   },

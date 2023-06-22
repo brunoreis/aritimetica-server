@@ -1,23 +1,23 @@
 import { objectType } from 'nexus'
 import { ContextType } from '../../createContext/ContextType'
-import { Role as PrismaRole } from '@prisma/client'
+import { MembershipRole as PrismaRole } from '@prisma/client'
 import type { MembershipSource } from './Membership'
 import type { PermissionSource } from './Permission'
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
 
-export type RoleSource =
+export type MembershipRoleSource =
   | (Optional<PrismaRole, 'title'> & {
       memberships?: MembershipSource[] | null
       permissions?: PermissionSource[] | null
     })
   | null
 
-export const Role = objectType({
-  name: 'Role',
+export const MembershipRole = objectType({
+  name: 'MembershipRole',
   sourceType: {
     module: __filename,
-    export: 'RoleSource',
+    export: 'MembershipRoleSource',
   },
   definition(t) {
     t.string('uuid')
@@ -31,7 +31,7 @@ export const Role = objectType({
           if (root?.uuid) {
             const params = {
               where: {
-                roleUuid: root.uuid ?? undefined, // set roleUuid to undefined if uuid is null or undefined
+                membershipRoleUuid: root.uuid ?? undefined, // set membershipRoleUuid to undefined if uuid is null or undefined
               },
               include: {
                 group: true,
@@ -53,7 +53,7 @@ export const Role = objectType({
           if (root?.uuid) {
             const params = {
               where: {
-                roles: {
+                membershipRoles: {
                   some: {
                     uuid: root.uuid,
                   },

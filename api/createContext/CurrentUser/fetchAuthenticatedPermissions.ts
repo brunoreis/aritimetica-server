@@ -5,7 +5,7 @@ export const fetchAuthenticatedPermissions = async (
 ): Promise<{ uuid: string }[]> => {
   return await prisma.permission.findMany({
     where: {
-      roles: {
+      membershipRoles: {
         some: {
           uuid: 'authenticated',
         },

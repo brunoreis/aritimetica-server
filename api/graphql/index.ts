@@ -17,7 +17,7 @@ export * from './types/User'
 export * from './types/Membership'
 export * from './types/Group'
 export * from './types/Lesson'
-export * from './types/Role'
+export * from './types/MembershipRole'
 export * from './types/Permission'
 
 export * from './types/UsersScreen'

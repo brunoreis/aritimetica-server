@@ -6,7 +6,7 @@ mutation createGroup($name: String!) {
       name
       memberships {
         uuid
-        roleUuid
+        membershipRoleUuid
         groupUuid
         userUuid
       }

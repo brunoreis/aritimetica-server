@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
-import { users, permissions, roles, groups } from '../seed-data'
-import { createUserWithGroup } from '../service'
+import { users, permissions, membershipRoles, groups } from '../seed-data'
+import { createGroupForUser } from '../service'
+import bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
 
@@ -12,9 +13,9 @@ async function main() {
     console.log(`Permissions ${permission.uuid}`)
   }
 
-  for (const role of Object.values(roles)) {
-    await prisma.role.create({ data: role })
-    console.log(`Role ${role.uuid}`)
+  for (const membershipRole of Object.values(membershipRoles)) {
+    await prisma.membershipRole.create({ data: membershipRole })
+    console.log(`Role ${membershipRole.uuid}`)
   }
 
   const { unauthenticated, ...otherUsers } = users
@@ -23,7 +24,12 @@ async function main() {
   console.log(`User: ${unauthenticated.email} - ${unauthenticated.name}`)
 
   for (const user of Object.values(otherUsers)) {
-    await createUserWithGroup(prisma, user)
+    await prisma.user.create({
+      data: {
+        ...user,
+        password: bcrypt.hashSync(user.password, 10),
+      },
+    })
     console.log(
       `User with group_owner membership and own group: ${user.email} - ${user.name}`,
     )
@@ -37,12 +43,14 @@ async function main() {
     {
       user: { connect: { uuid: users.admin.uuid } },
       group: { connect: { uuid: 'app' } },
-      role: { connect: { uuid: roles.admin.uuid } },
+      membershipRole: { connect: { uuid: membershipRoles.admin.uuid } },
     },
     {
       user: { connect: { uuid: users.unauthenticated.uuid } },
       group: { connect: { uuid: 'app' } },
-      role: { connect: { uuid: roles.unauthenticated.uuid } },
+      membershipRole: {
+        connect: { uuid: membershipRoles.unauthenticated.uuid },
+      },
     },
   ]
 
@@ -51,33 +59,38 @@ async function main() {
     console.log(`Membership`)
   }
 
+  await createGroupForUser(prisma, users.teacher.uuid, 'default')
+  await createGroupForUser(prisma, users.user1.uuid, 'default')
+
   const teacherUser = await prisma.user.findUnique({
     where: { uuid: users.teacher.uuid },
     include: { memberships: { include: { group: true } } },
   })
 
-  const membership = teacherUser?.memberships.find(
-    (membership) => membership.roleUuid === roles.group_owner.uuid,
+  const teacherGroupMembership = teacherUser?.memberships.find(
+    (membership) =>
+      membership.membershipRoleUuid === membershipRoles.group_owner.uuid,
   )
 
-  if (!membership?.group) throw 'teacher group was not created'
-  const group = membership.group
+  if (!teacherGroupMembership?.group) throw 'teacher group was not created'
+
+  const group = teacherGroupMembership.group
   await prisma.membership.createMany({
     data: [
       {
         groupUuid: group.uuid,
         userUuid: users.teacher.uuid,
-        roleUuid: roles.teacher.uuid,
+        membershipRoleUuid: membershipRoles.teacher.uuid,
       },
       {
         groupUuid: group.uuid,
         userUuid: users.user1.uuid,
-        roleUuid: roles.student.uuid,
+        membershipRoleUuid: membershipRoles.student.uuid,
       },
       {
         groupUuid: group.uuid,
         userUuid: users.user2.uuid,
-        roleUuid: roles.student.uuid,
+        membershipRoleUuid: membershipRoles.student.uuid,
       },
     ],
   })

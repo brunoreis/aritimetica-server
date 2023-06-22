@@ -9,7 +9,8 @@ import { sign } from 'jsonwebtoken'
 
 export async function createServerAndClient() {
   let serverInstance: ServerInfo | null = null
-  const port = await getPort({ port: makeRange(4000, 6000) })
+  const initialPort = Math.floor(Math.random() * 1001) + 4000
+  const port = await getPort({ port: makeRange(initialPort, 6000) })
   serverInstance = await server.listen({ port })
   const client = new GraphQLClient(`http://localhost:${port}`)
   return { serverInstance, client }

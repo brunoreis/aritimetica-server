@@ -30,7 +30,7 @@ export const LoginMutation = extendType({
             include: {
               memberships: {
                 include: {
-                  role: { select: { uuid: true } },
+                  membershipRole: { select: { uuid: true } },
                   group: true,
                 },
               },
@@ -38,7 +38,6 @@ export const LoginMutation = extendType({
           }
 
           const user = await ctx.prisma.user.findUnique(query)
-
           if (!user) {
             return { errorMessage: invalidLoginMessage }
           }

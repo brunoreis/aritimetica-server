@@ -112,7 +112,7 @@ describe('user query', () => {
           }
         })
 
-        it('a user with view_all_lessons_of_any_user_in_this_group permission can see the received lessons of a user in the group where they have that role', async () => {
+        it('a user with view_all_lessons_of_any_user_in_this_group permission can see the received lessons of a user in the group where they have that membershipRole', async () => {
           const variables: UserQueryVariables = { userUuid: users.user1.uuid }
           const headers = {
             authorization: `Bearer ${createAuthJwt(users.teacher.uuid)}`,

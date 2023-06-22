@@ -31,11 +31,11 @@ CREATE TABLE "Permission" (
 );
 
 -- CreateTable
-CREATE TABLE "Role" (
+CREATE TABLE "MembershipRole" (
     "uuid" TEXT NOT NULL,
     "title" TEXT NOT NULL,
 
-    CONSTRAINT "Role_pkey" PRIMARY KEY ("uuid")
+    CONSTRAINT "MembershipRole_pkey" PRIMARY KEY ("uuid")
 );
 
 -- CreateTable
@@ -50,14 +50,14 @@ CREATE TABLE "Group" (
 CREATE TABLE "Membership" (
     "uuid" TEXT NOT NULL,
     "userUuid" TEXT NOT NULL,
-    "roleUuid" TEXT NOT NULL,
+    "membershipRoleUuid" TEXT NOT NULL,
     "groupUuid" TEXT NOT NULL,
 
     CONSTRAINT "Membership_pkey" PRIMARY KEY ("uuid")
 );
 
 -- CreateTable
-CREATE TABLE "_PermissionToRole" (
+CREATE TABLE "_MembershipRoleToPermission" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
 );
@@ -66,10 +66,10 @@ CREATE TABLE "_PermissionToRole" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_PermissionToRole_AB_unique" ON "_PermissionToRole"("A", "B");
+CREATE UNIQUE INDEX "_MembershipRoleToPermission_AB_unique" ON "_MembershipRoleToPermission"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_PermissionToRole_B_index" ON "_PermissionToRole"("B");
+CREATE INDEX "_MembershipRoleToPermission_B_index" ON "_MembershipRoleToPermission"("B");
 
 -- AddForeignKey
 ALTER TABLE "Lesson" ADD CONSTRAINT "Lesson_assignerUuid_fkey" FOREIGN KEY ("assignerUuid") REFERENCES "User"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -78,16 +78,16 @@ ALTER TABLE "Lesson" ADD CONSTRAINT "Lesson_assignerUuid_fkey" FOREIGN KEY ("ass
 ALTER TABLE "Lesson" ADD CONSTRAINT "Lesson_assigneeUuid_fkey" FOREIGN KEY ("assigneeUuid") REFERENCES "User"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Membership" ADD CONSTRAINT "Membership_userUuid_fkey" FOREIGN KEY ("userUuid") REFERENCES "User"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Membership" ADD CONSTRAINT "Membership_userUuid_fkey" FOREIGN KEY ("userUuid") REFERENCES "User"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Membership" ADD CONSTRAINT "Membership_groupUuid_fkey" FOREIGN KEY ("groupUuid") REFERENCES "Group"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Membership" ADD CONSTRAINT "Membership_roleUuid_fkey" FOREIGN KEY ("roleUuid") REFERENCES "Role"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Membership" ADD CONSTRAINT "Membership_membershipRoleUuid_fkey" FOREIGN KEY ("membershipRoleUuid") REFERENCES "MembershipRole"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_PermissionToRole" ADD CONSTRAINT "_PermissionToRole_A_fkey" FOREIGN KEY ("A") REFERENCES "Permission"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_MembershipRoleToPermission" ADD CONSTRAINT "_MembershipRoleToPermission_A_fkey" FOREIGN KEY ("A") REFERENCES "MembershipRole"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_PermissionToRole" ADD CONSTRAINT "_PermissionToRole_B_fkey" FOREIGN KEY ("B") REFERENCES "Role"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_MembershipRoleToPermission" ADD CONSTRAINT "_MembershipRoleToPermission_B_fkey" FOREIGN KEY ("B") REFERENCES "Permission"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;

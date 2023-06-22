@@ -1,13 +1,14 @@
 - createUser mutation
-    - 
+        
+    - cleanup db
+        - user and membership are ok. We still need to cleanup the group after the test run.
+            - add postgres restriction/deletion???
+                - if a group_owner membership is deleted and there is no other group_owner... 
+                
     - write tests
         - user was created correctly (data)?
         - group was created correctly? 
         - memberhsip was created correctly?
-    - cleanup db
-        - user and membership are ok. We still need to cleanup the group. 
-    - validate password  - check if we can login
-    - use service code in the seed code
 
 - deleteUser mutation
     - delete memberships and groups where the user is the owner

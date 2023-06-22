@@ -8,7 +8,7 @@ import {
 } from '../../../../testHelpers'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import untypedCreateUserMutation from './createUser.gql'
-import { users } from '../../../../seed-data'
+import { users, membershipRoles } from '../../../../seed-data'
 import {
   CreateUserMutation,
   CreateUserMutationVariables,
@@ -25,6 +25,18 @@ const createUserMutation: TypedDocumentNode<
 >
 
 const groupName = 'Test Group'
+
+const loadUserGroupId = async (prismaI: PrismaClient, userUuid: string) => {
+  const user = await prismaI.user.findUnique({
+    where: { uuid: userUuid },
+    include: {
+      memberships: {
+        include: { group: true },
+      },
+    },
+  })
+  return user?.memberships[0].groupUuid
+}
 
 describe('createUser mutation', () => {
   let serverI: ServerInfo
@@ -50,13 +62,16 @@ describe('createUser mutation', () => {
       let testEmail1 = 'createUserUnauthenticated@aritimetica.com.br'
       beforeAll(async () => {
         await prismaI.user.deleteMany({ where: { email: testEmail1 } })
-        const variables: CreateUserMutationVariables = {
+        const variablesWithoutAddToGroupUuid: CreateUserMutationVariables = {
           name: 'Test User',
           email: testEmail1,
           password: 'xpto',
         }
 
-        result = await clientI.request(createUserMutation, variables)
+        result = await clientI.request(
+          createUserMutation,
+          variablesWithoutAddToGroupUuid,
+        )
       })
 
       afterAll(async () => {
@@ -71,6 +86,10 @@ describe('createUser mutation', () => {
       it('return the crated user', async () => {
         expect(result?.createUser.user?.uuid).toBeTruthy()
       })
+
+      it('do not crated a membership', async () => {
+        expect(result?.createUser.user?.memberships?.length).toBe(0)
+      })
     })
 
     describe(`group owner`, () => {
@@ -79,15 +98,7 @@ describe('createUser mutation', () => {
 
       beforeAll(async () => {
         await prismaI.user.deleteMany({ where: { email: testEmail2 } })
-        const user1 = await prismaI.user.findUnique({
-          where: { uuid: users.user1.uuid },
-          include: {
-            memberships: {
-              include: { group: true },
-            },
-          },
-        })
-        const user1GroupUuid = user1?.memberships[0].groupUuid
+        const user1GroupUuid = await loadUserGroupId(prismaI, users.user1.uuid)
 
         if (user1GroupUuid) {
           const variables: CreateUserMutationVariables = {
@@ -115,6 +126,20 @@ describe('createUser mutation', () => {
 
       it('can create a user for its own group', async () => {
         expect(result?.createUser.user?.uuid).toBeTruthy()
+      })
+
+      it('create one membership', async () => {
+        expect(result?.createUser.user?.memberships?.length).toBe(1)
+      })
+
+      it('create the membership to the group', async () => {
+        const memberships = result?.createUser.user?.memberships
+        if (memberships) {
+          const membership = memberships[0]
+          expect(membership?.membershipRole?.uuid).toBe(
+            membershipRoles.student.uuid,
+          )
+        }
       })
     })
 

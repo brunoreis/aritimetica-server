@@ -5,7 +5,7 @@ export const hasPermission = (
   permissionUuid: string,
 ): boolean => {
   return memberships.some((membership) => {
-    return membership.role.permissions.some((permission) => {
+    return membership.membershipRole.permissions.some((permission) => {
       return permission.uuid === permissionUuid
     })
   })

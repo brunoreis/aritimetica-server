@@ -2,7 +2,7 @@ type Permission = {
   uuid: string
 }
 
-type Role = {
+type MembershipRole = {
   uuid: string
   permissions: Permission[]
 }
@@ -14,7 +14,7 @@ type Group = {
 
 type Membership = {
   group: Group
-  role: Role
+  membershipRole: MembershipRole
 }
 
 type UserDataType = {

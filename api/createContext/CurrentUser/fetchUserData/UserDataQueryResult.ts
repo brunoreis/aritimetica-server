@@ -7,7 +7,7 @@ export type UserDataQueryResult = {
       uuid: string
       name: string
     }
-    role: {
+    membershipRole: {
       uuid: string
       permissions: {
         uuid: string

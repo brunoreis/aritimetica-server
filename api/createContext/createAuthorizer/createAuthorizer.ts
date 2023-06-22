@@ -13,9 +13,10 @@ const getLoggedUserGroupUuids = (
   const uuids = new Set<string>()
   userData.memberships.forEach((membership) => {
     if (permissionUuid) {
-      const membershipHasPermission = membership.role.permissions.find(
-        ({ uuid }) => permissionUuid === uuid,
-      )
+      const membershipHasPermission =
+        membership.membershipRole.permissions.find(
+          ({ uuid }) => permissionUuid === uuid,
+        )
       if (membershipHasPermission) {
         uuids.add(membership.group.uuid)
       }
@@ -66,7 +67,7 @@ export const createAuthorizer = ({
         userData,
         groups.app.uuid,
       )
-      // get all authenticated role permissions
+      // get all authenticated membershipRole permissions
       const isAuthorized: boolean = hasPermission(
         membershipsInGroup,
         permissionUuid,

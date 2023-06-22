@@ -7,7 +7,7 @@ query user($userUuid: String!) {
         uuid
         name
       }
-      role {
+      membershipRole {
         uuid
       }
     }

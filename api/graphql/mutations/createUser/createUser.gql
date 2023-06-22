@@ -16,8 +16,9 @@ mutation createUser(
       name
       email
       memberships {
-        roleUuid
-        role {
+        membershipRoleUuid
+        membershipRole {
+          uuid
           permissions {
             uuid
           }
