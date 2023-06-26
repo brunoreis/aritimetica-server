@@ -1,5 +1,4 @@
 - createUser mutation
-        
     - cleanup db
         - user and membership are ok. We still need to cleanup the group after the test run.
             - add postgres restriction/deletion???

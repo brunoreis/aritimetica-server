@@ -1,7 +1,5 @@
-import { ServerInfo } from 'apollo-server'
 import {
-  createServerAndClient,
-  closeServer,
+  createClient,
   createAuthJwt,
   createPrismaClient,
   closePrismaClient,
@@ -23,18 +21,14 @@ const loginMutation: TypedDocumentNode<LoginMutation, LoginMutationVariables> =
   >
 
 describe('login mutation', () => {
-  let serverI: ServerInfo
   let clientI: GraphQLClient
   let prismaI: PrismaClient
   beforeAll(async () => {
-    let { serverInstance, client } = await createServerAndClient()
+    clientI = await createClient()
     let { prisma } = await createPrismaClient()
-    serverI = serverInstance
-    clientI = client
     prismaI = prisma
   })
   afterAll(async () => {
-    closeServer(serverI)
     closePrismaClient(prismaI)
   })
 
@@ -97,9 +91,6 @@ describe('login mutation', () => {
             password: 'secretPassword123',
           }
           res = await clientI.request(loginMutation, variables)
-        })
-        afterAll(async () => {
-          closeServer(serverI)
         })
         it('returns a LessonsScreen', () => {
           expect(res?.login.screen?.__typename).toBe('LessonsScreen')

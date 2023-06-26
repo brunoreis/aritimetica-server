@@ -1,19 +1,12 @@
-import { ServerInfo } from 'apollo-server'
-import getPort, { makeRange } from 'get-port'
 import { execSync } from 'child_process'
 import { GraphQLClient } from 'graphql-request'
-import { server } from './api/server'
 import { join } from 'path'
 import { PrismaClient } from '@prisma/client'
 import { sign } from 'jsonwebtoken'
 
-export async function createServerAndClient() {
-  let serverInstance: ServerInfo | null = null
-  const initialPort = Math.floor(Math.random() * 1001) + 4000
-  const port = await getPort({ port: makeRange(initialPort, 6000) })
-  serverInstance = await server.listen({ port })
-  const client = new GraphQLClient(`http://localhost:${port}`)
-  return { serverInstance, client }
+export async function createClient() {
+  const client = new GraphQLClient(`http://localhost:${process.env.PORT}`)
+  return client
 }
 
 export async function createPrismaClient() {
@@ -24,16 +17,14 @@ export async function createPrismaClient() {
   return { prisma }
 }
 
-export async function closeServer(serverInstance?: ServerInfo) {
-  serverInstance?.server.close()
-}
-
 export function closePrismaClient(prismaClient?: PrismaClient) {
   prismaClient?.$disconnect()
 }
 
 export function createAuthJwt(userUuid: string) {
-  return sign({ userUuid }, process.env.JWT_SECRET_KEY, {
-    expiresIn: '1h',
-  })
+  if (process.env.JWT_SECRET_KEY) {
+    return sign({ userUuid }, process.env.JWT_SECRET_KEY, {
+      expiresIn: '1h',
+    })
+  }
 }

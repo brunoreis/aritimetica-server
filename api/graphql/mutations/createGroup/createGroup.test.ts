@@ -1,7 +1,6 @@
 import { ServerInfo } from 'apollo-server'
 import {
-  createServerAndClient,
-  closeServer,
+  createClient,
   createPrismaClient,
   closePrismaClient,
   createAuthJwt,
@@ -33,15 +32,12 @@ describe('createGroup mutation', () => {
   let prismaI: PrismaClient
 
   beforeAll(async () => {
-    let { serverInstance, client } = await createServerAndClient()
+    clientI = await createClient()
     let { prisma } = await createPrismaClient()
-    serverI = serverInstance
-    clientI = client
     prismaI = prisma
   })
 
   afterAll(async () => {
-    closeServer(serverI)
     closePrismaClient(prismaI)
   })
 

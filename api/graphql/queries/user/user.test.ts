@@ -1,9 +1,5 @@
 import { ServerInfo } from 'apollo-server'
-import {
-  createServerAndClient,
-  closeServer,
-  createAuthJwt,
-} from '../../../../testHelpers'
+import { createClient, createAuthJwt } from '../../../../testHelpers'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import untypedUserQuery from './user.gql'
 import untypedUserWithReceivedLessonsQuery from './userWithReceivedLessons.gql'
@@ -35,13 +31,7 @@ describe('user query', () => {
   let clientI: GraphQLClient
 
   beforeAll(async () => {
-    let { serverInstance, client } = await createServerAndClient()
-    serverI = serverInstance
-    clientI = client
-  })
-
-  afterAll(async () => {
-    closeServer(serverI)
+    clientI = await createClient()
   })
 
   describe('authorization::permissions', () => {

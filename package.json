@@ -19,6 +19,7 @@
     "codegen": "graphql-codegen",
     "generate": "ts-node --transpile-only api/schema --require dotenv/config dotenv_config_path=/.test.env",
     "test": "npm run generate && jest --watch",
+    "test:server": "dotenv -e .test.env -e .env -- ts-node-dev --transpile-only --no-notify api/index.ts",
     "test:prisma:migrate": "dotenv -e .test.env -e .env -- npx prisma migrate dev",
     "test:prisma:seed": "dotenv -e .test.env -e .env -- npx prisma migrate reset",
     "test:prisma:studio": "dotenv -e .test.env -e .env -- npx prisma studio"
@@ -39,6 +40,7 @@
         }
       ]
     },
+    "maxConcurrency": 10,
     "testEnvironment": "node"
   },
   "dependencies": {
