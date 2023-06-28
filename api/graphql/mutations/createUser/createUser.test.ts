@@ -89,13 +89,14 @@ describe('createUser mutation', () => {
       })
     })
 
-    describe(`group owner`, () => {
+    describe(`the group owner is creating`, () => {
       let testEmail2 = 'createUserGroupOwner@aritimetica.com.br'
       let result: CreateUserMutation
+      let user1GroupUuid: string | undefined
 
       beforeAll(async () => {
         await prismaI.user.deleteMany({ where: { email: testEmail2 } })
-        const user1GroupUuid = await loadUserGroupId(prismaI, users.user1.uuid)
+        user1GroupUuid = await loadUserGroupId(prismaI, users.user1.uuid)
 
         if (user1GroupUuid) {
           const variables: CreateUserMutationVariables = {
@@ -114,7 +115,9 @@ describe('createUser mutation', () => {
 
       afterAll(async () => {
         try {
-          await prismaI.user.deleteMany({ where: { email: testEmail2 } })
+          await prismaI.user.deleteMany({
+            where: { email: testEmail2 },
+          })
         } catch (e) {
           console.log('after delete error')
           console.log({ e })

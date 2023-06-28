@@ -6,7 +6,52 @@ import bcrypt from 'bcrypt'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log(`Start seeding ...`)
+  console.log(`Adding triggers`)
+  await prisma.$executeRaw`
+    CREATE FUNCTION avoid_group_without_owner() 
+      RETURNS TRIGGER 
+      LANGUAGE PLPGSQL
+    AS $$
+    DECLARE 
+      owners_count INTEGER;
+      members_count INTEGER;
+    BEGIN
+      IF OLD."membershipRoleUuid" = 'group_owner' THEN
+        SELECT count(uuid)
+        INTO owners_count
+        FROM "Membership"
+        WHERE "groupUuid" = OLD."groupUuid"
+          AND "membershipRoleUuid" = 'group_owner';
+
+        SELECT count(uuid)
+        INTO members_count
+        FROM "Membership"
+        WHERE "groupUuid" = OLD."groupUuid";
+
+        raise info 'owners_count: %', owners_count;
+        raise info 'members_count: %', members_count;
+
+        IF members_count = 0 THEN
+          DELETE FROM "Group" WHERE uuid = OLD."groupUuid";
+        ELSIF owners_count < 1 THEN
+          RAISE EXCEPTION 'This change would leave the following group, that has other memberships, without an owner: %. If you remove all the other memberships and repeat the operation, the group will be deleted.', OLD."groupUuid";
+        END IF;
+      END IF;
+
+      RETURN OLD; 
+    END;
+    $$;
+
+  `
+
+  await prisma.$executeRaw`
+    CREATE TRIGGER avoid_group_without_owner_trigger
+        AFTER DELETE OR UPDATE 
+        ON public."Membership"
+        FOR EACH ROW
+        EXECUTE FUNCTION public.avoid_group_without_owner();
+  `
+
   // PERMISSIONS
   for (const permission of Object.values(permissions)) {
     await prisma.permission.create({ data: permission })

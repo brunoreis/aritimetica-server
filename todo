@@ -1,8 +1,19 @@
 - createUser mutation
     - cleanup db
-        - user and membership are ok. We still need to cleanup the group after the test run.
+        - add tests to document/test the trigger
+            - create triggers folder and move the trigger there (include them on the seed file/mutations)
+            - deleting a user deletes the users memberships (documents the delete cascade)
+            - you can't delete a user with a group_owner membership if there are other non owner members in that group
+            - you cant delete a user with a group_owner membership if there are other owners for the same group
+            - you cant delete a user with a group_owner membership if there are no other members for the group
+                - in this case, the group will also be deleted
+
+        the test run.
             - add postgres restriction/deletion???
                 - if a group_owner membership is deleted and there is no other group_owner... 
+
+    - to think: do we want to access the prisma layer without passing through the service layer???
+        - the service layer may be a proxy and a facade
                 
     - write tests
         - user was created correctly (data)?
