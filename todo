@@ -1,12 +1,25 @@
 - createUser mutation
     - cleanup db
+        - group creation
+            - add service layer method to create a group setting the aritimetica.group_owner_userUuid config
+                BEGIN; (open transaction)
+                    SET LOCAL "aritimetica.group_owner_userUuid" to 'user1';
+                    INSERT into public."Group" (uuid, name) values (gen_random_uuid(), 'dude');
+                COMMIT; (close transaction)
+            - test the method
+            - use that in the seeds to create groups
         - add tests to document/test the trigger
-            - create triggers folder and move the trigger there (include them on the seed file/mutations)
-            - deleting a user deletes the users memberships (documents the delete cascade)
-            - you can't delete a user with a group_owner membership if there are other non owner members in that group
-            - you cant delete a user with a group_owner membership if there are other owners for the same group
-            - you cant delete a user with a group_owner membership if there are no other members for the group
-                - in this case, the group will also be deleted
+            - Group (insert)
+                - you cannot insert a group withour the aritimetica.group_owner_userUuid config
+                - when you insert a group with that config a new membership gets created
+            - Memberhips (update and delete)
+                - create triggers folder and move the trigger there (include them on the seed file/mutations)
+                - deleting a user deletes the users memberships (documents the delete cascade)
+                - you can't delete a user with a group_owner membership if there are other non owner members in that group
+                - you cant delete a user with a group_owner membership if there are other owners for the same group
+                - you cant delete a user with a group_owner membership if there are no other members for the group
+                    - in this case, the group will also be deleted
+                - same tests for membership
 
         the test run.
             - add postgres restriction/deletion???
@@ -20,6 +33,10 @@
         - group was created correctly? 
         - memberhsip was created correctly?
 
+    - is it possible to create a group without an owner? 
+        - should it be possible to do so? 
+        - how can I enforce that in the db level?
+        
 - deleteUser mutation
     - delete memberships and groups where the user is the owner
 

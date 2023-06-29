@@ -40,17 +40,32 @@ async function main() {
 
       RETURN OLD; 
     END;
-    $$;
-
-  `
+    $$;`
 
   await prisma.$executeRaw`
     CREATE TRIGGER avoid_group_without_owner_trigger
         AFTER DELETE OR UPDATE 
         ON public."Membership"
         FOR EACH ROW
-        EXECUTE FUNCTION public.avoid_group_without_owner();
-  `
+        EXECUTE FUNCTION public.avoid_group_without_owner();`
+
+  await prisma.$executeRaw`
+    CREATE or REPLACE FUNCTION create_membership_for_group() 
+      RETURNS TRIGGER 
+      LANGUAGE PLPGSQL
+    AS $$
+      BEGIN
+      INSERT INTO public."Membership" ("uuid", "userUuid", "membershipRoleUuid", "groupUuid") VALUES (gen_random_uuid(), current_setting('aritimetica.group_owner_userUuid'), 'group_owner', NEW."uuid");
+      RETURN NEW;
+      END;
+    $$;`
+
+  await prisma.$executeRaw`
+    CREATE TRIGGER create_membership_for_group_trigger
+    AFTER INSERT
+    ON public."Group"
+    FOR EACH ROW
+    EXECUTE FUNCTION public.create_membership_for_group();`
 
   // PERMISSIONS
   for (const permission of Object.values(permissions)) {
