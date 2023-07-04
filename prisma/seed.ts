@@ -50,7 +50,7 @@ async function main() {
         EXECUTE FUNCTION public.avoid_group_without_owner();`
 
   await prisma.$executeRaw`
-    CREATE or REPLACE FUNCTION create_membership_for_group() 
+    CREATE or REPLACE FUNCTION create_owner_membership_for_group() 
       RETURNS TRIGGER 
       LANGUAGE PLPGSQL
     AS $$
@@ -61,11 +61,11 @@ async function main() {
     $$;`
 
   await prisma.$executeRaw`
-    CREATE TRIGGER create_membership_for_group_trigger
+    CREATE TRIGGER create_owner_membership_for_group_trigger
     AFTER INSERT
     ON public."Group"
     FOR EACH ROW
-    EXECUTE FUNCTION public.create_membership_for_group();`
+    EXECUTE FUNCTION public.create_owner_membership_for_group();`
 
   // PERMISSIONS
   for (const permission of Object.values(permissions)) {

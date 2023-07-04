@@ -1,21 +1,14 @@
 - createUser mutation
     - cleanup db
         - add tests to document/test the trigger
-            - Group (insert)
-                - you cannot insert a group withour the aritimetica.group_owner_userUuid config
-                - when you insert a group with that config a new membership gets created
             - Memberhips (update and delete)
                 - create triggers folder and move the trigger there (include them on the seed file/mutations)
                 - deleting a user deletes the users memberships (documents the delete cascade)
                 - you can't delete a user with a group_owner membership if there are other non owner members in that group
-                - you cant delete a user with a group_owner membership if there are other owners for the same group
+                - deleting a user with a group_owner membership if there are other owners for the same group will not delete the group
                 - you cant delete a user with a group_owner membership if there are no other members for the group
                     - in this case, the group will also be deleted
                 - same tests for membership
-
-        the test run.
-            - add postgres restriction/deletion???
-                - if a group_owner membership is deleted and there is no other group_owner... 
     
     - restart test server when code changes
     - to think: do we want to access the prisma layer without passing through the service layer???
@@ -26,14 +19,8 @@
         - group was created correctly? 
         - memberhsip was created correctly?
 
-    - is it possible to create a group without an owner? 
-        - should it be possible to do so? 
-        - how can I enforce that in the db level?
-        
-- deleteUser mutation
-    - delete memberships and groups where the user is the owner
-
 - review documentation
+    - layers
     - lifecycles
         - write an operation
         - write a test
