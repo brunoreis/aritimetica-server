@@ -1,13 +1,5 @@
 - createUser mutation
     - cleanup db
-        - group creation
-            - add service layer method to create a group setting the aritimetica.group_owner_userUuid config
-                BEGIN; (open transaction)
-                    SET LOCAL "aritimetica.group_owner_userUuid" to 'user1';
-                    INSERT into public."Group" (uuid, name) values (gen_random_uuid(), 'dude');
-                COMMIT; (close transaction)
-            - test the method
-            - use that in the seeds to create groups
         - add tests to document/test the trigger
             - Group (insert)
                 - you cannot insert a group withour the aritimetica.group_owner_userUuid config
@@ -24,7 +16,8 @@
         the test run.
             - add postgres restriction/deletion???
                 - if a group_owner membership is deleted and there is no other group_owner... 
-
+    
+    - restart test server when code changes
     - to think: do we want to access the prisma layer without passing through the service layer???
         - the service layer may be a proxy and a facade
                 

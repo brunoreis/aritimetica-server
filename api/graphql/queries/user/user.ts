@@ -59,9 +59,7 @@ export const UserQuery = extendType({
       },
       authorize: async (_root, args, ctx: ContextType) => {
         return (
-          (await ctx.auth.hasGlobalPermission(
-            permissions.view_all_users.uuid,
-          )) ||
+          (await ctx.auth.hasGlobalPermission(permissions.view_users.uuid)) ||
           ((await ctx.auth.hasGlobalPermission(
             permissions.view_my_user.uuid,
           )) &&

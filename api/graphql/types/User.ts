@@ -69,7 +69,7 @@ export const User = objectType({
           if (requestedUserUuid) {
             isAuthorized =
               (await ctx.auth.hasGlobalPermission(
-                permissions.view_all_lessons.uuid,
+                permissions.view_received_lessons.uuid,
               )) ||
               ((await ctx.auth.hasGlobalPermission(
                 permissions.view_my_received_lessons.uuid,

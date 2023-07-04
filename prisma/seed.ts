@@ -73,16 +73,13 @@ async function main() {
     console.log(`Permissions ${permission.uuid}`)
   }
 
-  for (const membershipRole of Object.values(membershipRoles)) {
-    await prisma.membershipRole.create({ data: membershipRole })
-    console.log(`Role ${membershipRole.uuid}`)
-  }
-
+  //USERS - UNAUTHENTICATED
   const { unauthenticated, ...otherUsers } = users
 
   await prisma.user.create({ data: unauthenticated })
   console.log(`User: ${unauthenticated.email} - ${unauthenticated.name}`)
 
+  console.log('>>> USERS - OTHER')
   for (const user of Object.values(otherUsers)) {
     await prisma.user.create({
       data: {
@@ -95,15 +92,27 @@ async function main() {
     )
   }
 
-  await prisma.group.create({
-    data: groups.app,
-  })
+  console.log('>>> MEMBERSHIP ROLES')
+
+  for (const membershipRole of Object.values(membershipRoles)) {
+    console.log(`Create Role ${membershipRole.uuid}:`)
+    await prisma.membershipRole.create({ data: membershipRole })
+  }
+
+  console.log('>>> APP GROUPS')
+
+  await createGroupForUser(
+    prisma,
+    users.admin.uuid,
+    groups.app.name,
+    groups.app.uuid,
+  )
 
   const memberships = [
     {
       user: { connect: { uuid: users.admin.uuid } },
       group: { connect: { uuid: 'app' } },
-      membershipRole: { connect: { uuid: membershipRoles.admin.uuid } },
+      membershipRole: { connect: { uuid: membershipRoles.authenticated.uuid } },
     },
     {
       user: { connect: { uuid: users.unauthenticated.uuid } },
@@ -114,11 +123,15 @@ async function main() {
     },
   ]
 
+  console.log('>>> AUTHENTICATED AND UNAUTHENTICATED MEMBERSHIP ROLES')
   for (const membership of Object.values(memberships)) {
+    console.log(
+      `Create Membership... ${membership.membershipRole.connect.uuid}`,
+    )
     await prisma.membership.create({ data: membership })
-    console.log(`Membership`)
   }
 
+  console.log('>>> CREATE OWNED GROUPS')
   await createGroupForUser(prisma, users.teacher.uuid, 'default')
   await createGroupForUser(prisma, users.user1.uuid, 'default')
 
@@ -135,6 +148,8 @@ async function main() {
   if (!teacherGroupMembership?.group) throw 'teacher group was not created'
 
   const group = teacherGroupMembership.group
+
+  console.log('>>> TEACHER AND STUDENT MEMBERSHIPS')
   await prisma.membership.createMany({
     data: [
       {
@@ -188,9 +203,10 @@ async function main() {
     },
   ]
 
+  console.log('LESSON')
   for (const lesson of lessonData) {
-    await prisma.lesson.create({ data: lesson })
     console.log(`Lesson ${lesson.uuid}`)
+    await prisma.lesson.create({ data: lesson })
   }
 
   console.log(`Seeding finished.`)

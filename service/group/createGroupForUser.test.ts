@@ -1,38 +1,36 @@
 import { createPrismaClient } from '../../testHelpers'
 import { createGroupForUser } from './createGroupForUser'
+import { users, membershipRoles } from '../../seed-data'
+import { Group, Membership } from '@prisma/client'
 
 describe('createGroupForUser', () => {
   let prisma = createPrismaClient().prisma
-  const email = 'createGroupForUser1@example.com'
 
-  it('create a group and a membership for the provided user', async () => {
-    // await prisma.$transaction(async (tx) => {
-    //   const m = await tx.membership.findFirstOrThrow({
-    //     where: { user: { email } },
-    //     include: { user: true },
-    //   })
-    //   await tx.membership.delete({ where: { uuid: m.uuid } })
-    //   await tx.group.delete({ where: { uuid: m.groupUuid } })
-    // })
-    // await prisma.$transaction(async (tx) => {
-    //   tx.membership.findFirst({
-    //     where: { user: { email } },
-    //     include: { user: true },
-    //   })
-    // })
-    // const u = await prisma.user.create({
-    //   data: {
-    //     email,
-    //     name: 'dude',
-    //     password: 'hey joe',
-    //   },
-    // })
-    // const membership = await createGroupForUser(
-    //   prisma,
-    //   u.uuid,
-    //   'CreateGroupForUser test group',
-    // )
-    // console.log({ membership })
-    //
+  describe('create a group and a membership for the provided user', () => {
+    const userUuid = users.user1.uuid
+    const groupName = 'new group for user 1'
+    let group: Group & {
+      memberships: Membership[]
+    }
+    beforeAll(async () => {
+      group = await createGroupForUser(prisma, userUuid, groupName)
+    })
+    it('create an uuid', async () => {
+      expect(group.uuid).toBeTruthy()
+    })
+    it('assign the correct name', () => {
+      expect(group.name).toBe(groupName)
+    })
+    it('create a membership', () => {
+      expect(group.memberships.length).toBe(1)
+    })
+
+    it('create the membership for the correct group and user, with group_owner membershipRole', () => {
+      expect(group.memberships[0].groupUuid).toBe(group.uuid)
+      expect(group.memberships[0].userUuid).toBe(userUuid)
+      expect(group.memberships[0].membershipRoleUuid).toBe(
+        membershipRoles.group_owner.uuid,
+      )
+    })
   })
 })

@@ -1,10 +1,12 @@
+import { permissions } from './permissions'
+
 export const membershipRoles = {
   // app memberhipRoles
   unauthenticated: {
     uuid: 'unauthenticated',
     title: 'Unauthenticated',
     permissions: {
-      connect: { uuid: 'log_in' },
+      connect: { uuid: permissions.log_in.uuid },
     },
   },
   authenticated: {
@@ -12,19 +14,12 @@ export const membershipRoles = {
     title: 'Authenticated',
     permissions: {
       connect: [
-        { uuid: 'log_out' },
-        { uuid: 'view_my_received_lessons' },
-        { uuid: 'view_my_user' },
-        { uuid: 'create_lesson' },
-        { uuid: 'view_users_of_my_groups' },
+        { uuid: permissions.log_out.uuid },
+        { uuid: permissions.view_my_received_lessons.uuid },
+        { uuid: permissions.view_my_user.uuid },
+        { uuid: permissions.create_lesson.uuid },
+        { uuid: permissions.view_users.uuid },
       ],
-    },
-  },
-  admin: {
-    uuid: 'admin',
-    title: 'Admin',
-    permissions: {
-      connect: [{ uuid: 'view_all_users' }, { uuid: 'view_all_lessons' }],
     },
   },
 
@@ -34,8 +29,10 @@ export const membershipRoles = {
     title: 'Group Owner',
     permissions: {
       connect: [
-        { uuid: 'create_user_into_group' },
-        { uuid: 'change_user_group_roles' },
+        { uuid: permissions.view_users.uuid },
+        { uuid: permissions.view_received_lessons.uuid },
+        { uuid: permissions.create_user_into_group.uuid },
+        { uuid: permissions.change_user_group_roles.uuid },
       ],
     },
   },
@@ -44,9 +41,9 @@ export const membershipRoles = {
     title: 'Teacher',
     permissions: {
       connect: [
-        { uuid: 'assign_lesson' },
-        { uuid: 'answer_assigned_lesson' },
-        { uuid: 'view_all_lessons_of_any_user_in_this_group' },
+        { uuid: permissions.assign_lesson.uuid },
+        { uuid: permissions.answer_assigned_lesson.uuid },
+        { uuid: permissions.view_all_lessons_of_any_user_in_this_group.uuid },
       ],
     },
   },
@@ -54,7 +51,7 @@ export const membershipRoles = {
     uuid: 'student',
     title: 'Student',
     permissions: {
-      connect: [{ uuid: 'answer_assigned_lesson' }],
+      connect: [{ uuid: permissions.answer_assigned_lesson.uuid }],
     },
   },
 }

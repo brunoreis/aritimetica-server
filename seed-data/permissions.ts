@@ -7,17 +7,17 @@ export const permissions = {
     uuid: 'log_out',
     description: 'Allows user to log out',
   },
-  view_all_users: {
-    uuid: 'view_all_users',
+  view_users: {
+    uuid: 'view_users',
     description: 'Allows user to view all users',
+  },
+  view_users_of_my_groups: {
+    uuid: 'view_users_of_my_groups',
+    description: 'Allows user to view all users of the user groups',
   },
   view_my_user: {
     uuid: 'view_my_user',
     description: 'Allows user to view their own profile',
-  },
-  view_users_of_my_groups: {
-    uuid: 'view_users_of_my_groups',
-    description: 'Allows user to view users of their own groups',
   },
   create_user_into_group: {
     uuid: 'create_user_into_group',
@@ -27,8 +27,8 @@ export const permissions = {
     uuid: 'change_user_group_roles',
     description: 'Allows user to change roles of users in their group',
   },
-  view_all_lessons: {
-    uuid: 'view_all_lessons',
+  view_received_lessons: {
+    uuid: 'view_received_lessons',
     description: 'Allows user to view all lessons',
   },
   view_all_lessons_of_any_user_in_this_group: {
